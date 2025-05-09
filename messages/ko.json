@@ -1,0 +1,60 @@
+{
+  "Header": {
+    "serviceName": "Notive",
+    "signIn": {
+      "buttonName": "로그인",
+      "title": "로그인",
+      "content": "로그인 진행 시 회원 가입이 되지 않은 회원은 자동으로 회원 가입이 진행됩니다."
+    },
+    "userMenu": {
+      "myPage": {
+        "title": "마이페이지",
+        "content": "마이페이지 입니다."
+      },
+      "setting": {
+        "title": "설정",
+        "content": "설정 페이지 입니다."
+      },
+      "scrap": {
+        "title": "스크랩",
+        "content": "스크랩 페이지 입니다."
+      },
+      "signOut": {
+        "title": "로그아웃",
+        "content": ""
+      }
+    }
+  },
+
+  "MainPage": {
+    "pageTitle": "우리의 사랑스러운 반려 동물들",
+    "description": "우리의 반려 동물들을 소개합니다.",
+    "pets": {
+      "dog": {
+        "name": "바둑이",
+        "description": "바둑이는 에너지가 넘치는 강아지입니다."
+      },
+      "cat": {
+        "name": "나비",
+        "description": "나비는 온순한 성격의 고양이입니다."
+      },
+      "parrot": {
+        "name": "초롱이",
+        "description": "초롱이는 말을 흉내내는 앵무새입니다."
+      }
+    },
+    "search": {
+      "placeholder": "반려 동물 검색"
+    }
+  },
+
+  "LoginPage": {
+    "title": "로그인",
+    "content": "로그인 진행 시 회원 가입이 되지 않은 회원은 자동으로 회원 가입이 진행됩니다."
+  },
+
+  "Language": {
+    "ko": "한국어",
+    "en": "영어"
+  }
+}

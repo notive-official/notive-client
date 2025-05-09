@@ -1,0 +1,58 @@
+{
+  "Header": {
+    "serviceName": "Notive",
+    "signIn": {
+      "buttonName": "Sign In"
+    },
+    "userMenu": {
+      "myPage": {
+        "title": "My Page",
+        "content": "My Page"
+      },
+      "setting": {
+        "title": "Setting",
+        "content": "Setting"
+      },
+      "scrap": {
+        "title": "Scrap",
+        "content": "Scrap"
+      },
+      "signOut": {
+        "title": "Sign Out",
+        "content": ""
+      }
+    }
+  },
+
+  "MainPage": {
+    "pageTitle": "Meet Our Lovely Pets",
+    "description": "Here are some of our wonderful pets.",
+    "pets": {
+      "dog": {
+        "name": "Buddy",
+        "description": "Buddy is an energetic dog."
+      },
+      "cat": {
+        "name": "Luna",
+        "description": "Luna is a gentle and calm cat."
+      },
+      "parrot": {
+        "name": "Sunny",
+        "description": "Sunny is a parrot that mimics speech."
+      }
+    },
+    "search": {
+      "placeholder": "Search for a pet"
+    }
+  },
+
+  "LoginPage": {
+    "title": "Sign In",
+    "content": "로그인 진행 시 회원 가입이 되지 않은 회원은 자동으로 회원 가입이 진행됩니다."
+  },
+
+  "Language": {
+    "ko": "Korean",
+    "en": "English"
+  }
+}
