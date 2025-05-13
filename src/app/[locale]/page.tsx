@@ -1,61 +1,39 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import PetCard from "@/components/Card";
-import { usePathname, useRouter } from "@/i18n/routing";
-import LocaleDropdown, { LocaledLanguage } from "@/components/LocaleDropDown";
-import { Language } from "@/common/consts/language";
+import Card from "@/components/Card";
 import InputBox from "@/components/InputBox";
+import useTrans from "@/hooks/translation";
+import { Button } from "@headlessui/react";
+import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
+import { useState } from "react";
 
 export default function MainPage() {
-  const tm = useTranslations("MainPage");
-  const languageTrans = useTranslations("Language");
-
-  const pathname = usePathname();
-  const router = useRouter();
-
-  const languages = Object.values(Language).map(
-    (languageType): LocaledLanguage => ({
-      languageType: languageType,
-      expression: languageTrans(languageType),
-    })
-  );
-  const handleLocaleChange = (locale: string) => {
-    router.push(pathname, { locale });
-  };
+  const { MainTrans } = useTrans();
+  const [search, setSearch] = useState("");
 
   return (
-    <div className="h-dvh flex flex-col items-center justify-between px-5 py-2">
-      <main>
-        <section className="py-10 flex justify-center w-full text-center p-4">
-          <InputBox
-            label=""
-            description=""
-            placeholder={tm("search.placeholder")}
-          />
-        </section>
-        <section className="w-full text-center p-4">
-          <h1 className="text-3xl font-bold">{tm("pageTitle")}</h1>
-          <p>{tm("description")}</p>
-        </section>
-        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <PetCard
-            name={tm("pets.dog.name")}
-            description={tm("pets.dog.description")}
-          />
-          <PetCard
-            name={tm("pets.dog.name")}
-            description={tm("pets.dog.description")}
-          />
-        </section>
-        <LocaleDropdown
-          languages={languages}
-          handleLocaleChange={handleLocaleChange}
+    <div className="h-full flex flex-col items-center px-5 py-2">
+      <section className="py-10 flex justify-center w-full text-center p-4">
+        <InputBox
+          placeholder={MainTrans("search.placeholder")}
+          handleChange={(e) => setSearch(e.target.value)}
+          value={search}
+          button={
+            <Button className="block px-3 ml-2 cursor-pointer text-sm/6 font-semibold border-2 rounded-2xl click-effect">
+              <MagnifyingGlassIcon className="w-6 h-6" />
+            </Button>
+          }
         />
-      </main>
-      <footer className="w-full border-t text-light-fg-secondary dark:text-dark-fg-secondary bg-light-bg-secondary dark:bg-dark-bg-secondary text-center py-2">
-        Nya Nya Inc.
-      </footer>
+      </section>
+      <section className="w-full text-center p-4 mb-10">
+        <h1 className="text-3xl font-bold mb-3">{MainTrans("pageTitle")}</h1>
+        <p className="fg-assistant">{MainTrans("description")}</p>
+      </section>
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Card />
+        <Card />
+        <Card />
+      </section>
     </div>
   );
 }

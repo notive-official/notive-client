@@ -2,16 +2,16 @@
 
 import { Button } from "@headlessui/react";
 import { useGetUserQuery } from "@/hooks/api/get";
-import Pop, { PopFuncEntry, PopLinkEntry } from "../../components/Pop";
+import Pop, { PopEntry } from "./Pop";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { useAuth } from "@/contexts/AuthContext";
-import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
-import Favicon from "@/../public/icons/favicon.ico";
+import Favicon from "@/../public/icons/favicon-light.ico";
 import Image from "next/image";
+import useTrans from "@/hooks/translation";
 
 export default function Header() {
-  const HeaderTrans = useTranslations("Header");
+  const { HeaderTrans } = useTrans();
   const router = useRouter();
   const { isAuthenticated, logout, isLoading: isAuthLoading } = useAuth();
 
@@ -19,7 +19,7 @@ export default function Header() {
     router.push("/");
   };
   const handleLogin = () => {
-    router.push("/auth/login");
+    router.push("/login");
   };
 
   const {
@@ -31,25 +31,25 @@ export default function Header() {
     enabled: isAuthenticated,
   });
 
-  const popLinkEntries: PopLinkEntry[] = [
+  const popTopEntries: PopEntry[] = [
     {
       title: HeaderTrans("userMenu.myPage.title"),
       content: HeaderTrans("userMenu.myPage.content"),
-      link: "/",
+      onClick: () => router.push("/my"),
     },
     {
-      title: HeaderTrans("userMenu.setting.title"),
-      content: HeaderTrans("userMenu.setting.content"),
-      link: "/",
+      title: HeaderTrans("userMenu.archive.title"),
+      content: HeaderTrans("userMenu.archive.content"),
+      onClick: () => router.push("/"),
     },
     {
-      title: HeaderTrans("userMenu.scrap.title"),
-      content: HeaderTrans("userMenu.scrap.content"),
-      link: "/",
+      title: HeaderTrans("userMenu.posting.title"),
+      content: HeaderTrans("userMenu.posting.content"),
+      onClick: () => router.push("/post"),
     },
   ];
 
-  const popFuncEntries: PopFuncEntry[] = [
+  const popBottomEntries: PopEntry[] = [
     {
       title: HeaderTrans("userMenu.signOut.title"),
       content: HeaderTrans("userMenu.signOut.content"),
@@ -58,7 +58,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="w-full p-4 flex justify-between shadow-md fg-secondary bg-secondary">
+    <header className="w-full p-4 flex justify-between shadow-md fg-principal bg-secondary">
       <p
         className="flex flex-row items-center font-bold text-2xl cursor-pointer"
         onClick={handleLogoClick}
@@ -69,15 +69,22 @@ export default function Header() {
       {isAuthLoading ? null : isAuthenticated ? (
         <>
           <Pop
-            node={<UserCircleIcon className="w-8 h-8 flex-shrink-0" />}
-            popLinkEntries={popLinkEntries}
-            popFuncEntries={popFuncEntries}
+            node={
+              <div className="flex flex-row items-center">
+                <UserCircleIcon className="w-8 h-8 flex-shrink-0" />
+                <p className="mx-2 text-sm font-medium text-current">
+                  {data?.nickname}
+                </p>
+              </div>
+            }
+            popTopEntries={popTopEntries}
+            popBottomEntries={popBottomEntries}
           />
         </>
       ) : (
         <Button
           onClick={handleLogin}
-          className="cursor-pointer rounded-md px-4 py-2 text-sm font-medium fg-secondary hover-bg-effect"
+          className="cursor-pointer rounded-md px-4 py-2 text-sm font-medium fg-principal hover-bg-effect"
         >
           {HeaderTrans("signIn.buttonName")}
         </Button>

@@ -4,13 +4,13 @@ import { Locale, routing } from "@/i18n/routing";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import ClientProviders from "../../contexts/ClientProvider";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 export const metadata = {
   title: "Notive",
   icons: {
-    icon: "/icons/favicon.ico",
-    shortcut: "/icons/favicon-16x16.png", // 단축 아이콘 (옵션)
-    apple: "/icons/apple-touch-icon.png", // iOS 홈 화면 아이콘 (옵션)
+    icon: "/icons/favicon-light.ico",
   },
 };
 
@@ -30,9 +30,11 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body className="text-light-fg-primary dark:text-dark-fg-primary bg-light-bg-primary dark:bg-dark-bg-primary">
+      <body className="h-screen flex flex-col fg-principal bg-primary">
         <ClientProviders locale={locale} messages={messages}>
-          {children}
+          <Header />
+          <main className="flex-1 overflow-auto">{children}</main>
+          <Footer />
         </ClientProviders>
       </body>
     </html>

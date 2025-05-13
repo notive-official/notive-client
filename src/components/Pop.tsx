@@ -1,5 +1,4 @@
 import {
-  Button,
   Popover,
   PopoverBackdrop,
   PopoverButton,
@@ -9,17 +8,11 @@ import { ReactNode } from "react";
 
 interface PopProps {
   node: ReactNode;
-  popLinkEntries: PopLinkEntry[];
-  popFuncEntries: PopFuncEntry[];
+  popTopEntries: PopEntry[];
+  popBottomEntries: PopEntry[];
 }
 
-export interface PopLinkEntry {
-  title: string;
-  content: string;
-  link: string;
-}
-
-export interface PopFuncEntry {
+export interface PopEntry {
   title: string;
   content: string;
   onClick: () => void;
@@ -27,8 +20,8 @@ export interface PopFuncEntry {
 
 export default function Pop({
   node,
-  popLinkEntries,
-  popFuncEntries,
+  popTopEntries,
+  popBottomEntries,
 }: PopProps) {
   return (
     <div className="flex justify-center items-center">
@@ -40,40 +33,31 @@ export default function Pop({
         <PopoverPanel
           transition
           anchor="bottom end"
-          className="divide-y divide-black/5 dark:divide-white/5 rounded-xl bg-tertiary text-sm/6 transition duration-200 ease-in-out [--anchor-gap:--spacing(5)] data-closed:-translate-y-1 data-closed:opacity-0"
+          className="divide-y divide-primary rounded-xl bg-tertiary text-sm/6 transition duration-200 ease-in-out [--anchor-gap:--spacing(5)] data-closed:-translate-y-1 data-closed:opacity-0"
         >
           <div className="p-3">
-            {popLinkEntries.map((entry) => {
+            {popTopEntries.map((entry) => {
               return (
                 <a
-                  className="block rounded-lg px-3 py-2 transition hover-bg-effect"
-                  href={entry.link}
+                  className="cursor-pointer w-full block rounded-lg px-3 py-2 transition hover-bg-effect"
                   key={entry.title}
+                  onClick={entry.onClick}
                 >
-                  <p className="font-semibold text-light-fg-primary dark:text-dark-fg-primary">
-                    {entry.title}
-                  </p>
-                  <p className="text-black/50 dark:text-white/50">
-                    {entry.content}
-                  </p>
+                  <p className="font-semibold fg-principal">{entry.title}</p>
+                  <p className="fg-assistant">{entry.content}</p>
                 </a>
               );
             })}
           </div>
           <div className="p-3">
-            {popFuncEntries.map((entry) => {
+            {popBottomEntries.map((entry) => {
               return (
                 <a
                   onClick={entry.onClick}
-                  className="cursor-pointer w-full block rounded-lg px-3 py-2 transition hover-bg-effect"
+                  className="cursor-pointer w-full block rounded-lg px-3 py-2 transition hover-bg-effect text-center"
                   key={entry.title}
                 >
-                  <p className="font-semibold text-light-fg-primary dark:text-dark-fg-primary">
-                    {entry.title}
-                  </p>
-                  <p className="text-light-fg-assistent dark:text-dark-fg-assistent">
-                    {entry.content}
-                  </p>
+                  <p className="font-semibold fg-principal">{entry.title}</p>
                 </a>
               );
             })}

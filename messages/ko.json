@@ -11,13 +11,13 @@
         "title": "마이페이지",
         "content": "마이페이지 입니다."
       },
-      "setting": {
-        "title": "설정",
-        "content": "설정 페이지 입니다."
+      "posting": {
+        "title": "작성",
+        "content": "작성 페이지 입니다."
       },
-      "scrap": {
-        "title": "스크랩",
-        "content": "스크랩 페이지 입니다."
+      "archive": {
+        "title": "아카이브",
+        "content": "아카이브 페이지 입니다."
       },
       "signOut": {
         "title": "로그아웃",
@@ -27,24 +27,10 @@
   },
 
   "MainPage": {
-    "pageTitle": "우리의 사랑스러운 반려 동물들",
-    "description": "우리의 반려 동물들을 소개합니다.",
-    "pets": {
-      "dog": {
-        "name": "바둑이",
-        "description": "바둑이는 에너지가 넘치는 강아지입니다."
-      },
-      "cat": {
-        "name": "나비",
-        "description": "나비는 온순한 성격의 고양이입니다."
-      },
-      "parrot": {
-        "name": "초롱이",
-        "description": "초롱이는 말을 흉내내는 앵무새입니다."
-      }
-    },
+    "pageTitle": "Design Archive",
+    "description": "디자인 아카이브는 디자인 리소스를 모아놓은 곳입니다.",
     "search": {
-      "placeholder": "반려 동물 검색"
+      "placeholder": "디자인 검색"
     }
   },
 
@@ -56,5 +42,19 @@
   "Language": {
     "ko": "한국어",
     "en": "영어"
+  },
+
+  "MyPage": {
+    "pageTitle": "마이페이지",
+    "description": "마이페이지 입니다."
+  },
+
+  "PostPage": {
+    "title": { "placeholder": "제목을 입력해주세요." },
+    "tag": { "placeholder": "Enter를 눌러 태그를 등록해주세요." },
+    "imageUploader": {
+      "delete": "삭제"
+    },
+    "description": "작성 페이지 입니다."
   }
 }
