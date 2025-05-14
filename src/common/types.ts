@@ -1,1 +1,1 @@
-export type EditorElement = "links" | "images" | "description";
+export type EditorElementCategory = "links" | "images" | "description";

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import TextEditor from "@/app/[locale]/post/TextEditor";
 
 export default function CreatePage() {

@@ -26,7 +26,6 @@ export const usePostLogoutMutation = (
 export type GetUserResponse = {
   userId: number;
   nickname: string;
-  roles: string[];
   profileImageUrl: string;
 };
 
@@ -35,6 +34,29 @@ export const useGetUserQuery = (options?: QueryConfig<typeof getUser>) => {
   return useQuery({
     queryKey: ["getUser"],
     queryFn: getUser,
+    ...options,
+  });
+};
+
+export type GetOEmbedResponse = {
+  version: string;
+  type: string;
+  providerName: string;
+  providerUrl: string;
+  title: string;
+  authorName: string;
+  authorUrl: string;
+  thumbnailUrl: string;
+  thumbnailWidth: number;
+  thumbnailHeight: number;
+  html: string;
+};
+
+const getOEmbed = createFetcher<GetOEmbedResponse>("api/archive/oembed");
+export const useGetOEmbedQuery = (options?: QueryConfig<typeof getOEmbed>) => {
+  return useQuery({
+    queryKey: ["getOEmbed"],
+    queryFn: getOEmbed,
     ...options,
   });
 };

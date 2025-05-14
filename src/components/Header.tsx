@@ -2,8 +2,7 @@
 
 import { Button } from "@headlessui/react";
 import { useGetUserQuery } from "@/hooks/api/get";
-import Pop, { PopEntry } from "./Pop";
-import { UserCircleIcon } from "@heroicons/react/24/solid";
+import Pop, { PopEntry } from "./common/Pop";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "@/i18n/routing";
 import Favicon from "@/../public/icons/favicon-light.ico";
@@ -22,11 +21,7 @@ export default function Header() {
     router.push("/login");
   };
 
-  const {
-    isLoading: isUserLoading,
-    data,
-    isError,
-  } = useGetUserQuery({
+  const { isLoading: isUserLoading, data } = useGetUserQuery({
     staleTime: 1000 * 60 * 5,
     enabled: isAuthenticated,
   });
@@ -66,14 +61,20 @@ export default function Header() {
         <Image className="w-8 h-8 mr-2" src={Favicon} alt={"icon"} />
         {HeaderTrans("serviceName")}
       </p>
-      {isAuthLoading ? null : isAuthenticated ? (
+      {!isAuthLoading && !isUserLoading && isAuthenticated && data ? (
         <>
           <Pop
             node={
-              <div className="flex flex-row items-center">
-                <UserCircleIcon className="w-8 h-8 flex-shrink-0" />
+              <div className="flex flex-row items-center m-2">
+                <Image
+                  className="w-8 h-8 flex-shrink-0"
+                  src={data.profileImageUrl}
+                  width={30}
+                  height={30}
+                  alt="profile image"
+                />
                 <p className="mx-2 text-sm font-medium text-current">
-                  {data?.nickname}
+                  {data.nickname}
                 </p>
               </div>
             }

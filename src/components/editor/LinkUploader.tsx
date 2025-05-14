@@ -1,8 +1,7 @@
 import { Button } from "@headlessui/react";
 import TextAreaBox from "../TextAreaBox";
 import { PlusIcon, MinusCircleIcon } from "@heroicons/react/16/solid";
-import { useEffect, useState } from "react";
-import { nanoid } from "nanoid";
+import { useEffect } from "react";
 import { useEditor } from "@/contexts/EditorProvider";
 import useLinkUpload from "@/hooks/linkUpload";
 

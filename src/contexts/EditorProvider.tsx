@@ -5,13 +5,8 @@ import { UploadedFile } from "@/hooks/imageUpload";
 import { UploadedLink } from "@/hooks/linkUpload";
 import useTag from "@/hooks/tag";
 import { nanoid } from "nanoid";
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-} from "react";
+import React, { createContext, useContext, useState, useCallback } from "react";
+import { arrayMove } from "@dnd-kit/sortable";
 
 interface EditorContextType {
   title: string;
@@ -23,6 +18,7 @@ interface EditorContextType {
   handleAddElement: (element: EditorElementCategory) => void;
   handleRemoveElement: (id: string) => void;
   handleUpdateElement: (id: string, data: Partial<ElementContent>) => void;
+  handleReorderElements: (oldIndex: number, newIndex: number) => void;
 }
 
 export interface EditorElementContent {
@@ -68,6 +64,13 @@ export function EditorProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
+  const handleReorderElements = useCallback(
+    (oldIndex: number, newIndex: number) => {
+      setElements((prev) => arrayMove(prev, oldIndex, newIndex));
+    },
+    []
+  );
+
   return (
     <EditorContext.Provider
       value={{
@@ -80,6 +83,7 @@ export function EditorProvider({ children }: { children: React.ReactNode }) {
         handleAddElement,
         handleRemoveElement,
         handleUpdateElement,
+        handleReorderElements,
       }}
     >
       {children}

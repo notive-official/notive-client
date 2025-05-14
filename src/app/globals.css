@@ -2,9 +2,9 @@
 
 @theme {
   /* Light Theme */
-  --color-light-bg-primary: #e4e4e4;
-  --color-light-bg-secondary: #f4f4f4;
-  --color-light-bg-tertiary: #f0f0f0;
+  --color-light-bg-primary: #e0e0e0;
+  --color-light-bg-secondary: #eaeaea;
+  --color-light-bg-tertiary: #f4f4f4;
   --color-light-bg-transparent: rgba(255, 255, 255, 0.05);
 
   --color-light-fg-principal: #1a1a1a;
@@ -14,8 +14,8 @@
 
   /* Dark Theme */
   --color-dark-bg-primary: #1a1a1a;
-  --color-dark-bg-secondary: #262626;
-  --color-dark-bg-tertiary: #2e2f33;
+  --color-dark-bg-secondary: #232323;
+  --color-dark-bg-tertiary: #2d2d2d;
   --color-dark-bg-transparent: rgba(0, 0, 0, 0.05);
 
   --color-dark-fg-principal: #e4e4e4;
@@ -52,6 +52,12 @@
   .fg-accent {
     @apply text-light-fg-accent dark:text-dark-fg-accent;
   }
+  .border-primary {
+    @apply border-light-fg-transparent dark:border-dark-fg-transparent;
+  }
+  .border-accent {
+    @apply border-light-fg-principal dark:border-dark-fg-principal;
+  }
   .divide-primary {
     @apply divide-dark-bg-transparent dark:divide-light-bg-transparent;
   }
@@ -65,7 +71,9 @@
     @apply text-light-fg-assistant dark:text-dark-fg-assistant
     data-hover:text-light-fg-accent dark:data-hover:text-dark-fg-accent 
     data-active:text-light-fg-accent dark:data-active:text-dark-fg-accent 
-    data-focus:text-light-fg-accent dark:data-focus:text-dark-fg-accent;
+    data-focus:text-light-fg-accent dark:data-focus:text-dark-fg-accent
+    hover:bg-dark-bg-transparent dark:hover:bg-light-bg-transparent
+    rounded-xl cursor-pointer;
   }
 }
 

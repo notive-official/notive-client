@@ -3,7 +3,7 @@
 import useTrans from "@/hooks/translation";
 import { usePathname, useRouter } from "@/i18n/routing";
 import { LanguageIcon } from "@heroicons/react/16/solid";
-import DropDown, { Item } from "@/components/DropDown";
+import DropDown, { Item } from "@/components/common/DropDown";
 import { Language } from "@/common/consts/language";
 
 export default function MyPage() {

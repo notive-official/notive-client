@@ -1,18 +1,19 @@
 "use client";
 
-import InputBox from "../../../components/InputBox";
+import InputBox from "../../../components/common/InputBox";
 import useTrans from "@/hooks/translation";
 import Tagbar from "../../../components/editor/Tagbar";
 import ToolBar from "../../../components/editor/ToolBar";
-import Tag from "@/components/Tag";
+import Tag from "@/components/common/Tag";
 import EditorElement from "@/components/editor/EditorElement";
 import { useEditor } from "@/contexts/EditorProvider";
-import { Button } from "@headlessui/react";
 import PreviewElement from "@/components/preview/PreviewElement";
+import { SortableElementProvider } from "@/contexts/SortableElementContext";
 
 export default function TextEditor() {
   const { PostTrans } = useTrans();
-  const { elements, title, tags, handleChangeTitle } = useEditor();
+  const { elements, title, tags, handleChangeTitle, handleReorderElements } =
+    useEditor();
 
   return (
     <div className="h-full w-full flex flex-row mx-auto divide-x-4 divide-primary">
@@ -27,9 +28,14 @@ export default function TextEditor() {
         <div className="sticky -top-2 z-10">
           <ToolBar />
         </div>
-        {elements.map((element) => (
-          <EditorElement key={element.id} element={element} />
-        ))}
+        <SortableElementProvider
+          elements={elements}
+          handleReorderElements={handleReorderElements}
+        >
+          {elements.map((element) => (
+            <EditorElement key={element.id} element={element} />
+          ))}
+        </SortableElementProvider>
       </section>
       <section className="w-1/2 h-full overflow-y-auto text-left p-8">
         <div className="flex flex-col gap-8">

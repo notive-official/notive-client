@@ -1,6 +1,6 @@
 "use client";
 
-import Tag from "@/components/Tag";
+import Tag from "@/components/common/Tag";
 import { useEditor } from "@/contexts/EditorProvider";
 import useTrans from "@/hooks/translation";
 import { Input } from "@headlessui/react";

@@ -1,7 +1,7 @@
 "use client";
 
-import Card from "@/components/Card";
-import InputBox from "@/components/InputBox";
+import Card from "@/components/common/Card";
+import InputBox from "@/components/common/InputBox";
 import useTrans from "@/hooks/translation";
 import { Button } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";

@@ -21,8 +21,19 @@ const data = {
 };
 
 export default function Card() {
+  const url = "https://www.youtube.com/watch?v=2mU7HBzhNOo";
+  const handleClick = () => {
+    window.open(
+      url,
+      "myPopup",
+      "width=800,height=600,toolbar=no,menubar=no,scrollbars=yes"
+    );
+  };
   return (
-    <div className="bg-tertiary rounded-lg overflow-hidden shadow-lg cursor-pointer">
+    <div
+      className="bg-tertiary rounded-lg overflow-hidden shadow-lg cursor-pointer"
+      onClick={handleClick}
+    >
       <div className="relative hover-bg-effect">
         {data.thumbnailUrl ? (
           <Image

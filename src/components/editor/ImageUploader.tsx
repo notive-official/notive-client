@@ -1,8 +1,7 @@
 // components/ImageUploader.tsx
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { useDropzone } from "react-dropzone";
+import { useEffect } from "react";
 import Image from "next/image";
 import useTrans from "@/hooks/translation";
 import { Button } from "@headlessui/react";
@@ -30,16 +29,18 @@ export default function ImageUploader({ id }: { id: string }) {
           p-6 border-2 border-dashed rounded-lg cursor-pointer my-3
           ${
             isDragActive
-              ? "border-blue-500 bg-transparent-reverse"
-              : "border-gray-300"
+              ? "border-accent bg-transparent-reverse"
+              : "border-primary"
           }
         `}
       >
         <input {...getInputProps()} />
         {isDragActive ? (
-          <p>여기로 이미지를 드래그하세요…</p>
+          <p className="fg-principal">여기로 이미지를 드래그하세요…</p>
         ) : (
-          <p>이미지를 드래그하거나 클릭하여 선택하세요 (최대 5MB)</p>
+          <p className="fg-assistant">
+            이미지를 드래그하거나 클릭하여 선택하세요 (최대 5MB)
+          </p>
         )}
       </div>
 

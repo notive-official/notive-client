@@ -26,7 +26,7 @@ export default function Pop({
   return (
     <div className="flex justify-center items-center">
       <Popover>
-        <PopoverButton className="block px-3 cursor-pointer text-sm/6 font-semibold focus:outline-none data-focus:outline click-effect">
+        <PopoverButton className="block cursor-pointer text-sm/6 font-semibold focus:outline-none data-focus:outline click-effect">
           {node}
         </PopoverButton>
         <PopoverBackdrop className="fixed inset-0 bg-transparent" />
