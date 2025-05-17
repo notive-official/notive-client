@@ -27,7 +27,7 @@ export default function Tagbar() {
         }}
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        className="w-full rounded-xl bg-transparent-reverse px-4 py-2 focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus-outline"
+        className="w-full rounded-xl bg-transparent-reverse px-4 py-2 focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus-outline-effect"
         placeholder={PostTrans("tag.placeholder")}
       />
       <div className="flex flex-row flex-wrap gap-2 my-3">

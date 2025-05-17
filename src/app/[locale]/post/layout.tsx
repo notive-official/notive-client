@@ -1,3 +1,4 @@
+import EditorFooter from "@/components/editor/EditorFooter";
 import { EditorProvider } from "@/contexts/EditorProvider";
 
 export default async function PostLayout({
@@ -5,5 +6,12 @@ export default async function PostLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <EditorProvider>{children}</EditorProvider>;
+  return (
+    <div className="relative h-screen pb-16">
+      <EditorProvider>{children}</EditorProvider>
+      <div className="fixed bottom-0 left-0 w-full z-10">
+        <EditorFooter />
+      </div>
+    </div>
+  );
 }

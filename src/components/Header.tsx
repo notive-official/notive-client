@@ -58,14 +58,22 @@ export default function Header() {
         className="flex flex-row items-center font-bold text-2xl cursor-pointer"
         onClick={handleLogoClick}
       >
-        <Image className="w-8 h-8 mr-2" src={Favicon} alt={"icon"} />
+        {data ? (
+          <Image
+            className="w-8 h-8 mr-2"
+            src={data.serviceImageUrl}
+            width={32}
+            height={32}
+            alt={"icon"}
+          />
+        ) : null}
         {HeaderTrans("serviceName")}
       </p>
       {!isAuthLoading && !isUserLoading && isAuthenticated && data ? (
         <>
           <Pop
             node={
-              <div className="flex flex-row items-center m-2">
+              <div className="flex flex-row items-center m-1">
                 <Image
                   className="w-8 h-8 flex-shrink-0"
                   src={data.profileImageUrl}

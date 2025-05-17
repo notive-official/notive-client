@@ -9,6 +9,7 @@ import EditorElement from "@/components/editor/EditorElement";
 import { useEditor } from "@/contexts/EditorProvider";
 import PreviewElement from "@/components/preview/PreviewElement";
 import { SortableElementProvider } from "@/contexts/SortableElementContext";
+import { Button, Input } from "@headlessui/react";
 
 export default function TextEditor() {
   const { PostTrans } = useTrans();
@@ -18,11 +19,10 @@ export default function TextEditor() {
   return (
     <div className="h-full w-full flex flex-row mx-auto divide-x-4 divide-primary">
       <section className="w-1/2 h-full overflow-y-auto text-center p-4">
-        <InputBox
+        <Input
+          className="text-3xl font-bold px-6 py-4 bg-transparent-reverse w-full rounded-xl data-focus-outline-effect"
           placeholder={PostTrans("title.placeholder")}
-          inputClassName="text-3xl font-bold px-6 py-4"
-          handleChange={(e) => handleChangeTitle(e.target.value)}
-          value={title}
+          onChange={(e) => handleChangeTitle(e.target.value)}
         />
         <Tagbar />
         <div className="sticky -top-2 z-10">

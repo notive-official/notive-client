@@ -9,6 +9,13 @@ export function createFetcher<TResponse>(url: string) {
   };
 }
 
+export function createFetcherWithParams<TResponse, TParams>(url: string) {
+  return async (params?: TParams): Promise<TResponse> => {
+    const { data } = await api.get<TResponse>(url, { params });
+    return data;
+  };
+}
+
 export function createPoster<TRequest, TResponse>(url: string) {
   return async (body: TRequest): Promise<TResponse> => {
     const { data } = await api.post<TResponse>(url, body);
@@ -27,6 +34,7 @@ export type GetUserResponse = {
   userId: number;
   nickname: string;
   profileImageUrl: string;
+  serviceImageUrl: string;
 };
 
 const getUser = createFetcher<GetUserResponse>("api/user/header");
@@ -36,6 +44,10 @@ export const useGetUserQuery = (options?: QueryConfig<typeof getUser>) => {
     queryFn: getUser,
     ...options,
   });
+};
+
+export type GetOEmbedParams = {
+  url: string;
 };
 
 export type GetOEmbedResponse = {
@@ -52,11 +64,16 @@ export type GetOEmbedResponse = {
   html: string;
 };
 
-const getOEmbed = createFetcher<GetOEmbedResponse>("api/archive/oembed");
-export const useGetOEmbedQuery = (options?: QueryConfig<typeof getOEmbed>) => {
-  return useQuery({
-    queryKey: ["getOEmbed"],
-    queryFn: getOEmbed,
+const getOEmbed = createFetcherWithParams<GetOEmbedResponse, { url: string }>(
+  "api/archive/oembed"
+);
+
+export const useGetOEmbedQuery = (
+  url: string,
+  options?: QueryConfig<typeof getOEmbed>
+) =>
+  useQuery({
+    queryKey: ["getOEmbed", url],
+    queryFn: () => getOEmbed({ url }),
     ...options,
   });
-};

@@ -6,7 +6,7 @@ import { XMarkIcon, EllipsisHorizontalIcon } from "@heroicons/react/16/solid";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-import TextAreaBox from "../TextAreaBox";
+import TextAreaBox from "../common/TextAreaBox";
 import ImageUploader from "./ImageUploader";
 import LinkUploader from "./LinkUploader";
 import { EditorElementContent, useEditor } from "@/contexts/EditorProvider";
@@ -59,18 +59,31 @@ export default function EditorElement({ element }: EditorElementProps) {
         </Button>
       </div>
       {element.elementCategory === "images" ? (
-        <ImageUploader id={element.id} />
+        <div className="flex flex-row gap-2">
+          <ImageUploader id={element.id} />
+          <TextAreaBox
+            placeholder="Add a description"
+            handleChange={(e) => setDescription(e.target.value)}
+            inputClassName="bg-transparent-reverse"
+            rows={1}
+            scrollable={false}
+          />
+        </div>
       ) : null}
 
       {element.elementCategory === "links" ? (
         <LinkUploader id={element.id} />
-      ) : (
+      ) : null}
+
+      {element.elementCategory === "description" ? (
         <TextAreaBox
           placeholder="Add a description"
           handleChange={(e) => setDescription(e.target.value)}
           inputClassName="bg-transparent-reverse"
+          rows={4}
+          scrollable={false}
         />
-      )}
+      ) : null}
     </div>
   );
 }

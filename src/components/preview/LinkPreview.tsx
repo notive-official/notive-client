@@ -1,27 +1,22 @@
-import Image, { StaticImageData } from "next/image";
+import { useGetOEmbedQuery } from "@/hooks/api/get";
+import { UploadedLink } from "@/hooks/linkUpload";
+import Image from "next/image";
 
-interface CardProps {
-  name: string;
-  description: string;
-  imageUrl?: string | StaticImageData;
-}
-
-const data = {
-  version: "1.0",
-  type: "video",
-  providerName: "YouTube",
-  providerUrl: "https://www.youtube.com/",
-  title: "국민의 50%가 이 작은 섬에 모여 사는 이유",
-  authorName: "서재로36",
-  authorUrl: "https://www.youtube.com/@%EC%84%9C%EC%9E%AC%EB%A1%9C36",
-  thumbnailUrl: "https://i.ytimg.com/vi/2mU7HBzhNOo/hqdefault.jpg",
-  thumbnailWidth: 480,
-  thumbnailHeight: 360,
-  html: '<iframe width="200" height="113" src="https://www.youtube.com/embed/2mU7HBzhNOo?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="국민의 50%가 이 작은 섬에 모여 사는 이유"></iframe>',
-};
-
-export default function Card() {
-  const url = "https://www.youtube.com/watch?v=2mU7HBzhNOo";
+export default function LinkPreview({
+  upLoadedLink,
+}: {
+  upLoadedLink: UploadedLink;
+}) {
+  const url = upLoadedLink.link;
+  const {
+    data: oEmbed,
+    isError,
+    error,
+  } = useGetOEmbedQuery(url, {
+    retry: (failureCount, err) => {
+      return false;
+    },
+  });
   const handleClick = () => {
     window.open(
       url,
@@ -29,26 +24,46 @@ export default function Card() {
       "width=800,height=600,toolbar=no,menubar=no,scrollbars=yes"
     );
   };
+  if (isError) {
+    return (
+      <p
+        className="underline text-blue-500 cursor-pointer hover:text-blue-600"
+        onClick={handleClick}
+      >
+        {url}
+      </p>
+    );
+  }
   return (
-    <div
-      className="bg-tertiary rounded-lg overflow-hidden shadow-lg cursor-pointer"
-      onClick={handleClick}
-    >
-      <div className="relative hover-bg-effect">
-        {data.thumbnailUrl ? (
-          <Image
-            className="w-full px-6 py-6"
-            width={data.thumbnailWidth}
-            height={data.thumbnailHeight}
-            src={data.thumbnailUrl}
-            alt={data.type}
-          />
-        ) : null}
-        <div className="p-6">
-          <h2 className="fg-principal font-bold text-lg py-2">{data.title}</h2>
-          <p className="fg-assistant text-base">{data.providerName}</p>
+    <div className="cursor-pointer max-w-148">
+      {oEmbed ? (
+        <div
+          className="bg-tertiary rounded-lg overflow-hidden shadow-lg h-48"
+          onClick={handleClick}
+        >
+          <div className="hover-bg-effect flex flex-row h-full">
+            {oEmbed.thumbnailUrl ? (
+              <div className="p-6 w-4/7 relative overflow-hidden h-full">
+                <Image
+                  src={oEmbed.thumbnailUrl}
+                  alt={oEmbed.type}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            ) : null}
+            <div className="flex flex-col justify-between w-fill p-6">
+              <h2
+                className="fg-principal font-bold text-lg line-clamp-4"
+                title={oEmbed.title}
+              >
+                {oEmbed.title}
+              </h2>
+              <p className="fg-assistant text-base">{oEmbed.providerName}</p>
+            </div>
+          </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 }

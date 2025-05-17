@@ -7,9 +7,7 @@ export interface UploadedLink {
 }
 
 export default function useLinkUpload() {
-  const [links, setLinks] = useState<UploadedLink[]>([
-    { id: nanoid(), link: "" },
-  ]);
+  const [links, setLinks] = useState<UploadedLink[]>([]);
 
   const handleChange = (id: string, value: string) => {
     const newLinks = links.map((link) => {
@@ -21,8 +19,8 @@ export default function useLinkUpload() {
     setLinks(newLinks);
   };
 
-  const handleAddLink = () => {
-    setLinks([...links, { id: nanoid(), link: "" }]);
+  const handleAddLink = (link: string) => {
+    setLinks([...links, { id: nanoid(), link }]);
   };
 
   const handleRemoveLink = (id: string) => {

@@ -55,10 +55,10 @@ export default function ImageUploader({ id }: { id: string }) {
                 height={100}
                 className="w-full h-32 object-cover rounded-xl"
               />
-              <p className="mt-2 text-sm fg-assistant truncate">{file.name}</p>
+              <p className="mt-2 text-sm fg-assistant">{file.name}</p>
               <Button
                 onClick={() => deleteImage(id)}
-                className="cursor-pointer absolute -top-1.5 -right-2 text-xs click-effect rounded-full shadow"
+                className="cursor-pointer absolute -top-1.5 -right-2 text-xs click-effect rounded-full"
               >
                 <div className="w-full h-full px-0.2 py-0.2 bg-primary rounded-full">
                   <XCircleIcon className="w-6 h-6" />

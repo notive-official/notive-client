@@ -1,82 +1,125 @@
 @import "tailwindcss";
 
 @theme {
-  /* Light Theme */
-  --color-light-bg-primary: #e0e0e0;
-  --color-light-bg-secondary: #eaeaea;
-  --color-light-bg-tertiary: #f4f4f4;
-  --color-light-bg-transparent: rgba(255, 255, 255, 0.05);
+  /* Light Colors */
+  --color-light-primary: #e0e0e0;
+  --color-light-secondary: #eaeaea;
+  --color-light-tertiary: #f4f4f4;
 
-  --color-light-fg-principal: #1a1a1a;
-  --color-light-fg-assistant: rgba(0, 0, 0, 0.5);
-  --color-light-fg-transparent: rgba(0, 0, 0, 0.25);
-  --color-light-fg-accent: #000000;
+  --color-light-transparent-5: rgba(255, 255, 255, 0.05);
+  --color-light-transparent-25: rgba(255, 255, 255, 0.25);
+  --color-light-transparent-50: rgba(255, 255, 255, 0.5);
+  --color-light-transparent-75: rgba(255, 255, 255, 0.75);
+  --color-light-transparent-100: rgba(255, 255, 255, 1);
 
-  /* Dark Theme */
-  --color-dark-bg-primary: #1a1a1a;
-  --color-dark-bg-secondary: #232323;
-  --color-dark-bg-tertiary: #2d2d2d;
-  --color-dark-bg-transparent: rgba(0, 0, 0, 0.05);
+  /* Dark Colors */
+  --color-dark-primary: #1a1a1a;
+  --color-dark-secondary: #232323;
+  --color-dark-tertiary: #2d2d2d;
 
-  --color-dark-fg-principal: #e4e4e4;
-  --color-dark-fg-assistant: rgba(255, 255, 255, 0.5);
-  --color-dark-fg-transparent: rgba(255, 255, 255, 0.25);
-  --color-dark-fg-accent: #ffffff;
+  --color-dark-transparent-5: rgba(40, 40, 40, 0.05);
+  --color-dark-transparent-25: rgba(40, 40, 40, 0.25);
+  --color-dark-transparent-50: rgba(40, 40, 40, 0.5);
+  --color-dark-transparent-75: rgba(40, 40, 40, 0.75);
+  --color-dark-transparent-100: rgba(40, 40, 40, 1);
 }
 
 @layer components {
+  /* Background Colors */
   .bg-primary {
-    @apply bg-light-bg-primary dark:bg-dark-bg-primary;
+    @apply bg-light-primary dark:bg-dark-primary;
   }
   .bg-secondary {
-    @apply bg-light-bg-secondary dark:bg-dark-bg-secondary;
+    @apply bg-light-secondary dark:bg-dark-secondary;
   }
   .bg-tertiary {
-    @apply bg-light-bg-tertiary dark:bg-dark-bg-tertiary;
+    @apply bg-light-tertiary dark:bg-dark-tertiary;
+  }
+  .bg-reverse {
+    @apply bg-dark-secondary dark:bg-light-secondary;
   }
   .bg-transparent {
-    @apply bg-light-bg-transparent dark:bg-dark-bg-transparent;
+    @apply bg-light-transparent-5 dark:bg-dark-transparent-5;
   }
   .bg-transparent-reverse {
-    @apply bg-dark-bg-transparent dark:bg-light-bg-transparent;
+    @apply bg-dark-transparent-5 dark:bg-light-transparent-5;
   }
+  .bg-transparent-25 {
+    @apply bg-light-transparent-25 dark:bg-dark-transparent-25;
+  }
+  .bg-transparent-reverse-25 {
+    @apply bg-dark-transparent-25 dark:bg-light-transparent-25;
+  }
+  .bg-transparent-50 {
+    @apply bg-light-transparent-50 dark:bg-dark-transparent-50;
+  }
+  .bg-transparent-reverse-50 {
+    @apply bg-dark-transparent-50 dark:bg-light-transparent-50;
+  }
+  .bg-transparent-75 {
+    @apply bg-light-transparent-75 dark:bg-dark-transparent-75;
+  }
+  .bg-transparent-reverse-75 {
+    @apply bg-dark-transparent-75 dark:bg-light-transparent-75;
+  }
+  .bg-contrast-main {
+    @apply bg-dark-transparent-50 dark:bg-light-transparent-75;
+  }
+  .bg-contrast-sub {
+    @apply bg-light-transparent-75 dark:bg-light-transparent-25;
+  }
+
+  /* Foreground Colors */
   .fg-principal {
-    @apply text-light-fg-principal dark:text-dark-fg-principal;
+    @apply text-dark-primary dark:text-light-primary;
   }
   .fg-assistant {
-    @apply text-light-fg-assistant dark:text-dark-fg-assistant;
-  }
-  .fg-transparent {
-    @apply text-light-fg-transparent dark:text-dark-fg-transparent;
+    @apply text-dark-transparent-50 dark:text-light-transparent-50;
   }
   .fg-accent {
-    @apply text-light-fg-accent dark:text-dark-fg-accent;
+    @apply text-dark-transparent-100 dark:text-light-transparent-100;
+  }
+  .fg-reverse {
+    @apply text-light-primary dark:text-dark-primary;
   }
   .border-primary {
-    @apply border-light-fg-transparent dark:border-dark-fg-transparent;
+    @apply border-dark-transparent-25 dark:border-light-transparent-25;
   }
   .border-accent {
-    @apply border-light-fg-principal dark:border-dark-fg-principal;
+    @apply border-dark-transparent-50 dark:border-light-transparent-50;
   }
   .divide-primary {
-    @apply divide-dark-bg-transparent dark:divide-light-bg-transparent;
+    @apply divide-dark-transparent-5 dark:divide-light-transparent-5;
   }
-  .data-focus-outline {
-    @apply data-focus:outline-light-fg-transparent dark:data-focus:outline-dark-fg-transparent;
-  }
+
+  /* Effect */
   .hover-bg-effect {
-    @apply hover:bg-dark-bg-transparent dark:hover:bg-light-bg-transparent;
+    @apply hover:bg-dark-transparent-5 dark:hover:bg-light-transparent-5;
+  }
+  .hover-outline-effect {
+    @apply hover:outline-dark-transparent-25 dark:hover:outline-light-transparent-25
+    hover:outline-2 hover:-outline-offset-2;
+  }
+  .data-focus-outline-effect {
+    @apply data-focus:outline-dark-transparent-25 dark:data-focus:outline-light-transparent-25
+    focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2;
   }
   .click-effect {
-    @apply text-light-fg-assistant dark:text-dark-fg-assistant
-    data-hover:text-light-fg-accent dark:data-hover:text-dark-fg-accent 
-    data-active:text-light-fg-accent dark:data-active:text-dark-fg-accent 
-    data-focus:text-light-fg-accent dark:data-focus:text-dark-fg-accent
-    hover:bg-dark-bg-transparent dark:hover:bg-light-bg-transparent
+    @apply text-dark-transparent-50 dark:text-light-transparent-50
+    data-hover:text-dark-transparent-100 dark:data-hover:text-light-transparent-100 
+    data-active:text-dark-transparent-100 dark:data-active:text-light-transparent-100 
+    data-focus:text-dark-transparent-100 dark:data-focus:text-light-transparent-100 
+    hover:bg-dark-transparent-5 dark:hover:bg-light-transparent-5
     rounded-xl cursor-pointer;
   }
 }
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer base {
+  p {
+    @apply truncate;
+  }
 }

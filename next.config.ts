@@ -5,51 +5,8 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "i.ytimg.com", // YouTube 썸네일
-        port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "pbs.twimg.com", // Twitter 카드 이미지
-        port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com", // Unsplash
-        port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "cdn.pixabay.com", // Pixabay
-        port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "widgets.pinterest.com", // Pinterest oEmbed
-        port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "graph.facebook.com", // Instagram/Facebook oEmbed
-        port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE,
-        port: "",
-        pathname: "/**",
-      },
-    ],
-    minimumCacheTTL: 60,
+    loader: "custom",
+    loaderFile: "./image-loader.ts",
   },
 };
 
