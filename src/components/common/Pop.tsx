@@ -3,6 +3,7 @@ import {
   PopoverBackdrop,
   PopoverButton,
   PopoverPanel,
+  CloseButton,
 } from "@headlessui/react";
 import { ReactNode } from "react";
 
@@ -38,27 +39,27 @@ export default function Pop({
           <div className="p-3">
             {popTopEntries.map((entry) => {
               return (
-                <a
+                <CloseButton
                   className="cursor-pointer w-full block rounded-lg px-3 py-2 transition hover-bg-effect"
                   key={entry.title}
                   onClick={entry.onClick}
                 >
                   <p className="font-semibold fg-principal">{entry.title}</p>
                   <p className="fg-assistant">{entry.content}</p>
-                </a>
+                </CloseButton>
               );
             })}
           </div>
           <div className="p-3">
             {popBottomEntries.map((entry) => {
               return (
-                <a
+                <CloseButton
                   onClick={entry.onClick}
                   className="cursor-pointer w-full block rounded-lg px-3 py-2 transition hover-bg-effect text-center"
                   key={entry.title}
                 >
                   <p className="font-semibold fg-principal">{entry.title}</p>
-                </a>
+                </CloseButton>
               );
             })}
           </div>
