@@ -8,10 +8,12 @@ export default async function PostLayout({
 }>) {
   return (
     <div className="relative h-screen pb-16">
-      <EditorProvider>{children}</EditorProvider>
-      <div className="fixed bottom-0 left-0 w-full z-10">
-        <EditorFooter />
-      </div>
+      <EditorProvider>
+        {children}
+        <div className="fixed bottom-0 left-0 w-full z-10">
+          <EditorFooter />
+        </div>
+      </EditorProvider>
     </div>
   );
 }

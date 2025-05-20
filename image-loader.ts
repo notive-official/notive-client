@@ -4,12 +4,14 @@ export default function imageLoader({ src, width, quality }: ImageLoaderProps) {
   const cfHost = process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE;
   const apiBase = process.env.NEXT_PUBLIC_API_BASE ?? "";
 
-  // 1) CloudFront 도메인이면 직접 URL 반환
+  if (/^\/(?!\/)(?!.*\.\.)/.test(src)) {
+    return src;
+  }
+
   if (src.includes(cfHost)) {
     return src;
   }
 
-  // 2) 그 외는 프록시
   const params = new URLSearchParams({
     url: src,
     ...(width ? { w: width.toString() } : {}),

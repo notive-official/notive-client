@@ -12,14 +12,18 @@ export default function Carousel({ nodes }: CarouselProps) {
     <div className="flex flex-col items-center justify-center">
       <div className="relative overflow-hidden mb-3 w-1/3 rounded-full">
         <div className="flex items-center justify-center gap-2 my-1">
-          {nodes.map((_, idx) => (
-            <div
-              key={idx}
-              className={`m-0.5 rounded-full w-2 h-2 ${
-                idx === currentIndex ? "bg-contrast-main" : "bg-contrast-sub"
-              }`}
-            />
-          ))}
+          {nodes.length > 1
+            ? nodes.map((_, idx) => (
+                <div
+                  key={idx}
+                  className={`m-0.5 rounded-full w-2 h-2 ${
+                    idx === currentIndex
+                      ? "bg-contrast-main"
+                      : "bg-contrast-sub"
+                  }`}
+                />
+              ))
+            : null}
         </div>
       </div>
       <div className="relative w-full aspect-video overflow-hidden px-[10%] rounded-xl">

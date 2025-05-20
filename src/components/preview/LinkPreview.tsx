@@ -1,4 +1,4 @@
-import { useGetOEmbedQuery } from "@/hooks/api/get";
+import { useGetOEmbedQuery } from "@/hooks/api/archive";
 import { UploadedLink } from "@/hooks/linkUpload";
 import Image from "next/image";
 
@@ -7,16 +7,15 @@ export default function LinkPreview({
 }: {
   upLoadedLink: UploadedLink;
 }) {
-  const url = upLoadedLink.link;
-  const {
-    data: oEmbed,
-    isError,
-    error,
-  } = useGetOEmbedQuery(url, {
-    retry: (failureCount, err) => {
-      return false;
-    },
-  });
+  const url = upLoadedLink.url;
+  const { data: oEmbed, isError } = useGetOEmbedQuery(
+    { url },
+    {
+      retry: () => {
+        return false;
+      },
+    }
+  );
   const handleClick = () => {
     window.open(
       url,

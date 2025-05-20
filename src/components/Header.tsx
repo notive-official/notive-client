@@ -1,11 +1,10 @@
 "use client";
 
 import { Button } from "@headlessui/react";
-import { useGetUserQuery } from "@/hooks/api/get";
+import { useGetUserQuery } from "@/hooks/api/auth";
 import Pop, { PopEntry } from "./common/Pop";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "@/i18n/routing";
-import Favicon from "@/../public/icons/favicon-light.ico";
 import Image from "next/image";
 import useTrans from "@/hooks/translation";
 
@@ -58,15 +57,13 @@ export default function Header() {
         className="flex flex-row items-center font-bold text-2xl cursor-pointer"
         onClick={handleLogoClick}
       >
-        {data ? (
-          <Image
-            className="w-8 h-8 mr-2"
-            src={data.serviceImageUrl}
-            width={32}
-            height={32}
-            alt={"icon"}
-          />
-        ) : null}
+        <Image
+          className="w-8 h-8 mr-2"
+          src="/icons/favicon-dark.ico"
+          width={32}
+          height={32}
+          alt={"icon"}
+        />
         {HeaderTrans("serviceName")}
       </p>
       {!isAuthLoading && !isUserLoading && isAuthenticated && data ? (

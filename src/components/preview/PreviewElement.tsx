@@ -1,19 +1,19 @@
 "use client";
 
-import { EditorElementContent } from "@/contexts/EditorProvider";
+import { EditorElementType } from "@/contexts/EditorProvider";
 import Image from "next/image";
 import Carousel from "../common/Carousel";
 import TextPreview from "./TextPreview";
 import LinkPreview from "./LinkPreview";
 
 interface EditorElementProps {
-  element: EditorElementContent;
+  element: EditorElementType;
 }
 
 export default function PreviewElement({ element }: EditorElementProps) {
   return (
-    <div className="space-y-2 rounded-xl w-full">
-      {element.elementCategory === "images" &&
+    <div className="space-y-2 rounded-xl w-full p-4">
+      {element.elementCategory === "image" &&
       element.data.uploadedFiles.length > 0 ? (
         <div>
           <Carousel
@@ -37,14 +37,14 @@ export default function PreviewElement({ element }: EditorElementProps) {
         </div>
       ) : null}
       <div className="flex flex-col gap-4">
-        {element.elementCategory === "links"
+        {element.elementCategory === "link"
           ? element.data.links.map((link) => (
               <LinkPreview key={link.id} upLoadedLink={link} />
             ))
           : null}
       </div>
-      {element.elementCategory === "description" ? (
-        <TextPreview text={element.data.description} />
+      {element.elementCategory === "text" ? (
+        <TextPreview text={element.data.text.value} />
       ) : null}
     </div>
   );

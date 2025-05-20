@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export interface UploadedLink {
   id: string;
-  link: string;
+  url: string;
 }
 
 export default function useLinkUpload() {
@@ -19,8 +19,8 @@ export default function useLinkUpload() {
     setLinks(newLinks);
   };
 
-  const handleAddLink = (link: string) => {
-    setLinks([...links, { id: nanoid(), link }]);
+  const handleAddLink = (url: string) => {
+    setLinks([...links, { id: nanoid(), url }]);
   };
 
   const handleRemoveLink = (id: string) => {

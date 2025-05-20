@@ -1,10 +1,5 @@
-import { Button, Input } from "@headlessui/react";
-import TextAreaBox from "../common/TextAreaBox";
-import {
-  PlusIcon,
-  MinusCircleIcon,
-  ArrowUpCircleIcon,
-} from "@heroicons/react/16/solid";
+import { Button } from "@headlessui/react";
+import { MinusCircleIcon, ArrowUpCircleIcon } from "@heroicons/react/16/solid";
 import { useEffect, useState } from "react";
 import { useEditor } from "@/contexts/EditorProvider";
 import useLinkUpload from "@/hooks/linkUpload";
@@ -44,7 +39,7 @@ export default function LinkUploader({ id }: LinkUploaderProps) {
             className="flex justify-between items-center w-full gap-2"
           >
             <div className="flex justify-between items-center bg-transparent-reverse w-full my-1 pl-4 rounded-xl underline">
-              <p className="truncate">{uploadedLink.link}</p>
+              <p className="truncate">{uploadedLink.url}</p>
               <Button
                 className="cursor-pointer click-effect m-2"
                 onClick={() => handleRemoveLink(uploadedLink.id)}

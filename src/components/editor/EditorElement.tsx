@@ -9,11 +9,12 @@ import { CSS } from "@dnd-kit/utilities";
 import TextAreaBox from "../common/TextAreaBox";
 import ImageUploader from "./ImageUploader";
 import LinkUploader from "./LinkUploader";
-import { EditorElementContent, useEditor } from "@/contexts/EditorProvider";
+import { EditorElementType, useEditor } from "@/contexts/EditorProvider";
 import { useSortableElement } from "@/contexts/SortableElementContext";
+import TextUploader from "./TextUploader";
 
 interface EditorElementProps {
-  element: EditorElementContent;
+  element: EditorElementType;
 }
 
 export default function EditorElement({ element }: EditorElementProps) {
@@ -58,8 +59,8 @@ export default function EditorElement({ element }: EditorElementProps) {
           <XMarkIcon className="w-6 h-6" />
         </Button>
       </div>
-      {element.elementCategory === "images" ? (
-        <div className="flex flex-row gap-2">
+      {element.elementCategory === "image" ? (
+        <div className="flex flex-col gap-1">
           <ImageUploader id={element.id} />
           <TextAreaBox
             placeholder="Add a description"
@@ -71,18 +72,12 @@ export default function EditorElement({ element }: EditorElementProps) {
         </div>
       ) : null}
 
-      {element.elementCategory === "links" ? (
+      {element.elementCategory === "link" ? (
         <LinkUploader id={element.id} />
       ) : null}
 
-      {element.elementCategory === "description" ? (
-        <TextAreaBox
-          placeholder="Add a description"
-          handleChange={(e) => setDescription(e.target.value)}
-          inputClassName="bg-transparent-reverse"
-          rows={4}
-          scrollable={false}
-        />
+      {element.elementCategory === "text" ? (
+        <TextUploader id={element.id} />
       ) : null}
     </div>
   );

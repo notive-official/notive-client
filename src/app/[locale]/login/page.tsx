@@ -1,6 +1,5 @@
 "use client";
 
-import GoogleImage from "@/../public/images/googleSignIn.png";
 import { useAuth } from "@/contexts/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
@@ -35,7 +34,13 @@ export default function LoginPage() {
               process.env.NEXT_PUBLIC_API_BASE + "/oauth2/authorization/google"
             }
           >
-            <Image className="w-2/3" src={GoogleImage} alt={"sign in"} />
+            <Image
+              className="w-2/3"
+              src="/images/googleSignIn.png"
+              width={100}
+              height={100}
+              alt={"sign in"}
+            />
           </Link>
         </div>
       </div>

@@ -2,7 +2,11 @@
 
 import { Button } from "@headlessui/react";
 import { ArrowLeftIcon } from "@heroicons/react/16/solid";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
+import { useEditor } from "@/contexts/EditorProvider";
+import { usePostArchiveMutation } from "@/hooks/api/archive";
+import { converElementTo } from "@/common/utils/archiveUtil";
+import api from "@/lib/api";
 
 export default function EditorFooter() {
   const router = useRouter();

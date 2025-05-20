@@ -10,7 +10,7 @@ export default function ToolBar() {
       <Button
         className="click-effect"
         onClick={() => {
-          handleAddElement("description");
+          handleAddElement("text");
         }}
       >
         <PencilIcon className="w-5 h-5 m-2" />
@@ -18,7 +18,7 @@ export default function ToolBar() {
       <Button
         className="click-effect"
         onClick={() => {
-          handleAddElement("links");
+          handleAddElement("link");
         }}
       >
         <LinkIcon className="w-5 h-5 m-2" />
@@ -26,7 +26,7 @@ export default function ToolBar() {
       <Button
         className="click-effect"
         onClick={() => {
-          handleAddElement("images");
+          handleAddElement("image");
         }}
       >
         <PhotoIcon className="w-5 h-5 m-2" />
