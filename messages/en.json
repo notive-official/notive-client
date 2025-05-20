@@ -9,13 +9,13 @@
         "title": "My Page",
         "content": "My Page"
       },
-      "setting": {
-        "title": "Setting",
-        "content": "Setting"
+      "posting": {
+        "title": "Posting",
+        "content": "Posting"
       },
-      "scrap": {
-        "title": "Scrap",
-        "content": "Scrap"
+      "archive": {
+        "title": "Archive",
+        "content": "Archive"
       },
       "signOut": {
         "title": "Sign Out",
@@ -25,24 +25,10 @@
   },
 
   "MainPage": {
-    "pageTitle": "Meet Our Lovely Pets",
-    "description": "Here are some of our wonderful pets.",
-    "pets": {
-      "dog": {
-        "name": "Buddy",
-        "description": "Buddy is an energetic dog."
-      },
-      "cat": {
-        "name": "Luna",
-        "description": "Luna is a gentle and calm cat."
-      },
-      "parrot": {
-        "name": "Sunny",
-        "description": "Sunny is a parrot that mimics speech."
-      }
-    },
+    "pageTitle": "Design Archive",
+    "description": "Design Archive is a collection of design resources.",
     "search": {
-      "placeholder": "Search for a pet"
+      "placeholder": "Search for design"
     }
   },
 
@@ -54,5 +40,19 @@
   "Language": {
     "ko": "Korean",
     "en": "English"
+  },
+
+  "MyPage": {
+    "pageTitle": "My Page",
+    "description": "My Page"
+  },
+
+  "PostPage": {
+    "title": { "placeholder": "Write your title here." },
+    "tag": { "placeholder": "Press enter to add a tag." },
+    "imageUploader": {
+      "delete": "Delete"
+    },
+    "description": "작성 페이지 입니다."
   }
 }

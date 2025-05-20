@@ -1,22 +1,62 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  MutationFunction,
+  useMutation,
+  UseMutationOptions,
+  useQuery,
+  UseQueryOptions,
+} from "@tanstack/react-query";
+import api from "./api";
 
-import { UseMutationOptions, UseQueryOptions } from "@tanstack/react-query";
+export function createPostMutation<TRequest, TResponse>(url: string) {
+  const poster = async (body: TRequest): Promise<TResponse> => {
+    const { data } = await api.post<TResponse>(url, body);
+    return data;
+  };
+  return (
+    options?: Omit<UseMutationOptions<TResponse, Error, TRequest>, "mutationFn">
+  ) =>
+    useMutation<TResponse, Error, TRequest>({
+      mutationFn: poster as MutationFunction<TResponse, TRequest>,
+      ...options,
+    });
+}
 
-export type ApiFnReturnType<FnType extends (...args: any) => Promise<any>> =
-  Awaited<ReturnType<FnType>>;
+export function createGetQuery<TResponse>(url: string, queryKey: string) {
+  const fetcher = async (): Promise<TResponse> => {
+    const { data } = await api.get<TResponse>(url);
+    return data;
+  };
+  return (
+    options?: Omit<
+      UseQueryOptions<TResponse, unknown, TResponse>,
+      "queryKey" | "queryFn"
+    >
+  ) =>
+    useQuery<TResponse, unknown, TResponse>({
+      queryKey: [queryKey],
+      queryFn: fetcher,
+      ...options,
+    });
+}
 
-export type QueryConfig<T extends (...args: any[]) => any> = Omit<
-  UseQueryOptions<Awaited<ReturnType<T>>, unknown, Awaited<ReturnType<T>>>,
-  "queryKey" | "queryFn"
->;
-
-export type MutationConfig<
-  MutationFnType extends (...args: any) => Promise<any>
-> = Omit<
-  UseMutationOptions<
-    ApiFnReturnType<MutationFnType>,
-    Error,
-    Parameters<MutationFnType>[0]
-  >,
-  "mutationFn"
->;
+export function createGetQueryWithParams<TResponse, TParams>(
+  url: string,
+  queryKey: string
+) {
+  const fetcher = async (params?: TParams): Promise<TResponse> => {
+    const { data } = await api.get<TResponse>(url, { params });
+    return data;
+  };
+  return (
+    params: TParams,
+    options?: Omit<
+      UseQueryOptions<TResponse, unknown, TResponse>,
+      "queryKey" | "queryFn"
+    >
+  ) =>
+    useQuery<TResponse, unknown, TResponse>({
+      queryKey: [queryKey, params],
+      queryFn: () => fetcher(params),
+      ...options,
+    });
+}
