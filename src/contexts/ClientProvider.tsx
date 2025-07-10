@@ -3,8 +3,8 @@
 import { ReactNode } from "react";
 import { NextIntlClientProvider, Messages } from "next-intl";
 import AxiosProvider from "@/contexts/AxiosProvider";
-import { AuthProvider } from "@/contexts/AuthContext";
-import ClientErrorBoundary from "@/components/ClientErrorBoundary";
+import { AuthProvider } from "@/contexts/AuthProvider";
+import ClientErrorBoundary from "@/contexts/ClientErrorBoundary";
 
 interface Props {
   children: ReactNode;
@@ -20,9 +20,9 @@ export default function ClientProviders({ children, locale, messages }: Props) {
         messages={messages}
         timeZone="Asia/Seoul"
       >
-        <AuthProvider>
-          <ClientErrorBoundary>{children}</ClientErrorBoundary>
-        </AuthProvider>
+        <ClientErrorBoundary>
+          <AuthProvider>{children}</AuthProvider>
+        </ClientErrorBoundary>
       </NextIntlClientProvider>
     </AxiosProvider>
   );

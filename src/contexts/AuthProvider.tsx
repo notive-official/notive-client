@@ -2,6 +2,10 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import api from "@/lib/api";
+import {
+  usePostLogoutMutation,
+  usePostReissueMutation,
+} from "@/hooks/api/auth";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -18,6 +22,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { mutate: reissueMutate } = usePostReissueMutation();
+  const { mutate: logoutMutate } = usePostLogoutMutation();
 
   // 1) accessToken이 바뀔 때마다 axios 기본 헤더 갱신
   useEffect(() => {
@@ -47,18 +53,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // 3) reissue 호출: 브라우저 fetch에 credentials: 'include' 로 쿠키 자동 전송
   useEffect(() => {
-    if (!accessToken) {
-      (async () => {
-        await api.post("/api/auth/reissue").catch(() => {
-          return;
-        });
-      })();
-    }
+    reissueMutate();
     setIsLoading(false);
   }, []);
 
   const logout = () => {
-    api.post("/api/auth/logout").catch(() => {});
+    logoutMutate();
     setAccessToken(null);
   };
 

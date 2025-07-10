@@ -3,7 +3,7 @@
 import { Button } from "@headlessui/react";
 import { useGetUserQuery } from "@/hooks/api/auth";
 import Pop, { PopEntry } from "./common/Pop";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthProvider";
 import { useRouter } from "@/i18n/routing";
 import Image from "next/image";
 import useTrans from "@/hooks/translation";

@@ -45,7 +45,7 @@ export default function LinkPreview({
               <div className="p-6 w-4/7 relative overflow-hidden h-full">
                 <Image
                   src={oEmbed.thumbnailUrl}
-                  alt={oEmbed.type}
+                  alt={oEmbed.title}
                   fill
                   className="object-cover"
                 />

@@ -66,6 +66,9 @@ export function SortableElementProvider({
 
 export function useSortableElement() {
   const ctx = useContext(SortableElementContext);
-  if (!ctx) throw new Error("useAuth must be inside AuthProvider");
+  if (!ctx)
+    throw new Error(
+      "useSortableElement must be inside SortableElementProvider"
+    );
   return ctx;
 }

@@ -17,5 +17,5 @@ export default function imageLoader({ src, width, quality }: ImageLoaderProps) {
     ...(width ? { w: width.toString() } : {}),
     ...(quality ? { q: quality.toString() } : {}),
   });
-  return `${apiBase}/api/archive/image-proxy?${params}`;
+  return `${apiBase}/api/proxy/image?${params}`;
 }

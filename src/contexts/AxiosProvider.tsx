@@ -1,14 +1,26 @@
 "use client";
 
 import { ReactNode } from "react";
-import { QueryClientProvider, HydrationBoundary } from "@tanstack/react-query";
+import {
+  QueryClientProvider,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { queryClient } from "@/lib/api";
 
 interface ProvidersProps {
   children: ReactNode;
   dehydratedState?: unknown;
 }
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      staleTime: 1000 * 60 * 5, // 5분
+    },
+  },
+});
 
 export default function AxiosProvider({
   children,

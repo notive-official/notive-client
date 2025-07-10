@@ -5,7 +5,6 @@ import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import ClientProviders from "../../contexts/ClientProvider";
 import Header from "../../components/Header";
-import Footer from "../../components/Footer";
 
 export const metadata = {
   title: "Notive",
