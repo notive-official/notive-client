@@ -100,6 +100,10 @@
     @apply hover:outline-dark-transparent-25 dark:hover:outline-light-transparent-25
     hover:outline-2 hover:-outline-offset-2;
   }
+  .hover-outline-effect-reverse {
+    @apply hover:outline-light-transparent-25 dark:hover:outline-dark-transparent-25
+    hover:outline-2 hover:-outline-offset-2;
+  }
   .data-focus-outline-effect {
     @apply data-focus:outline-dark-transparent-25 dark:data-focus:outline-light-transparent-25
     focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2;
@@ -111,6 +115,19 @@
     data-focus:text-dark-transparent-100 dark:data-focus:text-light-transparent-100 
     hover:bg-dark-transparent-5 dark:hover:bg-light-transparent-5
     rounded-xl cursor-pointer;
+  }
+
+  .text-h1 {
+    @apply text-4xl font-extrabold;
+  }
+  .text-h2 {
+    @apply text-2xl font-bold;
+  }
+  .text-h3 {
+    @apply text-xl font-semibold;
+  }
+  .text-normal {
+    @apply text-lg font-medium;
   }
 }
 

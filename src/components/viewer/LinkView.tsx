@@ -1,13 +1,7 @@
 import { useGetOEmbedQuery } from "@/hooks/api/archive";
-import { UploadedLink } from "@/hooks/linkUpload";
 import Image from "next/image";
 
-export default function LinkPreview({
-  upLoadedLink,
-}: {
-  upLoadedLink: UploadedLink;
-}) {
-  const url = upLoadedLink.url;
+export default function LinkView({ url }: { url: string }) {
   const { data: oEmbed, isError } = useGetOEmbedQuery(
     { url },
     {
@@ -34,7 +28,7 @@ export default function LinkPreview({
     );
   }
   return (
-    <div className="cursor-pointer max-w-148">
+    <div className="cursor-pointer w-full">
       {oEmbed ? (
         <div
           className="bg-tertiary rounded-lg overflow-hidden shadow-lg h-48"

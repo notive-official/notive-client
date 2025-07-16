@@ -3,42 +3,31 @@
 import { Button } from "@headlessui/react";
 import { ArrowLeftIcon } from "@heroicons/react/16/solid";
 import { useRouter } from "@/i18n/routing";
-import { useEditor } from "@/contexts/EditorProvider";
-import { usePostArchiveMutation } from "@/hooks/api/archive";
-import { converElementTo } from "@/common/utils/archiveUtil";
-import api from "@/lib/api";
+import { useEditor } from "@/contexts/EditorContext";
+import {
+  PostArchiveRequest,
+  usePostArchiveMutation,
+} from "@/hooks/api/archive";
 
 export default function EditorFooter() {
   const router = useRouter();
-  const { title, tags, elements } = useEditor();
+  const { title, tags, blocks } = useEditor();
   const { mutate: postArchive } = usePostArchiveMutation();
 
   const onSave = () => {
-    const form = new FormData();
-
-    form.append("title", title);
-    tags.forEach((t) => form.append("tags", t));
-    const { links, images, texts } = converElementTo(elements);
-    links.forEach((l, i) => {
-      form.append(`links[${i}].sequence`, l.sequence.toString());
-      l.urls.forEach((url) => form.append(`links[${i}].urls`, url));
-    });
-
-    texts.forEach((t, i) => {
-      form.append(`texts[${i}].sequence`, t.sequence.toString());
-      form.append(`texts[${i}].type`, t.type);
-      form.append(`texts[${i}].content`, t.content);
-    });
-
-    // images는 sequence, description, files를 그룹으로 묶어 전송
-    images.forEach((img, i) => {
-      form.append(`images[${i}].sequence`, img.sequence.toString());
-      form.append(`images[${i}].description`, img.description);
-      img.files.forEach((file) => form.append(`images[${i}].files`, file));
-    });
-
-    console.log(links);
-    api.post("/api/archive", form);
+    console.log("clicked");
+    const req: PostArchiveRequest = {
+      title,
+      tags,
+      blocks: blocks.map((block, idx) => {
+        return {
+          position: idx,
+          type: block.type,
+          payload: block.payload.content,
+        };
+      }),
+    };
+    postArchive(req);
   };
 
   return (

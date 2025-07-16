@@ -2,32 +2,32 @@
 
 import { SortableElementProvider } from "@/contexts/SortableElementContext";
 import { Input } from "@headlessui/react";
-import EditorElement from "./EditorElement";
+import EditorElement from "./ContentBlock";
 import Tagbar from "./Tagbar";
 import ToolBar from "./ToolBar";
 import useTrans from "@/hooks/translation";
-import { useEditor } from "@/contexts/EditorProvider";
+import { useEditor } from "@/contexts/EditorContext";
 
 export default function Editor() {
   const { PostTrans } = useTrans();
-  const { elements, handleChangeTitle, handleReorderElements } = useEditor();
+  const { blocks, changeTitle, reorderBlocks } = useEditor();
   return (
     <div>
       <Input
-        className="text-3xl font-bold px-6 py-4 bg-transparent-reverse w-full rounded-xl data-focus-outline-effect"
+        className="text-h1 px-6 py-4 bg-transparent-reverse w-full rounded-xl data-focus-outline-effect"
         placeholder={PostTrans("title.placeholder")}
-        onChange={(e) => handleChangeTitle(e.target.value)}
+        onChange={(e) => changeTitle(e.target.value)}
       />
       <Tagbar />
-      <div className="sticky -top-2 z-10">
+      <div className="sticky -top-2 z-10 mb-2">
         <ToolBar />
       </div>
       <SortableElementProvider
-        elements={elements}
-        handleReorderElements={handleReorderElements}
+        elements={blocks}
+        handleReorderElements={reorderBlocks}
       >
-        {elements.map((element) => (
-          <EditorElement key={element.id} element={element} />
+        {blocks.map((block) => (
+          <EditorElement key={block.id} block={block} />
         ))}
       </SortableElementProvider>
     </div>

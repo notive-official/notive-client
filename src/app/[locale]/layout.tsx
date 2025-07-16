@@ -3,13 +3,14 @@ import "../globals.css";
 import { Locale, routing } from "@/i18n/routing";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
-import ClientProviders from "../../contexts/ClientProvider";
+import ClientProviders from "../../contexts/ClientContext";
 import Header from "../../components/Header";
 
 export const metadata = {
   title: "Notive",
   icons: {
     icon: "/icons/favicon-light.ico",
+    innerWidth: 10,
   },
 };
 

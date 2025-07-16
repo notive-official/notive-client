@@ -1,4 +1,4 @@
-import { TextType } from "@/common/types";
+import { BlockType } from "@/common/types";
 import { createGetQueryWithParams, createPostMutation } from "@/lib/reactQuery";
 
 type GetOEmbedParams = {
@@ -25,26 +25,14 @@ export const useGetOEmbedQuery = createGetQueryWithParams<
 export type PostArchiveRequest = {
   title: string;
   tags: string[];
-  links: ArchiveLinkRequest[];
-  images: ArchiveImageRequest[];
-  texts: ArchiveTextRequest[];
+  blocks: ContentBlockRequest[];
 };
 
-export type ArchiveLinkRequest = {
-  sequence: number;
-  urls: string[];
-};
-
-export type ArchiveImageRequest = {
-  sequence: number;
-  files: File[];
-  description: string;
-};
-
-export type ArchiveTextRequest = {
-  sequence: number;
-  type: TextType;
-  content: string;
+export type ContentBlockRequest = {
+  position: number;
+  type: BlockType;
+  payload?: string;
+  file?: File;
 };
 
 export const usePostArchiveMutation = createPostMutation<

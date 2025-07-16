@@ -1,2 +1,1 @@
-export type EditorElementCategory = "link" | "image" | "text";
-export type TextType = "title" | "bold" | "plain";
+export type BlockType = "link" | "image" | "text" | "h1" | "h2" | "h3";

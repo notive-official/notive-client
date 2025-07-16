@@ -5,16 +5,16 @@ import { useState } from "react";
 export default function useTag() {
   const [tags, setTags] = useState<string[]>([]);
 
-  const handleAddTag = (val: string) => {
+  const addTag = (val: string) => {
     if (!tags.includes(val)) {
       tags.push(val);
       setTags([...tags]);
     }
   };
 
-  const handleRemoveTag = (val: string) => {
+  const removeTag = (val: string) => {
     setTags(tags.filter((tag) => tag !== val));
   };
 
-  return { tags, handleAddTag, handleRemoveTag };
+  return { tags, addTag, removeTag };
 }

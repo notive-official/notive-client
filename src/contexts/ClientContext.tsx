@@ -2,8 +2,8 @@
 
 import { ReactNode } from "react";
 import { NextIntlClientProvider, Messages } from "next-intl";
-import AxiosProvider from "@/contexts/AxiosProvider";
-import { AuthProvider } from "@/contexts/AuthProvider";
+import AxiosProvider from "@/contexts/AxiosContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import ClientErrorBoundary from "@/contexts/ClientErrorBoundary";
 
 interface Props {

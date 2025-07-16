@@ -1,7 +1,7 @@
 "use client";
 
 import Tag from "@/components/common/Tag";
-import { useEditor } from "@/contexts/EditorProvider";
+import { useEditor } from "@/contexts/EditorContext";
 import useTrans from "@/hooks/translation";
 import { Input } from "@headlessui/react";
 
@@ -9,7 +9,7 @@ import { useState } from "react";
 
 export default function Tagbar() {
   const { PostTrans } = useTrans();
-  const { tags, handleAddTag, handleRemoveTag } = useEditor();
+  const { tags, addTag, removeTag } = useEditor();
 
   const [input, setInput] = useState("");
   const [isComposing, setIsComposing] = useState(false);
@@ -21,7 +21,7 @@ export default function Tagbar() {
         onCompositionEnd={() => setIsComposing(false)}
         onKeyDown={(e) => {
           if (e.key === "Enter" && !isComposing && input !== "") {
-            handleAddTag(input);
+            addTag(input);
             setInput("");
           }
         }}
@@ -33,7 +33,7 @@ export default function Tagbar() {
       <div className="flex flex-row flex-wrap gap-2 my-3">
         {tags.map((tag) => {
           return (
-            <div key={tag} onClick={() => handleRemoveTag(tag)}>
+            <div key={tag} onClick={() => removeTag(tag)}>
               <Tag value={tag} isRemovable={true} />
             </div>
           );
