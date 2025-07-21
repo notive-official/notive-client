@@ -21,6 +21,7 @@ export default function Viewer() {
           <ViewBlock key={block.id} block={block} />
         ))}
       </div>
+      <div className="h-24" />
     </div>
   );
 }

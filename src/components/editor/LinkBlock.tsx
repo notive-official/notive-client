@@ -1,30 +1,44 @@
-import { ArrowUpCircleIcon } from "@heroicons/react/16/solid";
-import { useState } from "react";
+import { ArrowUpIcon } from "@heroicons/react/16/solid";
+import { useCallback, useState, memo } from "react";
 import { EditorBlock, useEditor } from "@/contexts/EditorContext";
 import InputBox from "../common/InputBox";
+import ViewBlock from "../viewer/ViewBlock";
+import { Button } from "@headlessui/react";
+import { useFocusBlock } from "@/contexts/FocusBlockContext";
 
 interface LinkBlockProps {
   block: EditorBlock;
 }
 
-export default function LinkBlock({ block }: LinkBlockProps) {
+export function LinkBlock({ block }: LinkBlockProps) {
   const { updateBlock } = useEditor();
+  const { focusedBlockId, setFocusedBlockId } = useFocusBlock();
   const [link, setLink] = useState("");
   const { id } = block;
 
-  const handleIconClick = () => {
+  const handleEvent = useCallback(() => {
     updateBlock(id, { content: link.trim() });
-  };
+    setLink("");
+  }, [updateBlock, id, link]);
 
   return (
-    <div className="flex flex-col justify-between items-center">
+    <div
+      className="flex flex-col justify-between items-center"
+      onBlur={() => {
+        if (focusedBlockId === id) setFocusedBlockId(null);
+      }}
+    >
       <InputBox
         value={link}
-        placeholder="Add a link"
-        handleChange={(e) => setLink(e.target.value)}
-        icon={<ArrowUpCircleIcon className="w-5 h-5" />}
-        handleIconClick={handleIconClick}
+        placeholder="Set a link"
+        handleChange={setLink}
+        onAction={handleEvent}
+        buttonIcon={<ArrowUpIcon className="w-5 h-5" />}
       />
+
+      {block.payload.content && <ViewBlock key={block.id} block={block} />}
     </div>
   );
 }
+
+export default memo(LinkBlock);

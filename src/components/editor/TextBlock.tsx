@@ -1,5 +1,5 @@
 import { EditorBlock, useEditor } from "@/contexts/EditorContext";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Field, Textarea } from "@headlessui/react";
 import { useFocusBlock } from "@/contexts/FocusBlockContext";
 
@@ -8,25 +8,26 @@ interface TextBlockProps {
 }
 
 export default function TextBlock({ block }: TextBlockProps) {
-  const {
-    updateBlock,
-    addNewBlockAfter,
-    getPrevTextBlockId,
-    getNextTextBlockId,
-  } = useEditor();
+  const { updateBlock, addNewBlockAfter, getPrevTextBlock, getNextTextBlock } =
+    useEditor();
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { focusedBlockId, setFocusedBlockId } = useFocusBlock();
-  const { removeBlock } = useEditor();
+  const { removeBlock, mergeWithPrevBlock } = useEditor();
   const { id, type: blockType, payload } = block;
   const { content } = payload;
 
-  const handleInput = (e: React.FormEvent<HTMLTextAreaElement>) => {
-    const el = e.currentTarget;
-    el.style.height = "auto";
-    el.style.height = el.scrollHeight + "px";
-  };
+  const [isComposing, setIsComposing] = useState(false);
 
-  // 포커스가 돌아올 때 커서 위치 복원
+  const handleCompositionStart = () => setIsComposing(true);
+  const handleCompositionEnd = () => setIsComposing(false);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.style.height = "auto";
+      inputRef.current.style.height = inputRef.current.scrollHeight + "px";
+    }
+  }, [blockType, content]);
+
   useEffect(() => {
     if (focusedBlockId === id && inputRef.current) {
       const { selectionStart, selectionEnd } = inputRef.current;
@@ -36,6 +37,7 @@ export default function TextBlock({ block }: TextBlockProps) {
   }, [focusedBlockId, id]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (isComposing) return;
     if (inputRef.current) {
       const { selectionStart, selectionEnd, value } = inputRef.current;
       if (e.key === "Enter" && !e.shiftKey) {
@@ -44,25 +46,31 @@ export default function TextBlock({ block }: TextBlockProps) {
         const after = value.slice(selectionEnd);
 
         updateBlock(id, { content: before });
-        const newBlockId = addNewBlockAfter(id, "text");
+        const newBlockId = addNewBlockAfter(id, "paragraph");
         updateBlock(newBlockId, { content: after });
         setFocusedBlockId(newBlockId);
       }
       if (e.key === "Backspace" && !e.shiftKey) {
         if (selectionStart === 0 && selectionEnd === 0) {
-          const prevBlockId = getPrevTextBlockId(id);
-          setFocusedBlockId(prevBlockId);
-          removeBlock(id);
+          e.preventDefault();
+          const prevBlock = getPrevTextBlock(id);
+          if (!prevBlock) return;
+          mergeWithPrevBlock(id);
+          setTimeout(() => {
+            setFocusedBlockId(prevBlock.id);
+          });
         }
       }
     }
     if (e.key === "ArrowDown") {
-      const prevBlockId = getNextTextBlockId(id);
-      setFocusedBlockId(prevBlockId);
+      const nextBlock = getNextTextBlock(id);
+      if (!nextBlock) return;
+      setFocusedBlockId(nextBlock.id);
     }
     if (e.key === "ArrowUp") {
-      const nextBlockId = getPrevTextBlockId(id);
-      setFocusedBlockId(nextBlockId);
+      const prevBlock = getPrevTextBlock(id);
+      if (!prevBlock) return;
+      setFocusedBlockId(prevBlock.id);
     }
   };
 
@@ -72,15 +80,24 @@ export default function TextBlock({ block }: TextBlockProps) {
         <Textarea
           ref={inputRef}
           value={content}
-          className={`${blockType === "text" && "text-normal"}
+          className={`${blockType === "paragraph" && "text-normal"}
           ${blockType === "h1" && "text-h1"}
           ${blockType === "h2" && "text-h2"}
           ${blockType === "h3" && "text-h3"} 
           block w-full resize-none rounded-lg border-none bg-transparent px-3 py-1.5 fg-principal data-focus:outline-none`}
           rows={1}
-          onInput={handleInput}
+          placeholder={
+            content.length === 0 && id === focusedBlockId
+              ? "내용을 입력해주세요."
+              : ""
+          }
           onChange={(e) => updateBlock(id, { content: e.target.value })}
           onFocus={() => setFocusedBlockId(id)}
+          onBlur={() => {
+            if (focusedBlockId === id) setFocusedBlockId(null);
+          }}
+          onCompositionStart={handleCompositionStart}
+          onCompositionEnd={handleCompositionEnd}
           onKeyDown={handleKeyDown}
         />
       </Field>

@@ -1,16 +1,14 @@
 import { Button, Description, Field, Input, Label } from "@headlessui/react";
-import clsx from "clsx";
-import { ReactNode, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 
 interface InputBoxProps {
   label?: string;
   description?: string;
   placeholder?: string;
   value: string;
-  handleChange: (value: React.ChangeEvent<HTMLInputElement>) => void;
-  icon?: ReactNode;
-  handleIconClick?: () => void;
-  inputClassName?: string;
+  handleChange: Dispatch<SetStateAction<string>>;
+  buttonIcon?: ReactNode;
+  onAction?: () => void;
 }
 
 export default function InputBox({
@@ -19,9 +17,8 @@ export default function InputBox({
   placeholder,
   value,
   handleChange,
-  icon,
-  handleIconClick,
-  inputClassName,
+  buttonIcon,
+  onAction,
 }: InputBoxProps) {
   const [isComposing, setIsComposing] = useState(false);
   return (
@@ -34,33 +31,30 @@ export default function InputBox({
           {description}
         </Description>
       </div>
-      <div className="w-full flex justify-start relative">
+      <div className="w-full flex flex-row justify-start gap-2">
         <Input
           onCompositionStart={() => setIsComposing(true)}
           onCompositionEnd={() => setIsComposing(false)}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !isComposing && value !== "") {
-              handleIconClick?.();
+              onAction?.();
             }
           }}
-          className={clsx(
-            "block w-full rounded-xl border-none fg-principal px-4 py-2 bg-transparent-reverse data-focus-outline-effect",
-            inputClassName
-          )}
+          className="block w-full rounded-xl border-none fg-principal px-4 py-2 bg-transparent-reverse-5 data-focus-outline-effect"
           placeholder={placeholder}
-          onChange={(e) => handleChange(e)}
+          onChange={(e) => handleChange(e.target.value)}
           value={value}
         />
-        {icon !== undefined && (
-          <Button
-            className="absolute right-0 top-1/2 -translate-y-1/2 click-effect mx-2"
-            onClick={() => {
-              if (value != "") handleIconClick?.();
-            }}
-          >
-            {icon}
-          </Button>
-        )}
+        <Button
+          className="p-2 flex justify-center items-center click-effect"
+          onClick={() => {
+            if (!isComposing && value !== "") {
+              onAction?.();
+            }
+          }}
+        >
+          {buttonIcon}
+        </Button>
       </div>
     </Field>
   );

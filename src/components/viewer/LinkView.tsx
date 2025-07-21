@@ -1,22 +1,29 @@
 import { useGetOEmbedQuery } from "@/hooks/api/archive";
 import Image from "next/image";
+import { useCallback, memo, useState } from "react";
 
-export default function LinkView({ url }: { url: string }) {
+export function LinkView({ url }: { url: string }) {
+  const [isHovered, setIsHovered] = useState(false);
+
   const { data: oEmbed, isError } = useGetOEmbedQuery(
     { url },
     {
-      retry: () => {
-        return false;
-      },
+      enabled: Boolean(url), // url이 있을 때만 fetch
+      retry: false, // 실패 시 재시도 금지
+      staleTime: 1000 * 60 * 5, // 5분간은 캐시 유효
+      refetchOnMount: false, // 마운트 시 재요청 금지
+      refetchOnWindowFocus: false, // 포커스 시 재요청 금지
     }
   );
-  const handleClick = () => {
+
+  const handleClick = useCallback(() => {
     window.open(
       url,
       "myPopup",
       "width=800,height=600,toolbar=no,menubar=no,scrollbars=yes"
     );
-  };
+  }, [url]);
+
   if (isError) {
     return (
       <p
@@ -27,14 +34,17 @@ export default function LinkView({ url }: { url: string }) {
       </p>
     );
   }
+
   return (
-    <div className="cursor-pointer w-full">
+    <div className="w-full">
       {oEmbed ? (
         <div
           className="bg-tertiary rounded-lg overflow-hidden shadow-lg h-48"
           onClick={handleClick}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
-          <div className="hover-bg-effect flex flex-row h-full">
+          <div className="cursor-pointer hover-bg-effect flex flex-row h-full">
             {oEmbed.thumbnailUrl ? (
               <div className="p-6 w-4/7 relative overflow-hidden h-full">
                 <Image
@@ -45,18 +55,25 @@ export default function LinkView({ url }: { url: string }) {
                 />
               </div>
             ) : null}
-            <div className="flex flex-col justify-between w-fill p-6">
+            <div className="flex flex-col justify-between items-start w-fill p-6">
               <h2
-                className="fg-principal font-bold text-lg line-clamp-4"
+                className="fg-principal font-bold text-lg line-clamp-4 text-start"
                 title={oEmbed.title}
               >
                 {oEmbed.title}
               </h2>
-              <p className="fg-assistant text-base">{oEmbed.providerName}</p>
+              <p className="fg-assistant text-base pl-2">
+                {oEmbed.providerName}
+              </p>
             </div>
           </div>
         </div>
       ) : null}
+      <div className="flex items-start w-full">
+        <p className="p-1 text-sm fg-assistant line-clamp-1">{url}</p>
+      </div>
     </div>
   );
 }
+
+export default memo(LinkView);

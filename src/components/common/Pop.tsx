@@ -3,27 +3,16 @@ import {
   PopoverBackdrop,
   PopoverButton,
   PopoverPanel,
-  CloseButton,
 } from "@headlessui/react";
 import { ReactNode } from "react";
 
 interface PopProps {
   node: ReactNode;
-  popTopEntries: PopEntry[];
-  popBottomEntries: PopEntry[];
+  popTopNode: ReactNode[];
+  popBottomNode: ReactNode[];
 }
 
-export interface PopEntry {
-  title: string;
-  content: string;
-  onClick: () => void;
-}
-
-export default function Pop({
-  node,
-  popTopEntries,
-  popBottomEntries,
-}: PopProps) {
+export default function Pop({ node, popTopNode, popBottomNode }: PopProps) {
   return (
     <div className="flex justify-center items-center">
       <Popover>
@@ -36,33 +25,8 @@ export default function Pop({
           anchor="bottom end"
           className="divide-y divide-primary rounded-xl bg-tertiary text-sm/6 transition duration-200 ease-in-out [--anchor-gap:--spacing(5)] data-closed:-translate-y-1 data-closed:opacity-0"
         >
-          <div className="p-3">
-            {popTopEntries.map((entry) => {
-              return (
-                <CloseButton
-                  className="cursor-pointer w-full block rounded-lg px-3 py-2 transition hover-bg-effect"
-                  key={entry.title}
-                  onClick={entry.onClick}
-                >
-                  <p className="font-semibold fg-principal">{entry.title}</p>
-                  <p className="fg-assistant">{entry.content}</p>
-                </CloseButton>
-              );
-            })}
-          </div>
-          <div className="p-3">
-            {popBottomEntries.map((entry) => {
-              return (
-                <CloseButton
-                  onClick={entry.onClick}
-                  className="cursor-pointer w-full block rounded-lg px-3 py-2 transition hover-bg-effect text-center"
-                  key={entry.title}
-                >
-                  <p className="font-semibold fg-principal">{entry.title}</p>
-                </CloseButton>
-              );
-            })}
-          </div>
+          <div className="p-3">{popTopNode}</div>
+          <div className="p-3">{popBottomNode}</div>
         </PopoverPanel>
       </Popover>
     </div>

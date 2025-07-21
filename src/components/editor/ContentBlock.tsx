@@ -9,9 +9,10 @@ import LinkUploader from "./LinkBlock";
 import { EditorBlock } from "@/contexts/EditorContext";
 import { useSortableElement } from "@/contexts/SortableElementContext";
 import TextUploader from "./TextBlock";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import BlockMenu from "./BlockMenu";
 import { useFocusBlock } from "@/contexts/FocusBlockContext";
+import { isTextBlock } from "@/common/utils";
 
 interface EditorBlockProps {
   block: EditorBlock;
@@ -40,7 +41,7 @@ export default function ContentBlock({ block }: EditorBlockProps) {
       onMouseEnter={() => setOnFocus(true)}
       onMouseLeave={() => setOnFocus(false)}
     >
-      <div className="relative">
+      <div className="relative ">
         <div
           className="cursor-pointer rounded-md click-effect transition-colors"
           {...attributes}
@@ -48,7 +49,7 @@ export default function ContentBlock({ block }: EditorBlockProps) {
         >
           <EllipsisVerticalIcon
             className={`w-6 h-6 ${
-              onFocus ? "text-black/50" : "text-transparent"
+              onFocus ? "fg-principal" : "text-transparent"
             }`}
           />
         </div>
@@ -56,17 +57,14 @@ export default function ContentBlock({ block }: EditorBlockProps) {
       </div>
       <div
         className={`rounded-xl w-full ${
-          isActive(block.id) ? "bg-transparent-reverse" : "bg-transparent"
+          isActive(block.id) ? "bg-transparent-reverse-5" : "bg-transparent"
         }`}
       >
         <div className="flex">
           <div className="w-full">
             {block.type === "image" ? <ImageUploader block={block} /> : null}
             {block.type === "link" ? <LinkUploader block={block} /> : null}
-            {block.type === "text" ? <TextUploader block={block} /> : null}
-            {block.type === "h1" ? <TextUploader block={block} /> : null}
-            {block.type === "h2" ? <TextUploader block={block} /> : null}
-            {block.type === "h3" ? <TextUploader block={block} /> : null}
+            {isTextBlock(block.type) ? <TextUploader block={block} /> : null}
           </div>
         </div>
       </div>

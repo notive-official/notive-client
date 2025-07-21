@@ -18,9 +18,9 @@ export default function MainPage() {
           <div className="flex items-center justify-center w-full max-w-120">
             <InputBox
               placeholder={MainTrans("search.placeholder")}
-              handleChange={(e) => setSearch(e.target.value)}
+              handleChange={setSearch}
               value={search}
-              icon={<MagnifyingGlassIcon className="w-6 h-6" />}
+              buttonIcon={<MagnifyingGlassIcon className="w-6 h-6" />}
             />
           </div>
         </section>

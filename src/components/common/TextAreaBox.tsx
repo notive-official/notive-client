@@ -41,7 +41,7 @@ export default function TextAreaBox({
         <Textarea
           ref={!scrollable ? taRef : undefined}
           className={clsx(
-            "block w-full resize-none rounded-lg border-none bg-transparent-reverse px-3 py-1.5 text-sm/6 fg-principal",
+            "block w-full resize-none rounded-lg border-none bg-transparent-reverse-5 px-3 py-1.5 text-sm/6 fg-principal",
             "data-focus-outline-effect",
             inputClassName
           )}

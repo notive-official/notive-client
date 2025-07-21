@@ -2,11 +2,12 @@
 
 @theme {
   /* Light Colors */
-  --color-light-primary: #e0e0e0;
-  --color-light-secondary: #eaeaea;
-  --color-light-tertiary: #f4f4f4;
+  --color-light-primary: #f4f4f4;
+  --color-light-secondary: #efefef;
+  --color-light-tertiary: #eaeaea;
 
   --color-light-transparent-5: rgba(255, 255, 255, 0.05);
+  --color-light-transparent-10: rgba(255, 255, 255, 0.1);
   --color-light-transparent-25: rgba(255, 255, 255, 0.25);
   --color-light-transparent-50: rgba(255, 255, 255, 0.5);
   --color-light-transparent-75: rgba(255, 255, 255, 0.75);
@@ -18,6 +19,7 @@
   --color-dark-tertiary: #2d2d2d;
 
   --color-dark-transparent-5: rgba(40, 40, 40, 0.05);
+  --color-dark-transparent-10: rgba(40, 40, 40, 0.1);
   --color-dark-transparent-25: rgba(40, 40, 40, 0.25);
   --color-dark-transparent-50: rgba(40, 40, 40, 0.5);
   --color-dark-transparent-75: rgba(40, 40, 40, 0.75);
@@ -38,11 +40,17 @@
   .bg-reverse {
     @apply bg-dark-secondary dark:bg-light-secondary;
   }
-  .bg-transparent {
+  .bg-transparent-5 {
     @apply bg-light-transparent-5 dark:bg-dark-transparent-5;
   }
-  .bg-transparent-reverse {
+  .bg-transparent-reverse-5 {
     @apply bg-dark-transparent-5 dark:bg-light-transparent-5;
+  }
+  .bg-transparent-10 {
+    @apply bg-light-transparent-10 dark:bg-dark-transparent-10;
+  }
+  .bg-transparent-reverse-10 {
+    @apply bg-dark-transparent-10 dark:bg-light-transparent-10;
   }
   .bg-transparent-25 {
     @apply bg-light-transparent-25 dark:bg-dark-transparent-25;
@@ -95,6 +103,9 @@
   /* Effect */
   .hover-bg-effect {
     @apply hover:bg-dark-transparent-5 dark:hover:bg-light-transparent-5;
+  }
+  .hover-text-effect {
+    @apply hover:text-dark-transparent-25 dark:hover:text-light-transparent-25;
   }
   .hover-outline-effect {
     @apply hover:outline-dark-transparent-25 dark:hover:outline-light-transparent-25

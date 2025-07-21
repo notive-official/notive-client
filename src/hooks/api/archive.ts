@@ -1,5 +1,9 @@
 import { BlockType } from "@/common/types";
-import { createGetQueryWithParams, createPostMutation } from "@/lib/reactQuery";
+import {
+  createGetQuery,
+  createGetQueryWithParams,
+  createPostMutation,
+} from "@/lib/reactQuery";
 
 type GetOEmbedParams = {
   url: string;
@@ -39,3 +43,24 @@ export const usePostArchiveMutation = createPostMutation<
   PostArchiveRequest,
   void
 >("api/archive");
+
+type PakageResponse = {
+  id: number;
+  name: string;
+};
+type ListPakagesResponse = {
+  packages: PakageResponse[];
+};
+export const useListPakagesQuery = createGetQuery<ListPakagesResponse>(
+  "api/archive/packages",
+  "listPackages"
+);
+
+export type PostPackageRequest = {
+  packageName: string;
+};
+
+export const usePostPackageeMutation = createPostMutation<
+  PostPackageRequest,
+  void
+>("api/archive/package");

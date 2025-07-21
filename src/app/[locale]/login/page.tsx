@@ -20,7 +20,7 @@ export default function LoginPage() {
 
   return (
     <div className="h-full flex min-h-[calc(100vh-4rem)] items-center justify-center p-4">
-      <div className="w-full max-w-md rounded-xl bg-transparent-reverse p-6 backdrop-blur-2xl">
+      <div className="w-full max-w-md rounded-xl bg-transparent-reverse-5 p-6 backdrop-blur-2xl">
         <div className="flex-row flex w-full justify-between">
           <h3 className="text-base/7 font-medium fg-principal">
             {LoginTrans("title")}

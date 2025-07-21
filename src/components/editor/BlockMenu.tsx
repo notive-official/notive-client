@@ -1,6 +1,7 @@
 import { EditorBlock, useEditor } from "@/contexts/EditorContext";
 import { useSortableElement } from "@/contexts/SortableElementContext";
-import { XMarkIcon } from "@heroicons/react/16/solid";
+import { Button } from "@headlessui/react";
+import { TrashIcon } from "@heroicons/react/16/solid";
 import { useEffect, useRef, useState } from "react";
 
 export default function BlockMenu({ block }: { block: EditorBlock }) {
@@ -32,16 +33,17 @@ export default function BlockMenu({ block }: { block: EditorBlock }) {
         ref={menuRef}
         className="absolute left-0 mt-2 w-32 origin-top-left rounded-lg border border-gray-200 bg-white p-1 text-sm shadow-lg z-10"
       >
-        <button
+        <Button
           onClick={() => {
             removeBlock(block.id);
             setMenuOpen(false);
           }}
-          className="group flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-primay hover:bg-black/5 transition-colors"
+          className="group flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-primay \
+          hover:bg-black/5 transition-colors click-effect"
         >
-          <XMarkIcon className="w-4 h-4" />
+          <TrashIcon className="w-4 h-4" />
           삭제
-        </button>
+        </Button>
       </div>
     )
   );

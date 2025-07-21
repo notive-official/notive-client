@@ -31,7 +31,7 @@ export default function EditorFooter() {
   };
 
   return (
-    <div className="bg-reverse w-full flex justify-center items-center p-2">
+    <div className="fixed bottom-0 left-0 z-10 bg-reverse w-full flex justify-center items-center p-2">
       <div className="cursor-pointer rounded-xl">
         <Button
           onClick={() => router.back()}

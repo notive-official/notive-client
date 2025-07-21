@@ -10,7 +10,7 @@ export default function TextView({ blockType, text }: TextiewProps) {
     <div className="py-2 rounded-xl">
       {text.split("\n").map((line, index) => (
         <div key={index} className="rounded-xl">
-          {blockType === "text" && (
+          {blockType === "paragraph" && (
             <p className="text-normal">{line.length === 0 ? <br /> : line}</p>
           )}
           {blockType === "h1" && (

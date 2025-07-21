@@ -15,7 +15,7 @@ export default function ImageView({
 
   return (
     <div
-      className="flex flex-col w-full h-full items-end justify-center"
+      className="flex flex-col w-full h-full items-center justify-center"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -24,15 +24,15 @@ export default function ImageView({
           <a
             href={URL.createObjectURL(file)}
             download={file.name}
-            className={`cursor-pointer absolute rounded-lg ${
+            className={`cursor-pointer absolute left-0 top-0 rounded-xl m-2 z-10 ${
               isHovered
-                ? "bg-reverse hover-outline-effect-reverse"
+                ? "bg-dark-transparent-75 hover:outline-light-transparent-50 hover:outline-2 hover:-outline-offset-2"
                 : "bg-transparent"
             }`}
           >
             <ArrowDownTrayIcon
               className={`w-5 h-5 m-1 ${
-                isHovered ? "fg-reverse" : "text-transparent"
+                isHovered ? "text-light-primary" : "text-transparent"
               }`}
             />
           </a>
