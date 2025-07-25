@@ -1,4 +1,4 @@
-import { EditorBlock, useEditor } from "@/contexts/EditorContext";
+import { EditorBlock, useBlockEditor } from "@/contexts/BlockEditorContext";
 import { useEffect, useRef, useState } from "react";
 import { Field, Textarea } from "@headlessui/react";
 import { useFocusBlock } from "@/contexts/FocusBlockContext";
@@ -9,12 +9,11 @@ interface TextBlockProps {
 
 export default function TextBlock({ block }: TextBlockProps) {
   const { updateBlock, addNewBlockAfter, getPrevTextBlock, getNextTextBlock } =
-    useEditor();
+    useBlockEditor();
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { focusedBlockId, setFocusedBlockId } = useFocusBlock();
-  const { removeBlock, mergeWithPrevBlock } = useEditor();
+  const { removeBlock, mergeWithPrevBlock } = useBlockEditor();
   const { id, type: blockType, payload } = block;
-  const { content } = payload;
 
   const [isComposing, setIsComposing] = useState(false);
 
@@ -26,7 +25,7 @@ export default function TextBlock({ block }: TextBlockProps) {
       inputRef.current.style.height = "auto";
       inputRef.current.style.height = inputRef.current.scrollHeight + "px";
     }
-  }, [blockType, content]);
+  }, [blockType, payload.content]);
 
   useEffect(() => {
     if (focusedBlockId === id && inputRef.current) {
@@ -79,18 +78,14 @@ export default function TextBlock({ block }: TextBlockProps) {
       <Field>
         <Textarea
           ref={inputRef}
-          value={content}
+          value={payload.content}
           className={`${blockType === "paragraph" && "text-normal"}
           ${blockType === "h1" && "text-h1"}
           ${blockType === "h2" && "text-h2"}
           ${blockType === "h3" && "text-h3"} 
           block w-full resize-none rounded-lg border-none bg-transparent px-3 py-1.5 fg-principal data-focus:outline-none`}
           rows={1}
-          placeholder={
-            content.length === 0 && id === focusedBlockId
-              ? "내용을 입력해주세요."
-              : ""
-          }
+          placeholder={id === focusedBlockId ? "내용을 입력해주세요." : ""}
           onChange={(e) => updateBlock(id, { content: e.target.value })}
           onFocus={() => setFocusedBlockId(id)}
           onBlur={() => {

@@ -23,7 +23,7 @@ export default function Pop({ node, popTopNode, popBottomNode }: PopProps) {
         <PopoverPanel
           transition
           anchor="bottom end"
-          className="divide-y divide-primary rounded-xl bg-tertiary text-sm/6 transition duration-200 ease-in-out [--anchor-gap:--spacing(5)] data-closed:-translate-y-1 data-closed:opacity-0"
+          className="divide-y divide-primary rounded-xl bg-tertiary z-50 text-sm/6 transition duration-200 ease-in-out [--anchor-gap:--spacing(5)] data-closed:-translate-y-1 data-closed:opacity-0"
         >
           <div className="p-3">{popTopNode}</div>
           <div className="p-3">{popBottomNode}</div>

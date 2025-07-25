@@ -6,15 +6,20 @@ import EditorBlock from "./ContentBlock";
 import Tagbar from "./Tagbar";
 import ToolBar from "./ToolBar";
 import useTrans from "@/hooks/translation";
-import { useEditor } from "@/contexts/EditorContext";
+import { useBlockEditor } from "@/contexts/BlockEditorContext";
 import { useEffect } from "react";
+import { useEditor } from "@/contexts/EditorContext";
+import { useFocusBlock } from "@/contexts/FocusBlockContext";
 
 export default function Editor() {
   const { PostTrans } = useTrans();
-  const { blocks, changeTitle, reorderBlocks, addNewBlock } = useEditor();
+  const { blocks, reorderBlocks, addNewBlock } = useBlockEditor();
+  const { setFocusedBlockId } = useFocusBlock();
+  const { changeTitle } = useEditor();
 
   useEffect(() => {
-    addNewBlock("paragraph");
+    const blockId = addNewBlock("paragraph");
+    setFocusedBlockId(blockId);
   }, []);
 
   return (

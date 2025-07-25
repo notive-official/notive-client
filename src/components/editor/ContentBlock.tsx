@@ -6,7 +6,7 @@ import { CSS } from "@dnd-kit/utilities";
 
 import ImageUploader from "./ImageBlock";
 import LinkUploader from "./LinkBlock";
-import { EditorBlock } from "@/contexts/EditorContext";
+import { EditorBlock } from "@/contexts/BlockEditorContext";
 import { useSortableElement } from "@/contexts/SortableElementContext";
 import TextUploader from "./TextBlock";
 import { useState } from "react";

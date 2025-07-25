@@ -1,6 +1,6 @@
 import { ArrowUpIcon } from "@heroicons/react/16/solid";
 import { useCallback, useState, memo } from "react";
-import { EditorBlock, useEditor } from "@/contexts/EditorContext";
+import { EditorBlock, useBlockEditor } from "@/contexts/BlockEditorContext";
 import InputBox from "../common/InputBox";
 import ViewBlock from "../viewer/ViewBlock";
 import { Button } from "@headlessui/react";
@@ -11,7 +11,7 @@ interface LinkBlockProps {
 }
 
 export function LinkBlock({ block }: LinkBlockProps) {
-  const { updateBlock } = useEditor();
+  const { updateBlock } = useBlockEditor();
   const { focusedBlockId, setFocusedBlockId } = useFocusBlock();
   const [link, setLink] = useState("");
   const { id } = block;

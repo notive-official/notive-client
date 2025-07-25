@@ -1,4 +1,4 @@
-import { useEditor } from "@/contexts/EditorContext";
+import { useBlockEditor } from "@/contexts/BlockEditorContext";
 import { useFocusBlock } from "@/contexts/FocusBlockContext";
 import { Button } from "@headlessui/react";
 import {
@@ -12,7 +12,7 @@ import {
 import { useState } from "react";
 
 export default function ToolBar() {
-  const { addNewBlock, addNewBlockAfter, changeBlockType } = useEditor();
+  const { addNewBlock, addNewBlockAfter, changeBlockType } = useBlockEditor();
   const { focusedBlockId, setFocusedBlockId } = useFocusBlock();
   const [showHeadings, setShowHeadings] = useState(false);
 

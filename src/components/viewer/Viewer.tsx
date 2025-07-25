@@ -1,11 +1,13 @@
 "use client";
 
-import { useEditor } from "@/contexts/EditorContext";
+import { useBlockEditor } from "@/contexts/BlockEditorContext";
 import ViewBlock from "./ViewBlock";
 import Tag from "../common/Tag";
+import { useEditor } from "@/contexts/EditorContext";
 
 export default function Viewer() {
-  const { blocks, title, tags } = useEditor();
+  const { blocks } = useBlockEditor();
+  const { title, tags } = useEditor();
   return (
     <div className="flex flex-col gap-8">
       <h1 className="fg-principal text-h1 whitespace-normal break-words">

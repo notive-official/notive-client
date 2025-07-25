@@ -1,6 +1,6 @@
 "use client";
 
-import { EditorBlock } from "@/contexts/EditorContext";
+import { EditorBlock } from "@/contexts/BlockEditorContext";
 import TextView from "./TextView";
 import LinkView from "./LinkView";
 import ImageView from "./ImageView";

@@ -1,4 +1,4 @@
-import { useGetOEmbedQuery } from "@/hooks/api/archive";
+import { useGetOEmbedQuery } from "@/hooks/api/archive/oembed";
 import Image from "next/image";
 import { useCallback, memo, useState } from "react";
 
@@ -8,11 +8,10 @@ export function LinkView({ url }: { url: string }) {
   const { data: oEmbed, isError } = useGetOEmbedQuery(
     { url },
     {
-      enabled: Boolean(url), // url이 있을 때만 fetch
-      retry: false, // 실패 시 재시도 금지
-      staleTime: 1000 * 60 * 5, // 5분간은 캐시 유효
-      refetchOnMount: false, // 마운트 시 재요청 금지
-      refetchOnWindowFocus: false, // 포커스 시 재요청 금지
+      enabled: Boolean(url),
+      retry: false,
+      staleTime: 1000 * 60 * 5, // 5분
+      refetchOnWindowFocus: false,
     }
   );
 
@@ -27,7 +26,7 @@ export function LinkView({ url }: { url: string }) {
   if (isError) {
     return (
       <p
-        className="underline text-blue-500 cursor-pointer hover:text-blue-600"
+        className="p-2 text-start underline text-blue-500 cursor-pointer hover:text-blue-600"
         onClick={handleClick}
       >
         {url}

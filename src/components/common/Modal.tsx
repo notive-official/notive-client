@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useCallback, useEffect, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 
 interface ModalProps {
@@ -7,6 +7,8 @@ interface ModalProps {
   title: string;
   content?: string;
   actionNode?: ReactNode;
+  isOpen?: boolean;
+  onOpenChange?(open: boolean): void;
 }
 
 export default function Modal({
@@ -14,27 +16,33 @@ export default function Modal({
   title,
   content,
   actionNode,
+  isOpen: controlled,
+  onOpenChange,
 }: ModalProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [uncontrolled, setUncontrolled] = useState(false);
+  const isControlled = controlled !== undefined;
+  const openState = isControlled ? controlled : uncontrolled;
 
-  function open() {
-    setIsOpen(true);
-  }
+  const setOpen = useCallback(
+    (next: boolean) => {
+      if (isControlled) {
+        onOpenChange?.(next);
+      } else {
+        setUncontrolled(next);
+      }
+    },
+    [isControlled, onOpenChange]
+  );
 
-  useEffect(() => {
-    console.log("isOpen changed:", isOpen);
-  }, [isOpen]);
-
-  function close() {
-    setIsOpen(false);
-  }
+  const open = useCallback(() => setOpen(true), [setOpen]);
+  const close = useCallback(() => setOpen(false), [setOpen]);
 
   return (
     <>
       <Button onClick={open}>{openNode}</Button>
 
       <Dialog
-        open={isOpen}
+        open={openState}
         as="div"
         className="relative z-30 focus:outline-none"
         onClose={close}

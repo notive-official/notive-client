@@ -7,26 +7,35 @@ import {
 } from "@headlessui/react";
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
-import { ReactNode, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import Hangul from "hangul-js";
+
+export interface ComboSelection {
+  id: string;
+  name: string;
+}
 
 interface ComboProps {
-  options: { id: number; name: string }[];
+  selected: ComboSelection | null;
+  setSelected: Dispatch<SetStateAction<ComboSelection | null>>;
+  options: ComboSelection[];
   button?: ReactNode;
   maxVisible?: number;
 }
 
-export default function Combo({ options, button, maxVisible = 5 }: ComboProps) {
+export default function Combo({
+  selected,
+  setSelected,
+  options,
+  button,
+  maxVisible = 5,
+}: ComboProps) {
   const [query, setQuery] = useState("");
-  const [selected, setSelected] = useState<{ id: number; name: string } | null>(
-    null
-  );
 
   const filteredOptions =
     query === ""
       ? options
-      : options.filter((o) =>
-          o.name.toLowerCase().includes(query.toLowerCase())
-        );
+      : options.filter((o) => Hangul.search(o.name, query) > -1);
 
   const height = Math.min(filteredOptions.length, maxVisible) * 40;
 

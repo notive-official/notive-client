@@ -1,4 +1,4 @@
-import { EditorBlock, useEditor } from "@/contexts/EditorContext";
+import { EditorBlock, useBlockEditor } from "@/contexts/BlockEditorContext";
 import { useSortableElement } from "@/contexts/SortableElementContext";
 import { Button } from "@headlessui/react";
 import { TrashIcon } from "@heroicons/react/16/solid";
@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 export default function BlockMenu({ block }: { block: EditorBlock }) {
   const { isClicked, clickedId } = useSortableElement();
-  const { removeBlock } = useEditor();
+  const { removeBlock } = useBlockEditor();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 

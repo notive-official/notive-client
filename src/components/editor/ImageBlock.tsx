@@ -3,7 +3,7 @@
 
 import { useCallback } from "react";
 import useTrans from "@/hooks/translation";
-import { EditorBlock, useEditor } from "@/contexts/EditorContext";
+import { EditorBlock, useBlockEditor } from "@/contexts/BlockEditorContext";
 import { useDropzone } from "react-dropzone";
 import ViewBlock from "../viewer/ViewBlock";
 import { ArrowPathIcon } from "@heroicons/react/16/solid";
@@ -15,7 +15,7 @@ interface ImageBlockProps {
 }
 export default function ImageBlock({ block }: ImageBlockProps) {
   const { PostTrans } = useTrans();
-  const { updateBlock } = useEditor();
+  const { updateBlock } = useBlockEditor();
   const { focusedBlockId, setFocusedBlockId } = useFocusBlock();
   const { id, payload } = block;
   const { file } = payload;
