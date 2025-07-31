@@ -4,12 +4,11 @@ export default function imageLoader({ src, width, quality }: ImageLoaderProps) {
   const cfHost = process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE;
   const apiBase = process.env.NEXT_PUBLIC_API_BASE ?? "";
 
-  if (/^\/(?!\/)(?!.*\.\.)/.test(src)) {
-    return src;
-  }
+  if (src.startsWith("/icons")) return src;
 
-  if (src.includes(cfHost)) {
-    return src;
+  if (!isAbsoluteUrl(src)) {
+    const normalized = src.startsWith("/") ? src : `/${src}`;
+    return `${cfHost}${normalized}`;
   }
 
   const params = new URLSearchParams({
@@ -18,4 +17,12 @@ export default function imageLoader({ src, width, quality }: ImageLoaderProps) {
     ...(quality ? { q: quality.toString() } : {}),
   });
   return `${apiBase}/api/proxy/image?${params}`;
+}
+
+function isAbsoluteUrl(url: string): boolean {
+  try {
+    return Boolean(new URL(url).origin);
+  } catch {
+    return false;
+  }
 }
