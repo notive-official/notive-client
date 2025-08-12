@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 
-const useTrans = () => {
+const useTranslation = () => {
   const LanguageSelectTrans = useTranslations("Language");
   const MainTrans = useTranslations("MainPage");
   const HeaderTrans = useTranslations("Header");
@@ -17,4 +17,4 @@ const useTrans = () => {
   };
 };
 
-export default useTrans;
+export default useTranslation;

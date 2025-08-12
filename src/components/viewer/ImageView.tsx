@@ -15,7 +15,7 @@ export default function ImageView({
 
   return (
     <div
-      className="flex flex-col w-full h-full items-center justify-center"
+      className="flex flex-col w-full h-full items-start justify-center"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

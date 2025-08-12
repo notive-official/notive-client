@@ -7,6 +7,8 @@ import { useBlockEditor } from "@/contexts/BlockEditorContext";
 import { useEditor } from "@/contexts/EditorContext";
 import api from "@/lib/api";
 import { useQueryClient } from "@tanstack/react-query";
+import { listGroupDetailsKey } from "@/hooks/api/archive/group";
+import { listTagsKey } from "@/hooks/api/archive/tag";
 
 export default function EditorFooter() {
   const router = useRouter();
@@ -31,10 +33,10 @@ export default function EditorFooter() {
         (b.type === "link" && b.payload.content.length < 1)
       ) {
         form.append(`blocks[${idx}].content`, "");
-        form.append(`blocks[${idx}].blockType`, "paragraph".toUpperCase());
+        form.append(`blocks[${idx}].type`, "paragraph".toUpperCase());
         return;
       }
-      form.append(`blocks[${idx}].blockType`, b.type.toUpperCase());
+      form.append(`blocks[${idx}].type`, b.type.toUpperCase());
       form.append(`blocks[${idx}].content`, b.payload.content);
       if (b.payload.file) form.append(`blocks[${idx}].image`, b.payload.file);
     });
@@ -44,7 +46,9 @@ export default function EditorFooter() {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then(() => {
-        queryClient.invalidateQueries({ queryKey: ["listTags"] });
+        queryClient.invalidateQueries({
+          queryKey: [listTagsKey, listGroupDetailsKey],
+        });
         router.replace("/");
       });
   };

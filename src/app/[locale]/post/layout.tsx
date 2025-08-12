@@ -14,9 +14,7 @@ export default async function PostLayout({
         <EditorProvider>
           <BlockEditorProvider>
             {children}
-            <div className="fixed bottom-0 left-0 w-full z-10">
-              <EditorFooter />
-            </div>
+            <EditorFooter />
           </BlockEditorProvider>
         </EditorProvider>
       </FocusBlockProvider>

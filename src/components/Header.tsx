@@ -6,14 +6,14 @@ import Pop from "./common/Pop";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "@/i18n/routing";
 import Image from "next/image";
-import useTrans from "@/hooks/translation";
+import useTrans from "@/hooks/useTranslation";
 import PopButton from "./common/PopButton";
 import { ReactNode } from "react";
 import {
   UserIcon,
   ArchiveBoxIcon,
   PencilIcon,
-} from "@heroicons/react/24/outline";
+} from "@heroicons/react/24/solid";
 
 interface PopEntry {
   title: string;
@@ -42,28 +42,24 @@ export default function Header() {
   const popTopEntries: PopEntry[] = [
     {
       title: HeaderTrans("userMenu.myPage.title"),
-      description: HeaderTrans("userMenu.myPage.content"),
       onClick: () => router.push("/my"),
-      icon: <UserIcon className="w-6 h-6" />,
+      icon: <UserIcon className="w-6 h-6 fg-assistant" />,
     },
     {
       title: HeaderTrans("userMenu.archive.title"),
-      description: HeaderTrans("userMenu.archive.content"),
-      onClick: () => router.push("/"),
-      icon: <ArchiveBoxIcon className="w-6 h-6" />,
+      onClick: () => router.push("/archive/note"),
+      icon: <ArchiveBoxIcon className="w-6 h-6 fg-assistant" />,
     },
     {
       title: HeaderTrans("userMenu.posting.title"),
-      description: HeaderTrans("userMenu.posting.content"),
       onClick: () => router.push("/post"),
-      icon: <PencilIcon className="w-6 h-6" />,
+      icon: <PencilIcon className="w-6 h-6 fg-assistant" />,
     },
   ];
 
   const popBottomEntries: PopEntry[] = [
     {
       title: HeaderTrans("userMenu.signOut.title"),
-      description: HeaderTrans("userMenu.signOut.content"),
       onClick: () => logout(),
     },
   ];
@@ -97,7 +93,7 @@ export default function Header() {
         onClick={handleLogoClick}
       >
         <Image
-          className="w-8 h-8 mr-2"
+          className="w-7 h-7 mr-3"
           src="/icons/favicon-dark.ico"
           width={32}
           height={32}

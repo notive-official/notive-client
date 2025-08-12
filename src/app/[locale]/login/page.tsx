@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "@/i18n/routing";
-import useTrans from "@/hooks/translation";
+import useTrans from "@/hooks/useTranslation";
 
 export default function LoginPage() {
   const { LoginTrans } = useTrans();
@@ -26,7 +26,9 @@ export default function LoginPage() {
             {LoginTrans("title")}
           </h3>
         </div>
-        <p className="mt-2 text-sm/6 fg-assistant">{LoginTrans("content")}</p>
+        <div className="mt-2 text-sm/6 fg-assistant">
+          {LoginTrans("content")}
+        </div>
         <div className="mt-4 w-full flex justify-center">
           <Link
             className="flex justify-center"
@@ -35,7 +37,7 @@ export default function LoginPage() {
             }
           >
             <Image
-              className="w-2/3"
+              className="w-1/2 hover:drop-shadow-lg rounded-full shadow"
               src="/images/googleSignIn.png"
               width={100}
               height={100}

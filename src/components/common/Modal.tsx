@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { ReactNode, useCallback, useEffect, useState } from "react";
+import { ReactNode, useCallback, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 
 interface ModalProps {
@@ -8,7 +8,7 @@ interface ModalProps {
   content?: string;
   actionNode?: ReactNode;
   isOpen?: boolean;
-  onOpenChange?(open: boolean): void;
+  onOpenChange?: (open: boolean) => void;
 }
 
 export default function Modal({

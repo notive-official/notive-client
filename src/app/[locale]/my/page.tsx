@@ -1,6 +1,6 @@
 "use client";
 
-import useTrans from "@/hooks/translation";
+import useTrans from "@/hooks/useTranslation";
 import { usePathname, useRouter } from "@/i18n/routing";
 import { LanguageIcon } from "@heroicons/react/16/solid";
 import DropDown, { Item } from "@/components/common/DropDown";

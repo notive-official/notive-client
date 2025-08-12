@@ -5,6 +5,7 @@ import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import ClientProviders from "../../contexts/ClientContext";
 import Header from "../../components/Header";
+import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "Notive",
@@ -33,7 +34,8 @@ export default async function RootLayout({
       <body className="h-full flex flex-col fg-principal bg-primary">
         <ClientProviders locale={locale} messages={messages}>
           <Header />
-          <main className="flex-1 overflow-hidden">{children}</main>
+          <main className="flex-1 h-full overflow-hidden">{children}</main>
+          <Footer />
         </ClientProviders>
       </body>
     </html>

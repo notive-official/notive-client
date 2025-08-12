@@ -5,7 +5,7 @@ import { Input } from "@headlessui/react";
 import EditorBlock from "./ContentBlock";
 import Tagbar from "./Tagbar";
 import ToolBar from "./ToolBar";
-import useTrans from "@/hooks/translation";
+import useTrans from "@/hooks/useTranslation";
 import { useBlockEditor } from "@/contexts/BlockEditorContext";
 import { useEffect } from "react";
 import { useEditor } from "@/contexts/EditorContext";

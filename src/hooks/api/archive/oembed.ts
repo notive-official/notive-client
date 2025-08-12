@@ -19,4 +19,4 @@ type GetOEmbedResponse = {
 export const useGetOEmbedQuery = createGetQueryWithParams<
   GetOEmbedResponse,
   GetOEmbedParams
->("api/archive/oembed", "getOEmbed");
+>("api/oembed", "getOEmbed");

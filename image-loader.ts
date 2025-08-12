@@ -4,7 +4,7 @@ export default function imageLoader({ src, width, quality }: ImageLoaderProps) {
   const cfHost = process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE;
   const apiBase = process.env.NEXT_PUBLIC_API_BASE ?? "";
 
-  if (src.startsWith("/icons")) return src;
+  if (src.startsWith("/icons") || src.startsWith("/images")) return src;
 
   if (!isAbsoluteUrl(src)) {
     const normalized = src.startsWith("/") ? src : `/${src}`;

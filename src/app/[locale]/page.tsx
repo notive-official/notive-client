@@ -1,21 +1,25 @@
 "use client";
 
-import Card from "@/components/common/Card";
+import MainCard from "@/components/common/MainCard";
 import InputBox from "@/components/common/InputBox";
-import Footer from "@/components/Footer";
-import useTrans from "@/hooks/translation";
+import useTrans from "@/hooks/useTranslation";
 import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
 import { useState } from "react";
+import { useListArchivesQuery } from "@/hooks/api/search";
 
 export default function MainPage() {
   const { MainTrans } = useTrans();
   const [search, setSearch] = useState("");
 
+  const page = 0;
+  const { data } = useListArchivesQuery({ page });
+
   return (
-    <div className="h-full flex flex-col items-center justify-between px-5 py-2">
-      <div>
-        <section className="py-10 flex justify-center w-full text-center p-4">
-          <div className="flex items-center justify-center w-full max-w-120">
+    <div className="h-full overflow-y-auto flex flex-col items-center px-5 py-2">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-col flex-1">
+        {/* 검색 박스 */}
+        <section className="flex justify-center w-full text-center pt-10">
+          <div className="flex items-center justify-center w-full md:w-2/3 max-w-200">
             <InputBox
               placeholder={MainTrans("search.placeholder")}
               handleChange={setSearch}
@@ -24,17 +28,29 @@ export default function MainPage() {
             />
           </div>
         </section>
-        <section className="w-full text-center p-4 mb-10">
+
+        {/* 메인 타이틀 */}
+        <section className="w-full text-center py-10 md:py-20">
           <h1 className="text-3xl font-bold mb-3">{MainTrans("pageTitle")}</h1>
-          <p className="fg-assistant">{MainTrans("description")}</p>
+          <div className="fg-assistant">{MainTrans("description")}</div>
         </section>
-        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <Card />
-          <Card />
-          <Card />
-        </section>
+
+        {/* 아카이브 목록 */}
+        <div className="flex flex-wrap gap-8 justify-center">
+          {data?.content.map((note) => {
+            return (
+              <div className="flex justify-center" key={note.id}>
+                <MainCard
+                  key={note.id}
+                  title={note.title}
+                  writer={note.writer}
+                  thumbnailUrl={note.thumbnailPath}
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
-      <Footer />
     </div>
   );
 }

@@ -1,0 +1,52 @@
+import Image from "next/image";
+import { useState } from "react";
+
+interface CardProps {
+  title: string;
+  writer: {
+    nickname: string;
+    profileImagePath: string;
+  };
+  thumbnailUrl: string;
+}
+
+export default function MainCard({ title, writer, thumbnailUrl }: CardProps) {
+  const handleClick = () => {};
+  const [hover, setHover] = useState(false);
+  return (
+    <div
+      className="relative flex flex-col w-auto cursor-pointer"
+      onClick={handleClick}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      {/* 썸네일: 높이 통일, 가로는 이미지 비율에 맞춤 */}
+      <div className="rounded hover:drop-shadow-lg shadow-xs">
+        <Image
+          src={thumbnailUrl}
+          alt={title}
+          width={0}
+          height={200}
+          className="object-cover w-auto h-[200px] rounded bg-white"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+      </div>
+      {/* 제목 */}
+      <div className="flex flex-col gap-1 p-2">
+        {hover && (
+          <p className="absolute top-2 right-2 bg-transparent-reverse-75 fg-reverse py-1 px-2 rounded-full flex flex-row gap-1 text-sm">
+            <Image
+              src={writer.profileImagePath}
+              alt={writer.nickname}
+              width={20}
+              height={20}
+              className="object-cover"
+            />
+            {writer.nickname}
+          </p>
+        )}
+        <h3 className="w-full fg-principal text-md text-start">{title}</h3>
+      </div>
+    </div>
+  );
+}

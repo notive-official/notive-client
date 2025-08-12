@@ -4,7 +4,7 @@ import Tag from "@/components/common/Tag";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEditor } from "@/contexts/EditorContext";
 import { useListTagsQuery } from "@/hooks/api/archive/tag";
-import useTrans from "@/hooks/translation";
+import useTrans from "@/hooks/useTranslation";
 import { Button, Input } from "@headlessui/react";
 import Hangul from "hangul-js";
 

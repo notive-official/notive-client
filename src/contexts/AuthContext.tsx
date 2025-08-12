@@ -21,11 +21,14 @@ const tokenPrefix = "Bearer ";
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { mutate: reissueMutate } = usePostReissueMutation();
-  const { mutate: logoutMutate } = usePostLogoutMutation();
+  const [isLoading, setIsLoading] = useState(true);
 
-  // 1) accessToken이 바뀔 때마다 axios 기본 헤더 갱신
+  const { mutate: reissueMutate } = usePostReissueMutation();
+  const { mutate: logoutMutate } = usePostLogoutMutation({
+    onSuccess: () => setAccessToken(null),
+  });
+
+  // accessToken이 바뀔 때마다 axios 기본 헤더 갱신
   useEffect(() => {
     if (accessToken) {
       api.defaults.headers.common[tokenHeader] = tokenPrefix + accessToken;
@@ -36,7 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [accessToken]);
 
-  // 2) 새 토큰 헤더에 있으면 state 갱신
+  // 새 토큰 헤더에 있으면 state 갱신
   useEffect(() => {
     const interceptor = api.interceptors.response.use((res) => {
       const header = res.headers[tokenHeader];
@@ -44,22 +47,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const newToken = header.split(" ")[1];
         setAccessToken(newToken);
       }
+      setIsLoading(false);
+
       return res;
     });
+
     return () => {
       api.interceptors.response.eject(interceptor);
     };
   }, []);
 
-  // 3) reissue 호출: 브라우저 fetch에 credentials: 'include' 로 쿠키 자동 전송
+  // reissue 호출: 브라우저 fetch에 credentials: 'include' 로 쿠키 자동 전송
   useEffect(() => {
     reissueMutate();
-    setIsLoading(false);
   }, []);
 
   const logout = () => {
     logoutMutate();
-    setAccessToken(null);
   };
 
   return (

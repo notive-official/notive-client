@@ -2,7 +2,7 @@
 "use client";
 
 import { useCallback } from "react";
-import useTrans from "@/hooks/translation";
+import useTrans from "@/hooks/useTranslation";
 import { EditorBlock, useBlockEditor } from "@/contexts/BlockEditorContext";
 import { useDropzone } from "react-dropzone";
 import ViewBlock from "../viewer/ViewBlock";
@@ -51,7 +51,7 @@ export default function ImageBlock({ block }: ImageBlockProps) {
         >
           <input {...getInputProps()} />
           {file ? (
-            <p className="fg-primary">{file.name}</p>
+            <p className="fg-assistant">{file.name}</p>
           ) : (
             <p className="fg-assistant">파일 선택 (최대 5MB)</p>
           )}

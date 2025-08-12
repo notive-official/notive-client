@@ -79,7 +79,7 @@
 
   /* Foreground Colors */
   .fg-principal {
-    @apply text-dark-primary dark:text-light-primary;
+    @apply text-dark-primary dark:text-light-transparent-75;
   }
   .fg-assistant {
     @apply text-dark-transparent-50 dark:text-light-transparent-50;
@@ -105,7 +105,7 @@
     @apply hover:bg-dark-transparent-5 dark:hover:bg-light-transparent-5;
   }
   .hover-text-effect {
-    @apply hover:text-dark-transparent-25 dark:hover:text-light-transparent-25;
+    @apply hover:text-dark-transparent-50 dark:hover:text-light-transparent-50;
   }
   .hover-outline-effect {
     @apply hover:outline-dark-transparent-25 dark:hover:outline-light-transparent-25
