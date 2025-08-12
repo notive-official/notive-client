@@ -15,6 +15,7 @@ import InputBox from "../common/InputBox";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEditor } from "@/contexts/EditorContext";
+import useTranslation from "@/hooks/useTranslation";
 
 export default function ArchiveSetting() {
   const queryClient = useQueryClient();
@@ -28,6 +29,7 @@ export default function ArchiveSetting() {
     changeIsPublic,
     changeThumbnail,
   } = useEditor();
+  const { PostTrans } = useTranslation();
 
   const [newGroup, setNewGroup] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -85,6 +87,7 @@ export default function ArchiveSetting() {
       <InputBox
         value={newGroup}
         handleChange={setNewGroup}
+        placeholder={PostTrans("setting.group.create.placeholder")}
         buttonIcon={<PlusIcon className="w-5 h-5" />}
         onAction={handleEvent}
       />
@@ -105,7 +108,9 @@ export default function ArchiveSetting() {
                 {thumbnail.name}
               </p>
             ) : (
-              <p className="fg-assistant text-center">파일 선택 (최대 5MB)</p>
+              <p className="fg-assistant text-center">
+                {PostTrans("setting.thumbnail.placeholder")}
+              </p>
             )}
           </div>
         </div>
@@ -151,7 +156,7 @@ export default function ArchiveSetting() {
             />
             <Modal
               openNode={groupAddNode}
-              title="새로 생성할 그룹명을 입력해주세요."
+              title={PostTrans("setting.group.create.title")}
               actionNode={modalActionNode}
               isOpen={isOpen}
               onOpenChange={(open) => setIsOpen(open)}

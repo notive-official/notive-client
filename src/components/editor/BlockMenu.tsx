@@ -1,5 +1,6 @@
 import { EditorBlock, useBlockEditor } from "@/contexts/BlockEditorContext";
 import { useSortableElement } from "@/contexts/SortableElementContext";
+import useTranslation from "@/hooks/useTranslation";
 import { Button } from "@headlessui/react";
 import { TrashIcon } from "@heroicons/react/16/solid";
 import { useEffect, useRef, useState } from "react";
@@ -9,6 +10,7 @@ export default function BlockMenu({ block }: { block: EditorBlock }) {
   const { removeBlock } = useBlockEditor();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { PostTrans } = useTranslation();
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -42,7 +44,7 @@ export default function BlockMenu({ block }: { block: EditorBlock }) {
           hover:bg-black/5 transition-colors click-effect"
         >
           <TrashIcon className="w-4 h-4" />
-          삭제
+          {PostTrans("block.menu.delete")}
         </Button>
       </div>
     )

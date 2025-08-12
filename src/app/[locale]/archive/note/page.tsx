@@ -1,7 +1,7 @@
 "use client";
 
 import TagSearchBar from "@/components/archive/TagSearchBar";
-import NoteCard from "@/components/common/NoteCard";
+import NoteCard from "@/components/archive/NoteCard";
 import { useAuth } from "@/contexts/AuthContext";
 import { useListNotesQuery } from "@/hooks/api/archive/note";
 

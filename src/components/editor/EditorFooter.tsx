@@ -3,30 +3,39 @@
 import { Button } from "@headlessui/react";
 import { ArrowLeftIcon } from "@heroicons/react/16/solid";
 import { useRouter } from "@/i18n/routing";
-import { useBlockEditor } from "@/contexts/BlockEditorContext";
+import { EditorBlock, useBlockEditor } from "@/contexts/BlockEditorContext";
 import { useEditor } from "@/contexts/EditorContext";
 import api from "@/lib/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { listGroupDetailsKey } from "@/hooks/api/archive/group";
 import { listTagsKey } from "@/hooks/api/archive/tag";
+import { useErrorBar } from "@/contexts/ErrorBarContext";
+import { ComboSelection } from "../common/Combo";
+import useTranslation from "@/hooks/useTranslation";
 
 export default function EditorFooter() {
   const router = useRouter();
   const { blocks } = useBlockEditor();
   const { title, tags, group, isPublic, thumbnail } = useEditor();
+  const { trimContent } = useBlockEditor();
   const queryClient = useQueryClient();
+  const { pushWarning } = useErrorBar();
+  const { PostTrans } = useTranslation();
 
   const onSave = () => {
     const form = new FormData();
-    if (!group || title.trim().length === 0 || blocks.length === 0) return; // TODO: 에러 핸들링
+    const trimmedBlock = trimContent(blocks);
+    if (!validateInput(group, title, trimmedBlock)) {
+      return;
+    }
 
     if (thumbnail) form.append("thumbnailImage", thumbnail);
     form.append("isPublic", String(isPublic));
-    form.append("groupId", String(group.id));
+    form.append("groupId", String(group!.id));
     form.append("title", title);
     tags.forEach((t, i) => form.append(`tags[${i}]`, t));
 
-    blocks.forEach((b, idx) => {
+    trimmedBlock.forEach((b, idx) => {
       form.append(`blocks[${idx}].position`, String(idx));
       if (
         (b.type === "image" && !b.payload.file) ||
@@ -51,6 +60,26 @@ export default function EditorFooter() {
         });
         router.replace("/");
       });
+  };
+
+  const validateInput = (
+    group: ComboSelection | null,
+    title: string,
+    blocks: EditorBlock[]
+  ) => {
+    if (!group) {
+      pushWarning(PostTrans("message.warning.group"));
+      return false;
+    }
+    if (title.trim().length === 0) {
+      pushWarning(PostTrans("message.warning.title"));
+      return false;
+    }
+    if (blocks.length === 0) {
+      pushWarning(PostTrans("message.warning.content"));
+      return false;
+    }
+    return true;
   };
 
   return (

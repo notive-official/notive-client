@@ -1,10 +1,8 @@
 import { useGetOEmbedQuery } from "@/hooks/api/archive/oembed";
 import Image from "next/image";
-import { useCallback, memo, useState } from "react";
+import { useCallback, memo } from "react";
 
 export function LinkView({ url }: { url: string }) {
-  const [isHovered, setIsHovered] = useState(false);
-
   const { data: oEmbed, isError } = useGetOEmbedQuery(
     { url },
     {
@@ -40,8 +38,6 @@ export function LinkView({ url }: { url: string }) {
         <div
           className="bg-tertiary rounded-lg overflow-hidden shadow-lg h-48"
           onClick={handleClick}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
         >
           <div className="cursor-pointer hover-bg-effect flex flex-row h-full">
             {oEmbed.thumbnailUrl ? (

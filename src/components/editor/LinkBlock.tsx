@@ -3,8 +3,8 @@ import { useCallback, useState, memo } from "react";
 import { EditorBlock, useBlockEditor } from "@/contexts/BlockEditorContext";
 import InputBox from "../common/InputBox";
 import ViewBlock from "../viewer/ViewBlock";
-import { Button } from "@headlessui/react";
 import { useFocusBlock } from "@/contexts/FocusBlockContext";
+import useTranslation from "@/hooks/useTranslation";
 
 interface LinkBlockProps {
   block: EditorBlock;
@@ -13,6 +13,7 @@ interface LinkBlockProps {
 export function LinkBlock({ block }: LinkBlockProps) {
   const { updateBlock } = useBlockEditor();
   const { focusedBlockId, setFocusedBlockId } = useFocusBlock();
+  const { PostTrans } = useTranslation();
   const [link, setLink] = useState("");
   const { id } = block;
 
@@ -30,7 +31,7 @@ export function LinkBlock({ block }: LinkBlockProps) {
     >
       <InputBox
         value={link}
-        placeholder="Set a link"
+        placeholder={PostTrans("block.link.placeholder")}
         handleChange={setLink}
         onAction={handleEvent}
         buttonIcon={<ArrowUpIcon className="w-5 h-5" />}

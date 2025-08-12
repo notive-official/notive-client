@@ -27,8 +27,8 @@
   },
 
   "MainPage": {
-    "pageTitle": "Design Archive",
-    "description": "디자인 아카이브는 디자인 리소스를 모아놓은 곳입니다.",
+    "pageTitle": "Archiving Design with Notive",
+    "description": "Notive는 디자인 리소스를 모아놓은 곳입니다.",
     "search": {
       "placeholder": "디자인 검색"
     }
@@ -50,11 +50,41 @@
   },
 
   "PostPage": {
+    "setting": {
+      "group": {
+        "create": {
+          "title": "그룹 생성",
+          "placeholder": "그룹명을 입력해주세요."
+        }
+      },
+      "thumbnail": {
+        "placeholder": "파일 선택 (최대 5MB)"
+      }
+    },
     "title": { "placeholder": "제목을 입력해주세요." },
     "tag": { "placeholder": "Enter를 눌러 태그를 등록해주세요." },
-    "imageUploader": {
-      "delete": "삭제"
+    "block": {
+      "text": {
+        "placeholder": "내용을 입력해주세요."
+      },
+      "image": {
+        "placeholder": "파일 선택 (최대 5MB)"
+      },
+      "link": {
+        "placeholder": "링크를 입력해주세요."
+      },
+      "menu": {
+        "delete": "삭제"
+      }
     },
-    "description": "작성 페이지 입니다."
-  }
+    "message": {
+      "warning": {
+        "title": "제목을 입력해주세요.",
+        "group": "그룹을 입력해주세요.",
+        "content": "내용을 입력해주세요."
+      }
+    }
+  },
+
+  "ArchivePage": {}
 }

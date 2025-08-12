@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import ClientProviders from "../../contexts/ClientContext";
 import Header from "../../components/Header";
 import Footer from "@/components/Footer";
+import ErrorBarProvider from "@/contexts/ErrorBarContext";
 
 export const metadata = {
   title: "Notive",
@@ -33,9 +34,11 @@ export default async function RootLayout({
     <html lang={locale} className="h-full overflow-hidden">
       <body className="h-full flex flex-col fg-principal bg-primary">
         <ClientProviders locale={locale} messages={messages}>
-          <Header />
-          <main className="flex-1 h-full overflow-hidden">{children}</main>
-          <Footer />
+          <ErrorBarProvider listenGlobal position="bottom" align="left">
+            <Header />
+            <main className="flex-1 h-full overflow-hidden">{children}</main>
+            <Footer />
+          </ErrorBarProvider>
         </ClientProviders>
       </body>
     </html>

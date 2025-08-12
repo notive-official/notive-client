@@ -34,7 +34,7 @@ export default function MainCard({ title, writer, thumbnailUrl }: CardProps) {
       {/* 제목 */}
       <div className="flex flex-col gap-1 p-2">
         {hover && (
-          <p className="absolute top-2 right-2 bg-transparent-reverse-75 fg-reverse py-1 px-2 rounded-full flex flex-row gap-1 text-sm">
+          <p className="absolute top-2 right-2 bg-black/75 text-white py-1 px-2 rounded-full flex flex-row gap-1 text-sm">
             <Image
               src={writer.profileImagePath}
               alt={writer.nickname}

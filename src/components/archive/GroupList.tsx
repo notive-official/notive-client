@@ -1,11 +1,11 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useListGroupDetailsQuery } from "@/hooks/api/archive/group";
-import GroupCard from "../common/GroupCard";
+import GroupCard from "./GroupCard";
 
 export default function GroupList() {
   const { isAuthenticated } = useAuth();
   const page = 0;
-  const { isLoading, data } = useListGroupDetailsQuery(
+  const { data } = useListGroupDetailsQuery(
     { page },
     {
       enabled: isAuthenticated,

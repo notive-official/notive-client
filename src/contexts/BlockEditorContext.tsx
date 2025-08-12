@@ -18,6 +18,7 @@ interface BlockEditorContextType {
   mergeWithPrevBlock: (_id: string) => void;
   getPrevTextBlock: (_id: string) => EditorBlock | null;
   getNextTextBlock: (_id: string) => EditorBlock | null;
+  trimContent: (_blocks: EditorBlock[]) => EditorBlock[];
 }
 
 export interface EditorBlock {
@@ -146,6 +147,17 @@ export function BlockEditorProvider({
     setBlocks((prev) => arrayMove(prev, oldIndex, newIndex));
   }, []);
 
+  const trimContent = (targetBlocks: EditorBlock[]): EditorBlock[] => {
+    let i = 1;
+    for (; i <= targetBlocks.length; i++) {
+      const block = targetBlocks[targetBlocks.length - i];
+      if (block.payload.content.length > 0 || block.payload.file) {
+        break;
+      }
+    }
+    return targetBlocks.slice(0, i * -1);
+  };
+
   return (
     <BlockEditorContext.Provider
       value={{
@@ -159,6 +171,7 @@ export function BlockEditorProvider({
         mergeWithPrevBlock,
         getPrevTextBlock,
         getNextTextBlock,
+        trimContent,
       }}
     >
       {children}

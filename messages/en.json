@@ -25,7 +25,7 @@
   },
 
   "MainPage": {
-    "pageTitle": "Design Archive",
+    "pageTitle": "Archiving Design with Notive",
     "description": "Design Archive is a collection of design resources.",
     "search": {
       "placeholder": "Search for design"
@@ -48,11 +48,39 @@
   },
 
   "PostPage": {
-    "title": { "placeholder": "Write your title here." },
-    "tag": { "placeholder": "Press enter to add a tag." },
-    "imageUploader": {
-      "delete": "Delete"
+    "setting": {
+      "group": {
+        "create": {
+          "title": "Create group",
+          "placeholder": "Enter a group name."
+        }
+      },
+      "thumbnail": {
+        "placeholder": "Choose a file (Max 5MB)"
+      }
     },
-    "description": "작성 페이지 입니다."
+    "title": { "placeholder": "Enter your title." },
+    "tag": { "placeholder": "Press enter to add a tag." },
+    "block": {
+      "text": {
+        "placeholder": "Enter your content."
+      },
+      "image": {
+        "placeholder": "Choose a file (Max 5MB)"
+      },
+      "link": {
+        "placeholder": "Enter your link."
+      },
+      "menu": {
+        "delete": "Delete"
+      }
+    },
+    "message": {
+      "warning": {
+        "title": "Title is necesssary",
+        "group": "Group is necesssary",
+        "content": "Content is necesssary"
+      }
+    }
   }
 }

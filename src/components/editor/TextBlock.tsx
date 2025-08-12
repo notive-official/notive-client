@@ -2,6 +2,7 @@ import { EditorBlock, useBlockEditor } from "@/contexts/BlockEditorContext";
 import { useEffect, useRef, useState } from "react";
 import { Field, Textarea } from "@headlessui/react";
 import { useFocusBlock } from "@/contexts/FocusBlockContext";
+import useTranslation from "@/hooks/useTranslation";
 
 interface TextBlockProps {
   block: EditorBlock;
@@ -12,7 +13,9 @@ export default function TextBlock({ block }: TextBlockProps) {
     useBlockEditor();
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { focusedBlockId, setFocusedBlockId } = useFocusBlock();
-  const { removeBlock, mergeWithPrevBlock } = useBlockEditor();
+  const { mergeWithPrevBlock } = useBlockEditor();
+  const { PostTrans } = useTranslation();
+
   const { id, type: blockType, payload } = block;
 
   const [isComposing, setIsComposing] = useState(false);
@@ -85,7 +88,9 @@ export default function TextBlock({ block }: TextBlockProps) {
           ${blockType === "h3" && "text-h3"} 
           block w-full resize-none rounded-lg border-none bg-transparent px-3 py-1.5 fg-principal data-focus:outline-none`}
           rows={1}
-          placeholder={id === focusedBlockId ? "내용을 입력해주세요." : ""}
+          placeholder={
+            id === focusedBlockId ? PostTrans("block.text.placeholder") : ""
+          }
           onChange={(e) => updateBlock(id, { content: e.target.value })}
           onFocus={() => setFocusedBlockId(id)}
           onBlur={() => {
