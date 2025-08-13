@@ -1,8 +1,7 @@
-import { createGetQueryWithParams } from "@/lib/reactQuery";
-import { SliceRes } from "./type";
+import { createInfiniteGetQueryWithParams } from "@/lib/reactQuery";
 
 type ArchiveParams = {
-  page: number;
+  tags?: string[];
 };
 export type ArchiveResponse = {
   id: string;
@@ -15,7 +14,8 @@ export type ArchiveResponse = {
   };
 };
 export const listArchivesKey = "listArchive";
-export const useListArchivesQuery = createGetQueryWithParams<
-  SliceRes<ArchiveResponse>,
+
+export const useListArchivesQuery = createInfiniteGetQueryWithParams<
+  ArchiveResponse,
   ArchiveParams
 >("api/search", listArchivesKey);

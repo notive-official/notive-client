@@ -36,7 +36,7 @@
 
   "LoginPage": {
     "title": "로그인",
-    "content": "로그인 진행 시 회원 가입이 되지 않은 회원은 자동으로 회원 가입이 진행됩니다."
+    "content": ""
   },
 
   "Language": {

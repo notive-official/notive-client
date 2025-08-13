@@ -1,9 +1,9 @@
 import {
   createGetQuery,
-  createGetQueryWithParams,
+  createInfiniteGetQueryWithParams,
   createPostMutation,
 } from "@/lib/reactQuery";
-import { ListRes, SliceRes } from "../type";
+import { ListRes } from "../../../lib/type";
 
 export type GroupResponse = {
   id: string;
@@ -16,7 +16,7 @@ export const useListGroupsQuery = createGetQuery<ListRes<GroupResponse>>(
 );
 
 type GroupDetailParams = {
-  page: number;
+  page?: number;
 };
 export type GroupDetailResponse = {
   id: string;
@@ -25,8 +25,8 @@ export type GroupDetailResponse = {
   totalElements: number;
 };
 export const listGroupDetailsKey = "listGroupDetails";
-export const useListGroupDetailsQuery = createGetQueryWithParams<
-  SliceRes<GroupDetailResponse>,
+export const useListGroupDetailsQuery = createInfiniteGetQueryWithParams<
+  GroupDetailResponse,
   GroupDetailParams
 >("api/group/metas", listGroupDetailsKey);
 

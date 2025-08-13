@@ -12,6 +12,8 @@ import { listTagsKey } from "@/hooks/api/archive/tag";
 import { useErrorBar } from "@/contexts/ErrorBarContext";
 import { ComboSelection } from "../common/Combo";
 import useTranslation from "@/hooks/useTranslation";
+import { listNotesKey } from "@/hooks/api/archive/note";
+import { listArchivesKey } from "@/hooks/api/search";
 
 export default function EditorFooter() {
   const router = useRouter();
@@ -56,7 +58,16 @@ export default function EditorFooter() {
       })
       .then(() => {
         queryClient.invalidateQueries({
-          queryKey: [listTagsKey, listGroupDetailsKey],
+          queryKey: [listTagsKey],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [listGroupDetailsKey],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [listNotesKey, {}],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [listArchivesKey, {}],
         });
         router.replace("/");
       });

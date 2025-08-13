@@ -148,14 +148,14 @@ export function BlockEditorProvider({
   }, []);
 
   const trimContent = (targetBlocks: EditorBlock[]): EditorBlock[] => {
-    let i = 1;
-    for (; i <= targetBlocks.length; i++) {
-      const block = targetBlocks[targetBlocks.length - i];
+    let i = 0;
+    for (; i < targetBlocks.length; i++) {
+      const block = targetBlocks[targetBlocks.length - i - 1];
       if (block.payload.content.length > 0 || block.payload.file) {
         break;
       }
     }
-    return targetBlocks.slice(0, i * -1);
+    return targetBlocks.slice(0, blocks.length + i * -1);
   };
 
   return (

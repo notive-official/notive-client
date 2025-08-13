@@ -1,11 +1,15 @@
 import {
   MutationFunction,
+  QueryFunction,
+  useInfiniteQuery,
+  UseInfiniteQueryOptions,
   useMutation,
   UseMutationOptions,
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query";
 import api from "./api";
+import { SliceRes } from "@/lib/type";
 
 export function createPostMutation<TRequest, TResponse>(url: string) {
   const poster = async (body: TRequest): Promise<TResponse> => {
@@ -57,6 +61,42 @@ export function createGetQueryWithParams<TResponse, TParams>(
     useQuery<TResponse, unknown, TResponse>({
       queryKey: [queryKey, params],
       queryFn: () => fetcher(params),
+      ...options,
+    });
+}
+
+type InfiniteQueryProp<TParams> = {
+  pageParam: number;
+  params?: Omit<TParams, "page">;
+};
+
+export function createInfiniteGetQueryWithParams<TResponse, TParams>(
+  url: string,
+  queryKey: string
+) {
+  const fetcher = async ({ pageParam, params }: InfiniteQueryProp<TParams>) => {
+    const { data } = await api.get<SliceRes<TResponse>>(url, {
+      params: {
+        page: pageParam,
+        ...params,
+      },
+    });
+    return data;
+  };
+  return (
+    params: TParams,
+    options: Omit<
+      QueryFunction<SliceRes<TResponse>, readonly unknown[], unknown>,
+      "queryKey" | "queryFn" | "initialPageParam" | "getNextPageParam"
+    >
+  ) =>
+    useInfiniteQuery({
+      queryKey: [queryKey, params],
+      initialPageParam: 0,
+      queryFn: (params: InfiniteQueryProp<TParams>) => fetcher({ ...params }),
+      getNextPageParam: (lastPage: SliceRes<TResponse>) => {
+        return lastPage.meta.hasNext ? lastPage.meta.page + 1 : undefined;
+      },
       ...options,
     });
 }

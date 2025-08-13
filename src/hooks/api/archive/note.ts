@@ -1,9 +1,12 @@
-import { createGetQueryWithParams } from "@/lib/reactQuery";
-import { SliceRes } from "../type";
+import { createInfiniteGetQueryWithParams } from "@/lib/reactQuery";
 
 type NoteParams = {
-  page: number;
+  search?: string;
+  tag?: string;
+  sort?: string;
+  order?: "asc" | "desc";
 };
+
 export type NoteResponse = {
   id: string;
   title: string;
@@ -14,8 +17,9 @@ export type NoteResponse = {
     profileImagePath: string;
   };
 };
+
 export const listNotesKey = "listNote";
-export const useListNotesQuery = createGetQueryWithParams<
-  SliceRes<NoteResponse>,
+export const useListNotesQuery = createInfiniteGetQueryWithParams<
+  NoteResponse,
   NoteParams
 >("api/archive/notes", listNotesKey);

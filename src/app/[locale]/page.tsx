@@ -4,18 +4,23 @@ import MainCard from "@/components/common/MainCard";
 import InputBox from "@/components/common/InputBox";
 import useTrans from "@/hooks/useTranslation";
 import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useListArchivesQuery } from "@/hooks/api/search";
+import InfiniteScroll from "@/components/common/InfiniteScroll";
 
 export default function MainPage() {
   const { MainTrans } = useTrans();
   const [search, setSearch] = useState("");
 
-  const page = 0;
-  const { data } = useListArchivesQuery({ page });
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const result = useListArchivesQuery({}, { staleTime: 10 * 60 * 1000 });
 
   return (
-    <div className="h-full overflow-y-auto flex flex-col items-center px-5 py-2">
+    <div
+      ref={scrollRef}
+      className="h-full overflow-y-auto flex flex-col items-center px-5 py-2"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-col flex-1">
         {/* 검색 박스 */}
         <section className="flex justify-center w-full text-center pt-10">
@@ -36,20 +41,21 @@ export default function MainPage() {
         </section>
 
         {/* 아카이브 목록 */}
-        <div className="flex flex-wrap gap-8 justify-center">
-          {data?.content.map((note) => {
-            return (
-              <div className="flex justify-center" key={note.id}>
-                <MainCard
-                  key={note.id}
-                  title={note.title}
-                  writer={note.writer}
-                  thumbnailUrl={note.thumbnailPath}
-                />
-              </div>
-            );
-          })}
-        </div>
+        <InfiniteScroll
+          result={result}
+          root={scrollRef}
+          className="flex flex-wrap gap-8 justify-center"
+        >
+          {(archive) => (
+            <div className="flex justify-center" key={archive.id}>
+              <MainCard
+                title={archive.title}
+                thumbnailUrl={archive.thumbnailPath}
+                writer={archive.writer}
+              />
+            </div>
+          )}
+        </InfiniteScroll>
       </div>
     </div>
   );
