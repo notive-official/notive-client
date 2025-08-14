@@ -6,6 +6,7 @@ import Combo, { ComboSelection } from "../common/Combo";
 import { Button } from "@headlessui/react";
 import { PlusIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import {
+  listGroupsKey,
   PostGroupRequest,
   useListGroupsQuery,
   usePostGroupMutation,
@@ -38,7 +39,7 @@ export default function ArchiveSetting() {
     const req: PostGroupRequest = { groupName };
     postGroup(req, {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["listGroups"] });
+        queryClient.invalidateQueries({ queryKey: [listGroupsKey] });
       },
     });
   };
@@ -118,7 +119,7 @@ export default function ArchiveSetting() {
           <div className="w-full aspect-video bg-transparent hidden md:block relative">
             <div className="w-full h-full rounded-xl overflow-hidden items-center justify-center">
               {thumbnail ? (
-                <ImageView file={thumbnail} />
+                <ImageView filePath={URL.createObjectURL(thumbnail)} />
               ) : (
                 <div className="w-full h-full bg-transparent-reverse-25" />
               )}

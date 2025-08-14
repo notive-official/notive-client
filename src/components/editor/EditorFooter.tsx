@@ -14,11 +14,13 @@ import { ComboSelection } from "../common/Combo";
 import useTranslation from "@/hooks/useTranslation";
 import { listNotesKey } from "@/hooks/api/archive/note";
 import { listArchivesKey } from "@/hooks/api/search";
+import { isImageBlock, isLinkBlock } from "@/common/utils";
 
 export default function EditorFooter() {
   const router = useRouter();
   const { blocks } = useBlockEditor();
-  const { title, tags, group, isPublic, thumbnail } = useEditor();
+  const { title, tags, group, isPublic, archiveType, isReplicable, thumbnail } =
+    useEditor();
   const { trimContent } = useBlockEditor();
   const queryClient = useQueryClient();
   const { pushWarning } = useErrorBar();
@@ -33,6 +35,8 @@ export default function EditorFooter() {
 
     if (thumbnail) form.append("thumbnailImage", thumbnail);
     form.append("isPublic", String(isPublic));
+    form.append("type", archiveType.toUpperCase());
+    form.append("isReplicable", String(isReplicable));
     form.append("groupId", String(group!.id));
     form.append("title", title);
     tags.forEach((t, i) => form.append(`tags[${i}]`, t));
@@ -40,8 +44,8 @@ export default function EditorFooter() {
     trimmedBlock.forEach((b, idx) => {
       form.append(`blocks[${idx}].position`, String(idx));
       if (
-        (b.type === "image" && !b.payload.file) ||
-        (b.type === "link" && b.payload.content.length < 1)
+        (isImageBlock(b.type) && !b.payload.file) ||
+        (isLinkBlock(b.type) && b.payload.content.length < 1)
       ) {
         form.append(`blocks[${idx}].content`, "");
         form.append(`blocks[${idx}].type`, "paragraph".toUpperCase());

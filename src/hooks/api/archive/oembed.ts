@@ -16,7 +16,8 @@ type GetOEmbedResponse = {
   thumbnailHeight: number;
   html: string;
 };
+export const getOEmbedKey = "getOEmbed";
 export const useGetOEmbedQuery = createGetQueryWithParams<
   GetOEmbedResponse,
   GetOEmbedParams
->("api/oembed", "getOEmbed");
+>("api/oembed", getOEmbedKey);

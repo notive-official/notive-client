@@ -48,7 +48,7 @@ export default function TextBlock({ block }: TextBlockProps) {
         const after = value.slice(selectionEnd);
 
         updateBlock(id, { content: before });
-        const newBlockId = addNewBlockAfter(id, "paragraph");
+        const newBlockId = addNewBlockAfter(id, "PARAGRAPH");
         updateBlock(newBlockId, { content: after });
         setFocusedBlockId(newBlockId);
       }
@@ -82,10 +82,10 @@ export default function TextBlock({ block }: TextBlockProps) {
         <Textarea
           ref={inputRef}
           value={payload.content}
-          className={`${blockType === "paragraph" && "text-normal"}
-          ${blockType === "h1" && "text-h1"}
-          ${blockType === "h2" && "text-h2"}
-          ${blockType === "h3" && "text-h3"} 
+          className={`${blockType === "PARAGRAPH" && "text-normal"}
+          ${blockType === "H1" && "text-h1"}
+          ${blockType === "H2" && "text-h2"}
+          ${blockType === "H3" && "text-h3"} 
           block w-full resize-none rounded-lg border-none bg-transparent px-3 py-1.5 fg-principal data-focus:outline-none`}
           rows={1}
           placeholder={

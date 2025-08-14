@@ -1,4 +1,8 @@
-import { createInfiniteGetQueryWithParams } from "@/lib/reactQuery";
+import { ArchiveType, BlockType } from "@/common/types";
+import {
+  createInfiniteGetQueryWithParams,
+  createGetQuery,
+} from "@/lib/reactQuery";
 
 type NoteParams = {
   search?: string;
@@ -7,10 +11,12 @@ type NoteParams = {
   order?: "asc" | "desc";
 };
 
-export type NoteResponse = {
+export type NoteSummaryResponse = {
   id: string;
   title: string;
   thumbnailPath: string;
+  type: ArchiveType;
+  summary: string;
   writer: {
     id: string;
     nickname: string;
@@ -20,6 +26,23 @@ export type NoteResponse = {
 
 export const listNotesKey = "listNote";
 export const useListNotesQuery = createInfiniteGetQueryWithParams<
-  NoteResponse,
+  NoteSummaryResponse,
   NoteParams
 >("api/archive/notes", listNotesKey);
+
+type BlockResponse = {
+  id: string;
+  type: BlockType;
+  position: number;
+  payload: string;
+};
+
+type NoteDetailResponse = {
+  meta: NoteSummaryResponse;
+  tags: string[];
+  blocks: BlockResponse[];
+};
+export const noteDetailKey = "listNote";
+
+export const useNoteDetailQuery =
+  createGetQuery<NoteDetailResponse>(listNotesKey);

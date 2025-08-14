@@ -5,11 +5,12 @@ import NoteCard from "@/components/archive/NoteCard";
 import { useAuth } from "@/contexts/AuthContext";
 import { useListNotesQuery } from "@/hooks/api/archive/note";
 import InfiniteScroll from "@/components/common/InfiniteScroll";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export default function NotePage() {
   const { isAuthenticated } = useAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [tags, setTags] = useState<string[]>([]);
 
   const result = useListNotesQuery(
     {},
@@ -28,10 +29,11 @@ export default function NotePage() {
             {(note) => (
               <div className="flex justify-center" key={note.id}>
                 <NoteCard
+                  id={note.id}
                   title={note.title}
                   thumbnailUrl={note.thumbnailPath}
-                  name={note.writer.nickname}
-                  content={""}
+                  writer={note.writer}
+                  content={note.summary}
                 />
               </div>
             )}

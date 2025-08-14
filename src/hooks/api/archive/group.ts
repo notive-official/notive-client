@@ -1,5 +1,5 @@
 import {
-  createGetQuery,
+  createGetQueryWithPredefinedUrl,
   createInfiniteGetQueryWithParams,
   createPostMutation,
 } from "@/lib/reactQuery";
@@ -10,10 +10,9 @@ export type GroupResponse = {
   name: string;
 };
 export const listGroupsKey = "listGroups";
-export const useListGroupsQuery = createGetQuery<ListRes<GroupResponse>>(
-  "api/group/names",
-  listGroupsKey
-);
+export const useListGroupsQuery = createGetQueryWithPredefinedUrl<
+  ListRes<GroupResponse>
+>("api/group/names", listGroupsKey);
 
 type GroupDetailParams = {
   page?: number;

@@ -12,7 +12,7 @@ import TextUploader from "./TextBlock";
 import { useState } from "react";
 import BlockMenu from "./BlockMenu";
 import { useFocusBlock } from "@/contexts/FocusBlockContext";
-import { isTextBlock } from "@/common/utils";
+import { isImageBlock, isLinkBlock, isTextBlock } from "@/common/utils";
 
 interface EditorBlockProps {
   block: EditorBlock;
@@ -62,8 +62,8 @@ export default function ContentBlock({ block }: EditorBlockProps) {
       >
         <div className="flex">
           <div className="w-full">
-            {block.type === "image" ? <ImageUploader block={block} /> : null}
-            {block.type === "link" ? <LinkUploader block={block} /> : null}
+            {isImageBlock(block.type) ? <ImageUploader block={block} /> : null}
+            {isLinkBlock(block.type) ? <LinkUploader block={block} /> : null}
             {isTextBlock(block.type) ? <TextUploader block={block} /> : null}
           </div>
         </div>

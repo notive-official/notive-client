@@ -2,7 +2,7 @@ import { ArrowUpIcon } from "@heroicons/react/16/solid";
 import { useCallback, useState, memo } from "react";
 import { EditorBlock, useBlockEditor } from "@/contexts/BlockEditorContext";
 import InputBox from "../common/InputBox";
-import ViewBlock from "../viewer/ViewBlock";
+import ViewBlock from "../viewer/BlockView";
 import { useFocusBlock } from "@/contexts/FocusBlockContext";
 import useTranslation from "@/hooks/useTranslation";
 
@@ -37,7 +37,12 @@ export function LinkBlock({ block }: LinkBlockProps) {
         buttonIcon={<ArrowUpIcon className="w-5 h-5" />}
       />
 
-      {block.payload.content && <ViewBlock key={block.id} block={block} />}
+      {block.payload.content && (
+        <ViewBlock
+          key={block.id}
+          block={{ ...block, payload: block.payload.content }}
+        />
+      )}
     </div>
   );
 }

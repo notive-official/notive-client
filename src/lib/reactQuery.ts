@@ -25,7 +25,29 @@ export function createPostMutation<TRequest, TResponse>(url: string) {
     });
 }
 
-export function createGetQuery<TResponse>(url: string, queryKey: string) {
+export function createGetQuery<TResponse>(queryKey: string) {
+  const fetcher = async (url: string): Promise<TResponse> => {
+    const { data } = await api.get<TResponse>(url);
+    return data;
+  };
+  return (
+    url: string,
+    options?: Omit<
+      UseQueryOptions<TResponse, unknown, TResponse>,
+      "queryKey" | "queryFn"
+    >
+  ) =>
+    useQuery<TResponse, unknown, TResponse>({
+      queryKey: [url, queryKey],
+      queryFn: () => fetcher(url),
+      ...options,
+    });
+}
+
+export function createGetQueryWithPredefinedUrl<TResponse>(
+  url: string,
+  queryKey: string
+) {
   const fetcher = async (): Promise<TResponse> => {
     const { data } = await api.get<TResponse>(url);
     return data;

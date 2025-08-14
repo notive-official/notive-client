@@ -18,7 +18,7 @@ export default function Editor() {
   const { changeTitle } = useEditor();
 
   useEffect(() => {
-    const blockId = addNewBlock("paragraph");
+    const blockId = addNewBlock("PARAGRAPH");
     setFocusedBlockId(blockId);
   }, []);
 

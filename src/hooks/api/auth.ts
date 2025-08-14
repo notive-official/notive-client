@@ -1,4 +1,7 @@
-import { createPostMutation, createGetQuery } from "@/lib/reactQuery";
+import {
+  createPostMutation,
+  createGetQueryWithPredefinedUrl,
+} from "@/lib/reactQuery";
 
 export const usePostReissueMutation = createPostMutation<void, void>(
   "api/auth/reissue"
@@ -14,7 +17,7 @@ export type GetUserResponse = {
   profileImageUrl: string;
   serviceImageUrl: string;
 };
-export const useGetUserQuery = createGetQuery<GetUserResponse>(
+export const useGetUserQuery = createGetQueryWithPredefinedUrl<GetUserResponse>(
   "api/user/header",
   "getUser"
 );

@@ -1,17 +1,19 @@
 import Image from "next/image";
 import { ArrowDownTrayIcon } from "@heroicons/react/16/solid";
 import { useState } from "react";
+import path from "path";
 
 interface ImageViewProps {
-  file: File;
+  filePath: string;
   downloadable?: boolean;
 }
 
 export default function ImageView({
-  file,
+  filePath,
   downloadable = false,
 }: ImageViewProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const fileName = path.basename(filePath);
 
   return (
     <div
@@ -22,8 +24,8 @@ export default function ImageView({
       <div className="relative">
         {downloadable ? (
           <a
-            href={URL.createObjectURL(file)}
-            download={file.name}
+            href={filePath}
+            download={fileName}
             className={`cursor-pointer absolute left-0 top-0 rounded-xl m-2 z-10 ${
               isHovered
                 ? "bg-dark-transparent-75 hover:outline-light-transparent-50 hover:outline-2 hover:-outline-offset-2"
@@ -38,8 +40,8 @@ export default function ImageView({
           </a>
         ) : null}
         <Image
-          src={URL.createObjectURL(file)}
-          alt={file.name}
+          src={filePath}
+          alt={fileName}
           width={100}
           height={100}
           className="w-full h-full object-cover rounded-xl"

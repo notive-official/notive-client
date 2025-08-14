@@ -11,7 +11,6 @@ import InfiniteScroll from "@/components/common/InfiniteScroll";
 export default function MainPage() {
   const { MainTrans } = useTrans();
   const [search, setSearch] = useState("");
-
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const result = useListArchivesQuery({}, { staleTime: 10 * 60 * 1000 });
@@ -49,6 +48,7 @@ export default function MainPage() {
           {(archive) => (
             <div className="flex justify-center" key={archive.id}>
               <MainCard
+                id={archive.id}
                 title={archive.title}
                 thumbnailUrl={archive.thumbnailPath}
                 writer={archive.writer}

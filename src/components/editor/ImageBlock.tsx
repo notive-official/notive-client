@@ -4,7 +4,7 @@
 import { useCallback } from "react";
 import { EditorBlock, useBlockEditor } from "@/contexts/BlockEditorContext";
 import { useDropzone } from "react-dropzone";
-import ViewBlock from "../viewer/ViewBlock";
+import ViewBlock from "../viewer/BlockView";
 import { useFocusBlock } from "@/contexts/FocusBlockContext";
 import useTranslation from "@/hooks/useTranslation";
 
@@ -53,7 +53,15 @@ export default function ImageBlock({ block }: ImageBlockProps) {
           )}
         </div>
       </div>
-      {file && <ViewBlock key={block.id} block={block} />}
+      {block.payload.file && (
+        <ViewBlock
+          key={block.id}
+          block={{
+            ...block,
+            payload: URL.createObjectURL(block.payload.file),
+          }}
+        />
+      )}
     </div>
   );
 }

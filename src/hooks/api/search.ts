@@ -7,6 +7,7 @@ export type ArchiveResponse = {
   id: string;
   title: string;
   thumbnailPath: string;
+  summary: string;
   writer: {
     id: string;
     nickname: string;

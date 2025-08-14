@@ -1,7 +1,9 @@
+import { useRouter } from "@/i18n/routing";
 import Image from "next/image";
 import { useState } from "react";
 
 interface CardProps {
+  id: string;
   title: string;
   writer: {
     nickname: string;
@@ -10,18 +12,26 @@ interface CardProps {
   thumbnailUrl: string;
 }
 
-export default function MainCard({ title, writer, thumbnailUrl }: CardProps) {
-  const handleClick = () => {};
+export default function MainCard({
+  id,
+  title,
+  writer,
+  thumbnailUrl,
+}: CardProps) {
+  const router = useRouter();
+  const handleClick = () => {
+    router.push(`/view/note/${id}`);
+  };
   const [hover, setHover] = useState(false);
   return (
     <div
-      className="relative flex flex-col w-auto cursor-pointer"
+      className="flex flex-col w-auto cursor-pointer"
       onClick={handleClick}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
       {/* 썸네일: 높이 통일, 가로는 이미지 비율에 맞춤 */}
-      <div className="rounded hover:drop-shadow-lg shadow-xs">
+      <div className="relative rounded hover:drop-shadow-lg shadow-sm">
         <Image
           src={thumbnailUrl}
           alt={title}
@@ -30,11 +40,8 @@ export default function MainCard({ title, writer, thumbnailUrl }: CardProps) {
           className="object-cover w-auto h-[200px] rounded bg-white"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-      </div>
-      {/* 제목 */}
-      <div className="flex flex-col gap-1 p-2">
         {hover && (
-          <p className="absolute top-2 right-2 bg-black/75 text-white py-1 px-2 rounded-full flex flex-row gap-1 text-sm">
+          <p className="absolute bottom-2 right-2 bg-black/75 text-white py-1 px-2 rounded-full flex flex-row gap-1 text-sm">
             <Image
               src={writer.profileImagePath}
               alt={writer.nickname}
@@ -45,6 +52,9 @@ export default function MainCard({ title, writer, thumbnailUrl }: CardProps) {
             {writer.nickname}
           </p>
         )}
+      </div>
+      {/* 제목 */}
+      <div className="flex flex-col gap-1 p-2">
         <h3 className="w-full fg-principal text-md text-start">{title}</h3>
       </div>
     </div>

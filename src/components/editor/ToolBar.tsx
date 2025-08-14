@@ -25,8 +25,8 @@ export default function ToolBar() {
         className="click-effect"
         onClick={() =>
           focusedBlockId
-            ? addNewBlockAfter(focusedBlockId, "link")
-            : addNewBlock("link")
+            ? addNewBlockAfter(focusedBlockId, "LINK")
+            : addNewBlock("LINK")
         }
       >
         <LinkIcon className="w-5 h-5 m-2" />
@@ -35,8 +35,8 @@ export default function ToolBar() {
         className="click-effect"
         onClick={() =>
           focusedBlockId
-            ? addNewBlockAfter(focusedBlockId, "image")
-            : addNewBlock("image")
+            ? addNewBlockAfter(focusedBlockId, "IMAGE")
+            : addNewBlock("IMAGE")
         }
       >
         <PhotoIcon className="w-5 h-5 m-2" />
@@ -50,8 +50,8 @@ export default function ToolBar() {
           className="click-effect"
           onClick={() => {
             const newBlockId = focusedBlockId
-              ? addNewBlockAfter(focusedBlockId, "paragraph")
-              : addNewBlock("paragraph");
+              ? addNewBlockAfter(focusedBlockId, "PARAGRAPH")
+              : addNewBlock("PARAGRAPH");
             setFocusedBlockId(newBlockId);
           }}
         >
@@ -72,8 +72,8 @@ export default function ToolBar() {
             className="click-effect"
             onClick={() =>
               focusedBlockId
-                ? changeBlockType(focusedBlockId, "h1")
-                : addNewBlock("h1")
+                ? changeBlockType(focusedBlockId, "H1")
+                : addNewBlock("H1")
             }
           >
             <H1Icon className="w-5 h-5 m-2" />
@@ -82,8 +82,8 @@ export default function ToolBar() {
             className="click-effect"
             onClick={() =>
               focusedBlockId
-                ? changeBlockType(focusedBlockId, "h2")
-                : addNewBlock("h2")
+                ? changeBlockType(focusedBlockId, "H2")
+                : addNewBlock("H2")
             }
           >
             <H2Icon className="w-5 h-5 m-2" />
@@ -92,8 +92,8 @@ export default function ToolBar() {
             className="click-effect"
             onClick={() =>
               focusedBlockId
-                ? changeBlockType(focusedBlockId, "h3")
-                : addNewBlock("h3")
+                ? changeBlockType(focusedBlockId, "H3")
+                : addNewBlock("H3")
             }
           >
             <H3Icon className="w-5 h-5 m-2" />
@@ -101,7 +101,7 @@ export default function ToolBar() {
           <Button
             className="click-effect"
             onClick={() =>
-              focusedBlockId && changeBlockType(focusedBlockId, "paragraph")
+              focusedBlockId && changeBlockType(focusedBlockId, "PARAGRAPH")
             }
           >
             <div className="flex items-center justify-center w-5 h-5 m-2 text-xl font-serif">

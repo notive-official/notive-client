@@ -1,1 +1,2 @@
-export type BlockType = "link" | "image" | "paragraph" | "h1" | "h2" | "h3";
+export type BlockType = "LINK" | "IMAGE" | "PARAGRAPH" | "H1" | "H2" | "H3";
+export type ArchiveType = "REFERENCE" | "NOTE";
