@@ -11,7 +11,9 @@ export default function TextView({ blockType, text }: TextiewProps) {
       {text.split("\n").map((line, index) => (
         <div key={index} className="rounded-xl">
           {blockType === "PARAGRAPH" && (
-            <p className="text-normal">{line.length === 0 ? <br /> : line}</p>
+            <div className="text-normal">
+              {line.length === 0 ? <br /> : line}
+            </div>
           )}
           {blockType === "H1" && (
             <h1 className="text-h1">{line.length === 0 ? <br /> : line}</h1>

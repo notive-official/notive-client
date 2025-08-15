@@ -25,6 +25,20 @@ export function createPostMutation<TRequest, TResponse>(url: string) {
     });
 }
 
+export function createPutMutation<TRequest, TResponse>(url: string) {
+  const poster = async (body: TRequest): Promise<TResponse> => {
+    const { data } = await api.put<TResponse>(url, body);
+    return data;
+  };
+  return (
+    options?: Omit<UseMutationOptions<TResponse, Error, TRequest>, "mutationFn">
+  ) =>
+    useMutation<TResponse, Error, TRequest>({
+      mutationFn: poster as MutationFunction<TResponse, TRequest>,
+      ...options,
+    });
+}
+
 export function createGetQuery<TResponse>(queryKey: string) {
   const fetcher = async (url: string): Promise<TResponse> => {
     const { data } = await api.get<TResponse>(url);

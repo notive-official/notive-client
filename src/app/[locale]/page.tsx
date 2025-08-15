@@ -23,13 +23,13 @@ export default function MainPage() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-col flex-1">
         {/* 검색 박스 */}
         <section className="flex justify-center w-full text-center pt-10">
-          <div className="flex items-center justify-center w-full md:w-2/3 max-w-200">
-            <InputBox
+          <div className="flex items-center justify-center w-full max-w-150 pl-8">
+            {/* <InputBox
               placeholder={MainTrans("search.placeholder")}
               handleChange={setSearch}
               value={search}
               buttonIcon={<MagnifyingGlassIcon className="w-6 h-6" />}
-            />
+            /> */}
           </div>
         </section>
 

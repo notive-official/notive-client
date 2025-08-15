@@ -43,8 +43,12 @@
   },
 
   "MyPage": {
-    "pageTitle": "My Page",
-    "description": "My Page"
+    "information": {
+      "name": "Name",
+      "nickname": "Nickname",
+      "email": "Email"
+    },
+    "language": "Language Setting"
   },
 
   "PostPage": {

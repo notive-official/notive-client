@@ -3,12 +3,21 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 interface TagProps {
   value: string;
   isRemovable?: boolean;
+  isSelected?: boolean;
 }
 
-export default function Tag({ value, isRemovable = false }: TagProps) {
+export default function Tag({
+  value,
+  isRemovable = false,
+  isSelected = false,
+}: TagProps) {
   return (
     <div className="bg-tertiary rounded-full w-fit h-fit">
-      <div className="px-3 py-1 cursor-pointer hover-bg-effect rounded-full text-sm flex flex-row items-center gap-1">
+      <div
+        className={`px-3 py-1 cursor-pointer hover:bg-black/25 dark:hover:bg-white/25 
+          ${isSelected && "bg-transparent-reverse-25"} 
+          rounded-full text-sm flex flex-row items-center gap-1`}
+      >
         {value}
         {isRemovable ? <XMarkIcon className="w-4 h-4" /> : null}
       </div>

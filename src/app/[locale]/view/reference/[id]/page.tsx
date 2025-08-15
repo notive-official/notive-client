@@ -19,9 +19,14 @@ export default function ArchiveDetailPage({
   });
 
   return (
-    <div className="flex flex-col justify-center w-full max-w-3xl">
+    <div className="flex flex-col justify-start items-center w-full max-w-6xl p-16">
       {data && (
-        <Viewer title={data.meta.title} tags={data.tags} blocks={data.blocks} />
+        <Viewer
+          title={data.meta.title}
+          thumbnailPath={data.meta.thumbnailPath}
+          tags={data.tags}
+          blocks={data.blocks}
+        />
       )}
     </div>
   );

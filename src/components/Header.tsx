@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@headlessui/react";
-import { useGetUserQuery } from "@/hooks/api/auth";
+import { useGetUserQuery } from "@/hooks/api/user";
 import Pop from "./common/Pop";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "@/i18n/routing";
@@ -105,15 +105,15 @@ export default function Header() {
         <>
           <Pop
             node={
-              <div className="flex flex-row items-center m-1">
+              <div className="flex flex-row items-center m-2 gap-2">
                 <Image
-                  className="w-8 h-8 flex-shrink-0"
-                  src={data.profileImageUrl}
+                  className="w-7 h-7 rounded-full bg-white"
+                  src={data.profileImagePath}
                   width={30}
                   height={30}
                   alt="profile image"
                 />
-                <p className="mx-2 text-sm font-medium text-current">
+                <p className="text-md font-medium text-current">
                   {data.nickname}
                 </p>
               </div>

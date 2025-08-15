@@ -15,6 +15,7 @@ export type NoteSummaryResponse = {
   id: string;
   title: string;
   thumbnailPath: string;
+  tags: string[];
   type: ArchiveType;
   summary: string;
   writer: {

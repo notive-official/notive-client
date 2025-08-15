@@ -5,7 +5,7 @@ import api from "@/lib/api";
 import {
   usePostLogoutMutation,
   usePostReissueMutation,
-} from "@/hooks/api/auth";
+} from "@/hooks/api/user";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -64,6 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = () => {
     logoutMutate();
+    setAccessToken(null);
   };
 
   return (

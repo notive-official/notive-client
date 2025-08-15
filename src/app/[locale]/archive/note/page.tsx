@@ -3,19 +3,33 @@
 import TagSearchBar from "@/components/archive/TagSearchBar";
 import NoteCard from "@/components/archive/NoteCard";
 import { useAuth } from "@/contexts/AuthContext";
-import { useListNotesQuery } from "@/hooks/api/archive/note";
+import {
+  NoteSummaryResponse,
+  useListNotesQuery,
+} from "@/hooks/api/archive/note";
 import InfiniteScroll from "@/components/common/InfiniteScroll";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function NotePage() {
   const { isAuthenticated } = useAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [tags, setTags] = useState<string[]>([]);
+  const [selectedTag, setSelectedTad] = useState<string>();
+  const [payloads, setPayloads] = useState<NoteSummaryResponse[]>();
 
   const result = useListNotesQuery(
     {},
     { enabled: isAuthenticated, staleTime: 10 * 60 * 1000 }
   );
+
+  useEffect(() => {
+    if (!selectedTag) return;
+    if (!result.data) return;
+    const filteredPayloads =
+      result.data.pages
+        .flatMap((page) => page.content)
+        .filter((content) => content.tags.includes(selectedTag)) ?? [];
+    setPayloads(filteredPayloads);
+  }, [selectedTag, result.data]);
 
   return (
     <div
@@ -24,8 +38,11 @@ export default function NotePage() {
     >
       <section className="flex flex-row justify-between items-start h-full w-full max-w-7xl">
         <div className="flex flex-col gap-20 w-full">
-          <TagSearchBar />
-          <InfiniteScroll result={result} root={scrollRef}>
+          <TagSearchBar
+            onClick={(v) => setSelectedTad(v)}
+            selectedTag={selectedTag}
+          />
+          <InfiniteScroll result={result} root={scrollRef} payloads={payloads}>
             {(note) => (
               <div className="flex justify-center" key={note.id}>
                 <NoteCard

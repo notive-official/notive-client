@@ -45,8 +45,12 @@
   },
 
   "MyPage": {
-    "pageTitle": "마이페이지",
-    "description": "마이페이지 입니다."
+    "information": {
+      "name": "이름",
+      "nickname": "닉네임",
+      "email": "이메일"
+    },
+    "language": "언어 설정"
   },
 
   "PostPage": {
