@@ -5,6 +5,8 @@ import {
   QueryClientProvider,
   HydrationBoundary,
   QueryClient,
+  dehydrate,
+  DehydratedState,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
@@ -22,10 +24,9 @@ const queryClient = new QueryClient({
   },
 });
 
-export default function AxiosProvider({
-  children,
-  dehydratedState,
-}: ProvidersProps) {
+const dehydratedState: DehydratedState = dehydrate(queryClient);
+
+export default function AxiosProvider({ children }: ProvidersProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <HydrationBoundary state={dehydratedState}>{children}</HydrationBoundary>
