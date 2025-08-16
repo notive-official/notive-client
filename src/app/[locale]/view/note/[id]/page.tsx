@@ -1,7 +1,6 @@
 "use client";
 
 import { use } from "react";
-import { useAuth } from "@/contexts/AuthContext";
 import { useNoteDetailQuery } from "@/hooks/api/archive/note";
 import Viewer from "@/components/viewer/Viewer";
 
@@ -13,9 +12,8 @@ export default function NoteDetailPage({
   params: Promise<NoteeDetailProps>;
 }) {
   const { id } = use(params);
-  const { isAuthenticated } = useAuth();
   const { data } = useNoteDetailQuery(`api/archive/notes/${id}`, {
-    enabled: isAuthenticated,
+    staleTime: 5 * 60 * 1000,
   });
 
   return (

@@ -13,7 +13,7 @@ export default function MainPage() {
   const [search, setSearch] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const result = useListArchivesQuery({}, { staleTime: 10 * 60 * 1000 });
+  const result = useListArchivesQuery({}, { staleTime: 5 * 60 * 1000 });
 
   return (
     <div

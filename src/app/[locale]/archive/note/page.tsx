@@ -18,7 +18,7 @@ export default function NotePage() {
 
   const result = useListNotesQuery(
     {},
-    { enabled: isAuthenticated, staleTime: 10 * 60 * 1000 }
+    { enabled: isAuthenticated, staleTime: 5 * 60 * 1000 }
   );
 
   useEffect(() => {
