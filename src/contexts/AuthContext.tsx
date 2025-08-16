@@ -64,7 +64,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = () => {
     logoutMutate();
-    setAccessToken(null);
   };
 
   return (
