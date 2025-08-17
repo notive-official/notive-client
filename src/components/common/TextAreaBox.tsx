@@ -34,14 +34,14 @@ export default function TextAreaBox({
   return (
     <div className="w-full my-2">
       <Field>
-        <Label className="text-sm/6 font-medium fg-principal">{label}</Label>
-        <Description className="text-sm/6 fg-assistant">
+        <Label className="text-sm/6 font-medium text-foreground">{label}</Label>
+        <Description className="text-sm/6 text-muted-foreground">
           {description}
         </Description>
         <Textarea
           ref={!scrollable ? taRef : undefined}
           className={clsx(
-            "block w-full resize-none rounded-lg border-none bg-transparent-reverse-5 px-3 py-1.5 text-sm/6 fg-principal",
+            "block w-full resize-none rounded-lg border-none bg-reverse-5 px-3 py-1.5 text-sm/6 text-foreground",
             "data-focus-outline-effect",
             inputClassName
           )}

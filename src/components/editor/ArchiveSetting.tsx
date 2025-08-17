@@ -78,7 +78,7 @@ export default function ArchiveSetting() {
   });
 
   const groupAddNode = (
-    <div className="p-2 bg-transparent-reverse-25 click-effect">
+    <div className="p-2 bg-reverse-5 hover:bg-reverse-25 rounded-xl">
       <PlusIcon className="w-5 h-5" />
     </div>
   );
@@ -101,15 +101,15 @@ export default function ArchiveSetting() {
         <div className="flex flex-row gap-2 w-full">
           <div
             {...getRootProps()}
-            className="p-3 border-2 border-dashed rounded-lg cursor-pointer bg-tertiary border-primary w-full md:max-w-full shadow-md"
+            className="p-3 border-2 border-dashed rounded-lg cursor-pointer bg-secondary border-primary w-full md:max-w-full shadow-md"
           >
             <input {...getInputProps()} />
             {thumbnail ? (
-              <p className="fg-primary overflow-hidden text-ellipsis whitespace-nowrap block w-full text-center">
+              <p className="text-foreground overflow-hidden text-ellipsis whitespace-nowrap block w-full text-center">
                 {thumbnail.name}
               </p>
             ) : (
-              <p className="fg-assistant text-center">
+              <p className="text-muted-foreground text-center">
                 {PostTrans("setting.thumbnail.placeholder")}
               </p>
             )}
@@ -121,7 +121,7 @@ export default function ArchiveSetting() {
               {thumbnail ? (
                 <ImageView filePath={URL.createObjectURL(thumbnail)} />
               ) : (
-                <div className="w-full h-full bg-transparent-reverse-25" />
+                <div className="w-full h-full bg-reverse-25" />
               )}
             </div>
             {thumbnail && (
@@ -129,8 +129,8 @@ export default function ArchiveSetting() {
                 className="absolute -top-2 -right-2 flex justify-center items-center click-effect"
                 onClick={deleteFile}
               >
-                <div className="w-full h-full p-1 rounded-xl bg-dark-transparent-75 hover:outline-light-transparent-50 hover:outline-2 hover:-outline-offset-2">
-                  <XMarkIcon className="w-5 h-5 fg-reverse" />
+                <div className="w-full h-full p-1 rounded-xl bg-reverse-75 hover:outline-reverse-50 hover:outline-2 hover:-outline-offset-2">
+                  <XMarkIcon className="w-5 h-5 text-on-primary" />
                 </div>
               </Button>
             )}
@@ -139,16 +139,16 @@ export default function ArchiveSetting() {
       </section>
       <section className="flex flex-col gap-2 w-full">
         <div className="flex flex-row items-center justify-between">
-          <p className="text-md fg-principal p-2">{"Public / Private"}</p>
+          <p className="text-md text-foreground p-2">{"Public / Private"}</p>
           <div className="flex flex-row justify-center items-center gap-2">
-            <p className="text-sm fg-assistant">
+            <p className="text-sm text-muted-foreground">
               {isPublic ? "public" : "private"}
             </p>
             <ToggleSwitch enabled={isPublic} onChange={changeIsPublic} />
           </div>
         </div>
         <div className="flex flex-row justify-between items-center w-full gap-2">
-          <p className="w-1/4 text-md fg-principal p-2">Group</p>
+          <p className="w-1/4 text-md text-foreground p-2">Group</p>
           <div className="flex flex-row items-end gap-2">
             <Combo
               selected={group}

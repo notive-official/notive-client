@@ -83,7 +83,7 @@ export default function GroupCard({
           </div>
         )}
       </div>
-      <p className="w-full text-center fg-principal text-md">{name}</p>
+      <p className="w-full text-center text-foreground text-md">{name}</p>
     </div>
   );
 }

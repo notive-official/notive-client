@@ -55,7 +55,7 @@ export default function MainCard({
       </div>
       {/* 제목 */}
       <div className="flex flex-col gap-1 p-2">
-        <h3 className="w-full fg-principal text-md text-start">{title}</h3>
+        <h3 className="w-full text-foreground text-md text-start">{title}</h3>
       </div>
     </div>
   );

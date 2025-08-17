@@ -36,7 +36,9 @@ export default function MainPage() {
         {/* 메인 타이틀 */}
         <section className="w-full text-center py-10 md:py-20">
           <h1 className="text-3xl font-bold mb-3">{MainTrans("pageTitle")}</h1>
-          <div className="fg-assistant">{MainTrans("description")}</div>
+          <div className="text-muted-foreground">
+            {MainTrans("description")}
+          </div>
         </section>
 
         {/* 아카이브 목록 */}

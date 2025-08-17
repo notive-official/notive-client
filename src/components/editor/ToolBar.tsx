@@ -60,7 +60,7 @@ export default function ToolBar() {
         <div
           className={`
             flex gap-1 absolute left-full top-0 px-2
-            transition-all duration-300 bg-dark-transparent-5 rounded-r-2xl
+            transition-all duration-300 bg-reverse-5 rounded-r-2xl
             ${
               showHeadings
                 ? "opacity-100 translate-x-0"

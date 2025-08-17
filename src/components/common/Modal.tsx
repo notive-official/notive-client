@@ -51,13 +51,13 @@ export default function Modal({
           <div className="flex min-h-full items-center justify-center p-4">
             <DialogPanel
               transition
-              className="w-full max-w-md rounded-xl bg-transparent-75 shadow-lg
+              className="w-full max-w-md rounded-xl bg-secondary shadow-lg
                p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
             >
               <div className="flex-row flex w-full justify-between px-2">
                 <DialogTitle
                   as="h3"
-                  className="text-base/7 font-medium fg-principal"
+                  className="text-base/7 font-medium text-foreground"
                 >
                   {title}
                 </DialogTitle>

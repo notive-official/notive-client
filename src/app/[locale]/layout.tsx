@@ -32,7 +32,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} className="h-full overflow-hidden">
-      <body className="h-full flex flex-col fg-principal bg-primary">
+      <body className="h-full flex flex-col text-foreground bg-surface">
         <ClientProviders locale={locale} messages={messages}>
           <ErrorBarProvider listenGlobal position="bottom" align="left">
             <Header />

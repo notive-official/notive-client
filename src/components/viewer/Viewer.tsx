@@ -37,7 +37,7 @@ export default function Viewer({
             height={200}
           />
         </div>
-        <h1 className="fg-principal text-5xl font-bold whitespace-normal break-words">
+        <h1 className="text-foreground text-5xl font-bold whitespace-normal break-words">
           {title.length === 0 ? <br /> : title}
         </h1>
         <div className="flex flex-row flex-wrap gap-2">

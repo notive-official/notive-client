@@ -21,7 +21,9 @@ export default function PopButton({
       onClick={onClick}
     >
       {icon}
-      <span className={`w-full font-medium fg-principal ${text}`}>{title}</span>
+      <span className={`w-full font-medium text-foreground ${text}`}>
+        {title}
+      </span>
     </CloseButton>
   );
 }
