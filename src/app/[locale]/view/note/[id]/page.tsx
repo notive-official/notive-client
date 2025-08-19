@@ -14,8 +14,8 @@ export default function NoteDetailPage({
 }) {
   const { id } = use(params);
   const { isLoading } = useAuth();
-  const { data } = useNoteDetailQuery(`api/archive/notes/${id}`, {
-    enabled: isLoading,
+  const { data } = useNoteDetailQuery(noteDetailPath(id), {
+    enabled: !isLoading,
   });
 
   return (
