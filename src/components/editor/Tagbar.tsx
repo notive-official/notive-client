@@ -46,7 +46,7 @@ export default function Tagbar() {
           }}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="w-full rounded-xl bg-transparent-reverse-5 px-4 py-2 focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus-outline-effect"
+          className="w-full rounded-xl bg-reverse-5 px-4 py-2 focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus-outline-effect"
           placeholder={PostTrans("tag.placeholder")}
         />
         {showStoredTag && (

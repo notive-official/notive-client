@@ -9,12 +9,15 @@ import {
 } from "@/hooks/api/archive/note";
 import InfiniteScroll from "@/components/common/InfiniteScroll";
 import { useEffect, useRef, useState } from "react";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 
 export default function NotePage() {
   const { isAuthenticated } = useAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [selectedTag, setSelectedTad] = useState<string>();
   const [payloads, setPayloads] = useState<NoteSummaryResponse[]>();
+
+  useRequireAuth();
 
   const result = useListNotesQuery(
     {},

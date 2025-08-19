@@ -33,8 +33,8 @@
   },
 
   "LoginPage": {
-    "title": "Sign In",
-    "content": ""
+    "title": "Notive",
+    "content": "Design Archiving Platform"
   },
 
   "Language": {
@@ -48,15 +48,23 @@
       "nickname": "Nickname",
       "email": "Email"
     },
-    "language": "Language Setting"
+    "language": "Language Setting",
+
+    "message": {
+      "success": {
+        "profile": {
+          "image": "your profile is successfully updated."
+        }
+      }
+    }
   },
 
   "PostPage": {
     "setting": {
       "group": {
         "create": {
-          "title": "Create group",
-          "placeholder": "Enter a group name."
+          "title": "Do you want to create the following group?",
+          "button": "Add group"
         }
       },
       "thumbnail": {
@@ -80,10 +88,17 @@
       }
     },
     "message": {
+      "error": {
+        "groupCreation": "Group name already in use."
+      },
       "warning": {
-        "title": "Title is necesssary",
-        "group": "Group is necesssary",
-        "content": "Content is necesssary"
+        "title": "Title is necessary.",
+        "group": "Group is necessary.",
+        "content": "Content is necessary.",
+        "groupCreation": "Enter your new group name."
+      },
+      "success": {
+        "groupCreation": "Group created."
       }
     }
   }

@@ -1,3 +1,4 @@
+import api from "@/lib/api";
 import {
   createPostMutation,
   createGetQueryWithPredefinedUrl,
@@ -41,3 +42,19 @@ export const useGetUserProfileQuery =
     "api/user/profile",
     getUserProfileKey
   );
+
+type UpdateProfileImageProps = {
+  file: File;
+};
+
+export const usePutProfileImage = () => {
+  return {
+    postNote: (data: UpdateProfileImageProps) => {
+      const form = new FormData();
+      form.append("file", data.file);
+      return api.put("/api/user/profile/image", form, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+    },
+  };
+};

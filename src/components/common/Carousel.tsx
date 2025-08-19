@@ -44,7 +44,7 @@ export default function Carousel({ nodes }: CarouselProps) {
             onClick={() =>
               setCurrentIndex((currentIndex - 1 + nodes.length) % nodes.length)
             }
-            className="absolute h-1/4 left-2 top-1/2 transform -translate-y-1/2 rounded-full cursor-pointer bg-tertiary"
+            className="absolute h-1/4 left-2 top-1/2 transform -translate-y-1/2 rounded-full cursor-pointer bg-secondary"
           >
             <Button className="w-full h-full flex items-center justify-center p-0.5 rounded-full click-effect shadow">
               <ChevronLeftIcon className="h-6 w-6" />
@@ -54,7 +54,7 @@ export default function Carousel({ nodes }: CarouselProps) {
         {currentIndex < nodes.length - 1 && (
           <div
             onClick={() => setCurrentIndex((currentIndex + 1) % nodes.length)}
-            className="absolute h-1/4 right-2 top-1/2 transform -translate-y-1/2 rounded-full cursor-pointer bg-tertiary"
+            className="absolute h-1/4 right-2 top-1/2 transform -translate-y-1/2 rounded-full cursor-pointer bg-secondary"
           >
             <Button className="w-full h-full flex items-center justify-center p-0.5 rounded-full click-effect shadow">
               <ChevronRightIcon className="h-6 w-6" />

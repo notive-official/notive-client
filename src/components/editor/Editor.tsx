@@ -25,7 +25,7 @@ export default function Editor() {
   return (
     <div>
       <Input
-        className="text-h1 px-6 py-4 bg-transparent-reverse-5 w-full rounded-xl data-focus-outline-effect"
+        className="text-h1 px-6 py-4 bg-reverse-5 w-full rounded-xl data-focus-outline-effect"
         placeholder={PostTrans("title.placeholder")}
         onChange={(e) => changeTitle(e.target.value)}
       />

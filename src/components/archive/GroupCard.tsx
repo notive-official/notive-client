@@ -23,7 +23,8 @@ export default function GroupCard({
             <Image
               src={group_placeholder}
               alt={`${name} preview`}
-              layout="fill"
+              fill
+              sizes="200px"
               className="rounded object-cover"
             />
           </div>
@@ -38,7 +39,8 @@ export default function GroupCard({
             <Image
               src={first}
               alt={`${name} preview`}
-              layout="fill"
+              fill
+              sizes="200px"
               className="rounded object-cover"
             />
           </div>
@@ -52,7 +54,8 @@ export default function GroupCard({
             <Image
               src={second}
               alt={`${name} preview`}
-              layout="fill"
+              fill
+              sizes="200px"
               className="rounded object-cover"
             />
           </div>
@@ -64,7 +67,8 @@ export default function GroupCard({
             <Image
               src={third}
               alt={`${name} preview`}
-              layout="fill"
+              fill
+              sizes="200px"
               className="rounded object-cover"
             />
           </div>
@@ -83,7 +87,7 @@ export default function GroupCard({
           </div>
         )}
       </div>
-      <p className="w-full text-center fg-principal text-md">{name}</p>
+      <p className="w-full text-center text-foreground text-md">{name}</p>
     </div>
   );
 }

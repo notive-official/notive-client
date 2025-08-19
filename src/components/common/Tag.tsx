@@ -12,10 +12,10 @@ export default function Tag({
   isSelected = false,
 }: TagProps) {
   return (
-    <div className="bg-tertiary rounded-full w-fit h-fit">
+    <div className="bg-secondary rounded-full w-fit h-fit">
       <div
         className={`px-3 py-1 cursor-pointer hover:bg-black/25 dark:hover:bg-white/25 
-          ${isSelected && "bg-transparent-reverse-25"} 
+          ${isSelected && "bg-reverse-25"} 
           rounded-full text-sm flex flex-row items-center gap-1`}
       >
         {value}

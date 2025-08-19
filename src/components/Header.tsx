@@ -43,17 +43,17 @@ export default function Header() {
     {
       title: HeaderTrans("userMenu.myPage.title"),
       onClick: () => router.push("/my"),
-      icon: <UserIcon className="w-6 h-6 fg-assistant" />,
+      icon: <UserIcon className="w-6 h-6 text-muted-foreground" />,
     },
     {
       title: HeaderTrans("userMenu.archive.title"),
       onClick: () => router.push("/archive/note"),
-      icon: <ArchiveBoxIcon className="w-6 h-6 fg-assistant" />,
+      icon: <ArchiveBoxIcon className="w-6 h-6 text-muted-foreground" />,
     },
     {
       title: HeaderTrans("userMenu.posting.title"),
       onClick: () => router.push("/post"),
-      icon: <PencilIcon className="w-6 h-6 fg-assistant" />,
+      icon: <PencilIcon className="w-6 h-6 text-muted-foreground" />,
     },
   ];
 
@@ -87,7 +87,7 @@ export default function Header() {
   });
 
   return (
-    <header className="w-full p-4 flex justify-between shadow-md fg-principal bg-secondary">
+    <header className="w-full p-4 flex justify-between shadow-md text-foreground bg-primary">
       <p
         className="flex flex-row items-center font-bold text-2xl cursor-pointer"
         onClick={handleLogoClick}
@@ -97,6 +97,7 @@ export default function Header() {
           src="/icons/favicon-dark.ico"
           width={32}
           height={32}
+          unoptimized
           alt={"icon"}
         />
         {HeaderTrans("serviceName")}
@@ -125,7 +126,7 @@ export default function Header() {
       ) : (
         <Button
           onClick={handleLogin}
-          className="cursor-pointer rounded-md px-4 py-2 text-sm font-medium fg-principal hover-bg-effect"
+          className="cursor-pointer rounded-md px-4 py-2 text-sm font-medium text-foreground hover-bg-effect"
         >
           {HeaderTrans("signIn.buttonName")}
         </Button>

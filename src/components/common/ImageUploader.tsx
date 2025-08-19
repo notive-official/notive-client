@@ -24,8 +24,8 @@ export default function ImageUploader({
   });
 
   return (
-    <div>
-      <div {...getRootProps()}>
+    <div className="w-full h-full">
+      <div {...getRootProps()} className="w-full h-full">
         <input {...getInputProps()} />
         {button}
       </div>

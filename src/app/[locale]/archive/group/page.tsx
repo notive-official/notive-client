@@ -4,9 +4,11 @@ import GroupCard from "@/components/archive/GroupCard";
 import InfiniteScroll from "@/components/common/InfiniteScroll";
 import { useAuth } from "@/contexts/AuthContext";
 import { useListGroupDetailsQuery } from "@/hooks/api/archive/group";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { useRef } from "react";
 
 export default function GroupPage() {
+  useRequireAuth();
   const { isAuthenticated } = useAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
   const result = useListGroupDetailsQuery(

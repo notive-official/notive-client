@@ -1,14 +1,18 @@
 import type { ImageLoaderProps } from "next/image";
 
 export default function imageLoader({ src, width, quality }: ImageLoaderProps) {
-  const cfHost = process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE;
-  const apiBase = process.env.NEXT_PUBLIC_API_BASE ?? "";
+  const cfBase = (process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE || "").replace(
+    /\/+$/,
+    ""
+  );
+  const apiBase = (process.env.NEXT_PUBLIC_API_BASE || "").replace(/\/+$/, "");
 
   if (src.startsWith("/icons") || src.startsWith("/images")) return src;
 
   if (!isAbsoluteUrl(src)) {
     const normalized = src.startsWith("/") ? src : `/${src}`;
-    return `${cfHost}${normalized}`;
+    const encPath = encodeURI(normalized);
+    return `${cfBase}${encPath}`;
   }
 
   const params = new URLSearchParams({
@@ -21,7 +25,8 @@ export default function imageLoader({ src, width, quality }: ImageLoaderProps) {
 
 function isAbsoluteUrl(url: string): boolean {
   try {
-    return Boolean(new URL(url).origin);
+    new URL(url);
+    return true;
   } catch {
     return false;
   }
