@@ -1,6 +1,5 @@
 import { ArchiveType, BlockType } from "@/common/types";
 import { isImageBlock, isLinkBlock } from "@/common/utils";
-import { ComboSelection } from "@/components/common/Combo";
 import { EditorBlock } from "@/contexts/BlockEditorContext";
 import api from "@/lib/api";
 import {
@@ -59,7 +58,7 @@ type CreateNoteProps = {
   blocks: EditorBlock[];
   title: string;
   tags: string[];
-  group: ComboSelection;
+  groupId: number;
   isPublic: boolean;
   archiveType: ArchiveType;
   isReplicable: boolean;
@@ -80,7 +79,7 @@ const generateNoteRequestForm = ({
   blocks,
   title,
   tags,
-  group,
+  groupId,
   isPublic,
   archiveType,
   isReplicable,
@@ -92,7 +91,7 @@ const generateNoteRequestForm = ({
   form.append("isPublic", String(isPublic));
   form.append("type", archiveType.toUpperCase());
   form.append("isReplicable", String(isReplicable));
-  form.append("groupId", String(group!.id));
+  form.append("groupId", String(groupId));
   form.append("title", title);
   tags.forEach((t, i) => form.append(`tags[${i}]`, t));
 

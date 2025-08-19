@@ -9,44 +9,33 @@ import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
 import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import Hangul from "hangul-js";
-
-export interface ComboSelection {
-  id: string;
-  name: string;
-}
+import { ComboSelection } from "@/hooks/useCombo";
 
 interface ComboProps {
+  query: string;
+  setQuery: Dispatch<SetStateAction<string>>;
   selected: ComboSelection | null;
   setSelected: Dispatch<SetStateAction<ComboSelection | null>>;
   options: ComboSelection[];
-  button?: ReactNode;
+  buttons?: ReactNode[];
   maxVisible?: number;
 }
 
 export default function Combo({
+  query,
+  setQuery,
   selected,
   setSelected,
   options,
-  button,
+  buttons,
   maxVisible = 5,
 }: ComboProps) {
-  const [query, setQuery] = useState("");
-
-  const filteredOptions =
-    query === ""
-      ? options
-      : options.filter((o) => Hangul.search(o.name, query) > -1);
-
-  const height = Math.min(filteredOptions.length, maxVisible) * 40;
+  const height =
+    Math.min(options.length + (buttons ? buttons.length : 0), maxVisible) * 40;
 
   return (
     <div className="w-full">
-      <Combobox
-        value={selected}
-        onChange={setSelected}
-        onClose={() => setQuery("")}
-        __demoMode
-      >
+      <Combobox value={selected} onChange={setSelected}>
         <div className="relative">
           <ComboboxInput
             className={clsx(
@@ -57,25 +46,27 @@ export default function Combo({
             onChange={(e) => setQuery(e.target.value)}
           />
           <ComboboxButton className="group absolute inset-y-0 right-0 px-2.5">
-            <ChevronDownIcon className="size-4 text-foreground hover-text-effect" />
+            <ChevronDownIcon className="size-4 text-foreground hover:text-reverse-50" />
           </ComboboxButton>
         </div>
 
         <ComboboxOptions
           anchor="bottom"
           transition
+          unmount={false}
           className={clsx(
             "w-(--input-width) rounded-xl bg-secondary p-1 [--anchor-gap:--spacing(1)] empty:invisible",
-            "transition duration-100 ease-in data-leave:data-closed:opacity-0 z-20"
+            "transition duration-100 ease-in data-leave:data-closed:opacity-0 z-20 shadow-lg"
           )}
           style={{ height: `${height}px` }}
         >
-          {button}
-          {filteredOptions.map((option) => (
+          {buttons}
+          {options.map((option) => (
             <ComboboxOption
               key={option.id}
               value={option}
               className="group flex cursor-default items-center gap-2 rounded-lg px-3 py-1.5 select-none click-effect"
+              onClick={() => setQuery(option.name)}
             >
               <CheckIcon className="invisible size-4 text-foreground group-data-selected:visible" />
               <div className="text-sm/6 text-foreground">{option.name}</div>

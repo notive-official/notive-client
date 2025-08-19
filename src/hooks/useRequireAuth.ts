@@ -3,11 +3,11 @@ import { useRouter } from "@/i18n/routing";
 import { useEffect } from "react";
 
 export function useRequireAuth() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (isAuthenticated) return;
+    if (isLoading || isAuthenticated) return;
     router.replace("/login");
-  }, [isAuthenticated, router]);
+  }, [isLoading, isAuthenticated, router]);
 }

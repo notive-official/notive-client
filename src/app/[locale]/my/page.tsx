@@ -5,18 +5,23 @@ import { usePathname, useRouter } from "@/i18n/routing";
 import { LanguageIcon, PencilSquareIcon } from "@heroicons/react/16/solid";
 import DropDown, { Item } from "@/components/common/DropDown";
 import { Language } from "@/common/consts/language";
-import { useGetUserProfileQuery } from "@/hooks/api/user";
+import { useGetUserProfileQuery, usePutProfileImage } from "@/hooks/api/user";
 import { useAuth } from "@/contexts/AuthContext";
 import Image from "next/image";
 import ImageUploader from "@/components/common/ImageUploader";
 import { useEffect, useState } from "react";
 import api from "@/lib/api";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
+import { useErrorBar } from "@/contexts/ErrorBarContext";
 
 export default function MyPage() {
-  const { MyTrans, LanguageSelectTrans } = useTrans();
+  useRequireAuth();
 
+  const { MyTrans, LanguageSelectTrans } = useTrans();
+  const { postNote } = usePutProfileImage();
   const pathname = usePathname();
   const router = useRouter();
+  const { pushSuccess } = useErrorBar();
   const { isAuthenticated } = useAuth();
   const [file, setFile] = useState<File>();
   const { data } = useGetUserProfileQuery({
@@ -25,17 +30,10 @@ export default function MyPage() {
 
   useEffect(() => {
     if (!file) return;
-    const form = new FormData();
-    form.append("file", file);
-    api.put("/api/user/profile/image", form, {
-      headers: { "Content-Type": "multipart/form-data" },
+    postNote({ file }).then(() => {
+      pushSuccess(MyTrans("message.success.profile.image"));
     });
   }, [file]);
-
-  useEffect(() => {
-    if (isAuthenticated) return;
-    router.replace("/login");
-  }, [isAuthenticated]);
 
   const languages = Object.values(Language).map(
     (languageType): Item => ({
@@ -46,7 +44,7 @@ export default function MyPage() {
 
   return (
     <div className="h-full flex flex-col items-center justify-between p-8">
-      <div className="w-full max-w-lg rounded-xl bg-reverse-5 p-6 backdrop-blur-2xl">
+      <div className="w-full max-w-lg rounded-xl bg-surface p-6 shadow-md">
         {data && (
           <div className="flex flex-row">
             <div className="relative size-[120px]">
@@ -55,6 +53,7 @@ export default function MyPage() {
                   src={file ? URL.createObjectURL(file) : data.profileImagePath}
                   alt={"profile"}
                   fill
+                  sizes="100px"
                   className="object-cover rounded-full overflow-hidden bg-white"
                 />
               </div>
@@ -93,4 +92,7 @@ export default function MyPage() {
       </div>
     </div>
   );
+}
+function PostTrans(arg0: string): string {
+  throw new Error("Function not implemented.");
 }

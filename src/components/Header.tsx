@@ -97,6 +97,7 @@ export default function Header() {
           src="/icons/favicon-dark.ico"
           width={32}
           height={32}
+          unoptimized
           alt={"icon"}
         />
         {HeaderTrans("serviceName")}

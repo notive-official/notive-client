@@ -43,14 +43,14 @@ export default function EditorFooter() {
       blocks: trimmedBlocks,
       title,
       tags,
-      group,
+      groupId: group.id,
       isPublic,
       archiveType,
       isReplicable,
       thumbnail,
     };
 
-    postNote(data).then(() => {
+    postNote(data).then((res) => {
       queryClient.invalidateQueries({
         queryKey: [listTagsKey],
       });
@@ -63,7 +63,8 @@ export default function EditorFooter() {
       queryClient.invalidateQueries({
         queryKey: [listArchivesKey, {}],
       });
-      router.replace("/");
+      console.log(res.data);
+      router.replace(`/view/note/${res.data.id}`);
     });
   };
 

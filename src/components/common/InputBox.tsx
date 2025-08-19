@@ -9,6 +9,7 @@ interface InputBoxProps {
   handleChange: Dispatch<SetStateAction<string>>;
   buttonIcon?: ReactNode;
   onAction?: () => void;
+  autoFocus?: boolean;
 }
 
 export default function InputBox({
@@ -19,6 +20,7 @@ export default function InputBox({
   handleChange,
   buttonIcon,
   onAction,
+  autoFocus,
 }: InputBoxProps) {
   const [isComposing, setIsComposing] = useState(false);
   return (
@@ -44,6 +46,7 @@ export default function InputBox({
           placeholder={placeholder}
           onChange={(e) => handleChange(e.target.value)}
           value={value}
+          autoFocus={autoFocus}
         />
         <Button
           className="p-2 flex justify-center items-center click-effect"

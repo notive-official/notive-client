@@ -27,7 +27,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { mutate: logoutMutate } = usePostLogoutMutation({
     onSuccess: () => setAccessToken(null),
   });
-
   // accessToken이 바뀔 때마다 axios 기본 헤더 갱신
   useEffect(() => {
     if (accessToken) {
@@ -39,6 +38,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [accessToken]);
 
+  useEffect(() => {
+    if (!accessToken) return;
+    setIsLoading(false);
+  }, [isAuthenticated]);
+
   // 새 토큰 헤더에 있으면 state 갱신
   useEffect(() => {
     const interceptor = api.interceptors.response.use((res) => {
@@ -47,7 +51,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const newToken = header.split(" ")[1];
         setAccessToken(newToken);
       }
-      setIsLoading(false);
 
       return res;
     });

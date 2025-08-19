@@ -20,7 +20,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex w-full h-full items-center justify-center">
-      <div className="flex flex-col w-full justify-center items-center max-w-sm rounded-xl bg-reverse-5 gap-8 p-8 shadow-lg">
+      <div className="flex flex-col w-full justify-center items-center max-w-sm rounded-xl bg-muted gap-8 p-8 shadow-lg">
         <div className="flex flex-col w-full justify-center items-center gap-16">
           {/* 서비스 이름 */}
           <div className="flex flex-col w-full justify-center items-center gap-6">
@@ -60,7 +60,7 @@ export default function LoginPage() {
             </Link>
             <div className="flex items-center w-full">
               <div className="flex-1 h-px bg-reverse-25"></div>
-              <span className="px-4 text-sm text-gray-600">or</span>
+              <span className="px-4 text-sm text-reverse-25">or</span>
               <div className="flex-1 h-px bg-reverse-25"></div>
             </div>
             <Link
@@ -83,13 +83,10 @@ export default function LoginPage() {
 
         {/* 이용약관 및 개인정보처리방침 */}
         <div className="flex flex-row gap-4">
-          <Link
-            href={"/"}
-            className="text-sm font-semibold text-muted-foreground"
-          >
+          <Link href={"/"} className="text-sm font-semibold text-reverse-25">
             {"이용약관"}
           </Link>
-          <Link href={"/"} className="text-sm font-semibold text-foreground">
+          <Link href={"/"} className="text-sm font-semibold text-reverse-50">
             {"개인정보처리방침"}
           </Link>
         </div>

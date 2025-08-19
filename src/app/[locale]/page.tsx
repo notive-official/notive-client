@@ -18,9 +18,9 @@ export default function MainPage() {
   return (
     <div
       ref={scrollRef}
-      className="h-full overflow-y-auto flex flex-col items-center px-5 py-2"
+      className="h-full overflow-y-auto flex flex-col items-center px-4 py-2"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-col flex-1">
+      <div className="container mx-auto sm:px-6 lg:px-8 py-2 flex flex-col flex-1">
         {/* 검색 박스 */}
         <section className="flex justify-center w-full text-center pt-10">
           <div className="flex items-center justify-center w-full max-w-150 pl-8">

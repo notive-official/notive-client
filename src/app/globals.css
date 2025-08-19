@@ -2,11 +2,10 @@
 
 :root {
   @theme {
-    /* Light Colors */
     --color-surface: #fafafa;
     --color-foreground: #1a1a1a;
 
-    --color-muted: #efefef;
+    --color-muted: #f2f2f2;
     --color-muted-foreground: #3f3f3f;
 
     --color-border: #6f6f6f;
@@ -29,8 +28,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-surface: #1a1a1a;
-    --color-foreground: #fafafa;
+    --color-surface: #1d1d1d;
+    --color-foreground: #ebebeb;
 
     --color-muted: #232323;
     --color-muted-foreground: #d0d0d0;
@@ -38,11 +37,11 @@
     --color-border: #d0d0d0;
     --color-ring: #d0d0d0;
 
-    --color-primary: #1a1a1a;
-    --color-on-primary: #fafafa;
+    --color-primary: #232323;
+    --color-on-primary: #ebebeb;
 
     --color-secondary: #232323;
-    --color-on-secondary: #fafafa;
+    --color-on-secondary: #ebebeb;
 
     --color-reverse-5: rgba(255, 255, 255, 0.05);
     --color-reverse-10: rgba(255, 255, 255, 0.1);
@@ -57,15 +56,6 @@
   /* Effect */
   .hover-bg-effect {
     @apply hover:bg-reverse-5;
-  }
-  .hover-text-effect {
-    @apply hover:text-reverse-50;
-  }
-  .hover-outline-effect {
-    @apply hover:outline-reverse-25 hover:outline-2 hover:-outline-offset-2;
-  }
-  .hover-outline-effect-reverse {
-    @apply hover:outline-reverse-25 hover:outline-2 hover:-outline-offset-2;
   }
   .data-focus-outline-effect {
     @apply data-focus:outline-reverse-25

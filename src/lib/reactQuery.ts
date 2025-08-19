@@ -2,7 +2,6 @@ import {
   MutationFunction,
   QueryFunction,
   useInfiniteQuery,
-  UseInfiniteQueryOptions,
   useMutation,
   UseMutationOptions,
   useQuery,

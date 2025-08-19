@@ -52,6 +52,7 @@ export function LinkView({ url }: { url: string }) {
                   src={oEmbed.thumbnailUrl}
                   alt={oEmbed.title}
                   fill
+                  sizes="100px"
                   className="object-cover"
                 />
               </div>
