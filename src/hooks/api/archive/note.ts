@@ -58,7 +58,7 @@ type CreateNoteProps = {
   blocks: EditorBlock[];
   title: string;
   tags: string[];
-  groupId: number;
+  groupId: string;
   isPublic: boolean;
   archiveType: ArchiveType;
   isReplicable: boolean;

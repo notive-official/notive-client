@@ -63,7 +63,6 @@ export default function EditorFooter() {
       queryClient.invalidateQueries({
         queryKey: [listArchivesKey, {}],
       });
-      console.log(res.data);
       router.replace(`/view/note/${res.data.id}`);
     });
   };
