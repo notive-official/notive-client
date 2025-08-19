@@ -42,7 +42,7 @@ export function LinkView({ url }: { url: string }) {
     <div className="w-full">
       {oEmbed ? (
         <div
-          className="bg-tertiary rounded-lg overflow-hidden shadow-lg h-48"
+          className="bg-secondary rounded-lg overflow-hidden shadow-lg h-48"
           onClick={handleClick}
         >
           <div className="cursor-pointer hover-bg-effect flex flex-row h-full">
@@ -52,18 +52,19 @@ export function LinkView({ url }: { url: string }) {
                   src={oEmbed.thumbnailUrl}
                   alt={oEmbed.title}
                   fill
+                  sizes="100px"
                   className="object-cover"
                 />
               </div>
             ) : null}
             <div className="flex flex-col justify-between items-start w-fill p-6">
               <h2
-                className="fg-principal font-bold text-lg line-clamp-4 text-start"
+                className="text-foreground font-bold text-lg line-clamp-4 text-start"
                 title={oEmbed.title}
               >
                 {oEmbed.title}
               </h2>
-              <p className="fg-assistant text-base pl-2">
+              <p className="text-muted-foreground text-base pl-2">
                 {oEmbed.providerName}
               </p>
             </div>
@@ -71,7 +72,7 @@ export function LinkView({ url }: { url: string }) {
         </div>
       ) : null}
       <div className="flex items-start w-full">
-        <p className="p-1 text-sm fg-assistant line-clamp-1">{url}</p>
+        <p className="p-1 text-sm text-muted-foreground line-clamp-1">{url}</p>
       </div>
     </div>
   );

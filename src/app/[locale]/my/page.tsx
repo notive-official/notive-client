@@ -5,45 +5,33 @@ import { usePathname, useRouter } from "@/i18n/routing";
 import { LanguageIcon, PencilSquareIcon } from "@heroicons/react/16/solid";
 import DropDown, { Item } from "@/components/common/DropDown";
 import { Language } from "@/common/consts/language";
-import {
-  useGetUserProfileQuery,
-  usePutProfileImageMutation,
-  getUserProfileKey,
-  PutProfileImageRequest,
-} from "@/hooks/api/user";
+import { useGetUserProfileQuery, usePutProfileImage } from "@/hooks/api/user";
 import { useAuth } from "@/contexts/AuthContext";
 import Image from "next/image";
 import ImageUploader from "@/components/common/ImageUploader";
 import { useEffect, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/api";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
+import { useErrorBar } from "@/contexts/ErrorBarContext";
 
 export default function MyPage() {
-  const { MyTrans, LanguageSelectTrans } = useTrans();
-  const queryClient = useQueryClient();
+  useRequireAuth();
 
+  const { MyTrans, LanguageSelectTrans } = useTrans();
+  const { postNote } = usePutProfileImage();
   const pathname = usePathname();
   const router = useRouter();
+  const { pushSuccess } = useErrorBar();
   const { isAuthenticated } = useAuth();
   const [file, setFile] = useState<File>();
   const { data } = useGetUserProfileQuery({
     enabled: isAuthenticated,
   });
 
-  const { mutate: putProfileImage } = usePutProfileImageMutation({
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [getUserProfileKey, {}],
-      });
-    },
-  });
-
   useEffect(() => {
     if (!file) return;
-    const form = new FormData();
-    form.append("file", file);
-    api.put("/api/user/profile/image", form, {
-      headers: { "Content-Type": "multipart/form-data" },
+    postNote({ file }).then(() => {
+      pushSuccess(MyTrans("message.success.profile.image"));
     });
   }, [file]);
 
@@ -56,7 +44,7 @@ export default function MyPage() {
 
   return (
     <div className="h-full flex flex-col items-center justify-between p-8">
-      <div className="w-full max-w-lg rounded-xl bg-transparent-reverse-5 p-6 backdrop-blur-2xl">
+      <div className="w-full max-w-lg rounded-xl bg-surface p-6 shadow-md">
         {data && (
           <div className="flex flex-row">
             <div className="relative size-[120px]">
@@ -65,13 +53,14 @@ export default function MyPage() {
                   src={file ? URL.createObjectURL(file) : data.profileImagePath}
                   alt={"profile"}
                   fill
+                  sizes="100px"
                   className="object-cover rounded-full overflow-hidden bg-white"
                 />
               </div>
               <ImageUploader
                 button={
                   <div className="absolute bottom-1 right-1 cursor-pointer rounded-full p-1 bg-primary">
-                    <PencilSquareIcon className="w-5 h-5 fg-principal hover-bg-effect" />
+                    <PencilSquareIcon className="w-5 h-5 text-foreground hover-bg-effect" />
                   </div>
                 }
                 handleFileChange={(newFile) => setFile(newFile)}
@@ -103,4 +92,7 @@ export default function MyPage() {
       </div>
     </div>
   );
+}
+function PostTrans(arg0: string): string {
+  throw new Error("Function not implemented.");
 }

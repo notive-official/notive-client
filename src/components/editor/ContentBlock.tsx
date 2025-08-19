@@ -49,7 +49,7 @@ export default function ContentBlock({ block }: EditorBlockProps) {
         >
           <EllipsisVerticalIcon
             className={`w-6 h-6 ${
-              onFocus ? "fg-principal" : "text-transparent"
+              onFocus ? "text-foreground" : "text-transparent"
             }`}
           />
         </div>
@@ -57,7 +57,7 @@ export default function ContentBlock({ block }: EditorBlockProps) {
       </div>
       <div
         className={`rounded-xl w-full ${
-          isActive(block.id) ? "bg-transparent-reverse-5" : "bg-transparent"
+          isActive(block.id) ? "bg-reverse-5" : "bg-transparent"
         }`}
       >
         <div className="flex">

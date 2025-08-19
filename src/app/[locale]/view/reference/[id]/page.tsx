@@ -24,6 +24,7 @@ export default function ArchiveDetailPage({
         <Viewer
           title={data.meta.title}
           thumbnailPath={data.meta.thumbnailPath}
+          canEdit={data.canEdit}
           tags={data.tags}
           blocks={data.blocks}
         />

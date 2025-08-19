@@ -1,8 +1,10 @@
 "use client";
 
 import TagSearchBar from "@/components/archive/TagSearchBar";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 
 export default function NotePage() {
+  useRequireAuth();
   return (
     <div className="relative h-full w-full flex flex-row justify-start mx-auto overflow-y-auto p-8">
       <section className="flex flex-row justify-between items-start h-full w-full max-w-7xl">

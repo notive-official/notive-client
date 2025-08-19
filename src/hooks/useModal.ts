@@ -1,0 +1,22 @@
+import { useCallback, useMemo, useState } from "react";
+
+type UseModalnit = {
+  isOpened?: boolean | null;
+};
+
+export function useModal(init?: {
+  isOpened?: boolean;
+  onChange?: (v: boolean) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const open = useCallback(() => setIsOpen(true), [setIsOpen]);
+  const close = useCallback(() => setIsOpen(false), [setIsOpen]);
+
+  const modalBind = useMemo(
+    () => ({ isOpen, open, close }),
+    [isOpen, open, close]
+  );
+
+  return { isOpen, open, close, setIsOpen, modalBind };
+}

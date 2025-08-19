@@ -35,10 +35,10 @@ export default function MainCard({
         <Image
           src={thumbnailUrl}
           alt={title}
-          width={0}
-          height={200}
+          width={20}
+          height={20}
+          priority
           className="object-cover w-auto h-[200px] rounded bg-white"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         {hover && (
           <p className="absolute bottom-2 right-2 bg-black/75 text-white py-1 px-2 rounded-full flex flex-row gap-1 text-sm">
@@ -47,6 +47,7 @@ export default function MainCard({
               alt={writer.nickname}
               width={20}
               height={20}
+              priority
               className="object-cover"
             />
             {writer.nickname}
@@ -55,7 +56,7 @@ export default function MainCard({
       </div>
       {/* 제목 */}
       <div className="flex flex-col gap-1 p-2">
-        <h3 className="w-full fg-principal text-md text-start">{title}</h3>
+        <h3 className="w-full text-foreground text-md text-start">{title}</h3>
       </div>
     </div>
   );

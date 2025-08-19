@@ -1,7 +1,7 @@
 "use client";
 
 import { ArchiveType } from "@/common/types";
-import { ComboSelection } from "@/components/common/Combo";
+import { ComboSelection } from "@/hooks/useCombo";
 import {
   createContext,
   Dispatch,

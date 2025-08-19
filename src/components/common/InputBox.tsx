@@ -9,6 +9,7 @@ interface InputBoxProps {
   handleChange: Dispatch<SetStateAction<string>>;
   buttonIcon?: ReactNode;
   onAction?: () => void;
+  autoFocus?: boolean;
 }
 
 export default function InputBox({
@@ -19,15 +20,16 @@ export default function InputBox({
   handleChange,
   buttonIcon,
   onAction,
+  autoFocus,
 }: InputBoxProps) {
   const [isComposing, setIsComposing] = useState(false);
   return (
     <Field className="w-full m-2">
       <div className="ml-2 flex flex-col justify-start">
-        <Label className="text-sm/6 font-medium fg-principal text-left">
+        <Label className="text-sm/6 font-medium text-foreground text-left">
           {label}
         </Label>
-        <Description className="text-sm/6 fg-assistant text-left">
+        <Description className="text-sm/6 text-muted-foreground text-left">
           {description}
         </Description>
       </div>
@@ -40,10 +42,11 @@ export default function InputBox({
               onAction?.();
             }
           }}
-          className="block w-full rounded-xl border-none fg-principal px-4 py-2 bg-transparent-reverse-5 data-focus-outline-effect"
+          className="block w-full rounded-xl border-none text-foreground px-4 py-2 bg-reverse-5 data-focus-outline-effect"
           placeholder={placeholder}
           onChange={(e) => handleChange(e.target.value)}
           value={value}
+          autoFocus={autoFocus}
         />
         <Button
           className="p-2 flex justify-center items-center click-effect"

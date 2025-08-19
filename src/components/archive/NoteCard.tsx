@@ -28,7 +28,7 @@ export default function NoteCard({
   };
   return (
     <div
-      className="grid grid-rows-1 lg:grid-cols-2 shadow-lg bg-transparent-10 cursor-pointer w-full max-w-[300px] lg:max-w-[720px] hover-bg-effect overflow-hidden"
+      className="grid grid-rows-1 lg:grid-cols-2 shadow-md bg-surface cursor-pointer w-full max-w-[300px] lg:max-w-[720px] hover-bg-effect overflow-hidden"
       onClick={handleClick}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
@@ -36,14 +36,14 @@ export default function NoteCard({
       <div className="flex flex-col 2xl:flex-row gap-4 2xl:gap-8 p-2 lg:p-4 2xl:p-8">
         {/* 제목 */}
         <div className="flex w-full 2xl:w-2/5">
-          <h3 className="w-full fg-principal font-bold text-md text-center lg:text-start">
+          <h3 className="w-full text-foreground font-bold text-md text-center lg:text-start">
             {title}
           </h3>
         </div>
 
         {/* 내용 */}
         <div className="hidden lg:flex flex-col 2xl:w-3/5 h-full gap-3">
-          <div className="fg-assistant text-sm line-clamp-3 2xl:line-clamp-6">
+          <div className="text-muted-foreground text-sm line-clamp-3 2xl:line-clamp-6">
             {content}
           </div>
         </div>

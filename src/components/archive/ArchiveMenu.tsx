@@ -21,28 +21,28 @@ export default function ArchiveMenu({}: ArchiveMenuProps) {
     <div className="flex flex-row md:flex-col w-full h-full gap-4 py-4 drop-shadow-lg md:shadow-none justify-center items-center">
       <Link
         href={NOTE}
-        className="flex flex-row justify-center md:justify-start cursor-pointer hover-text-effect w-full"
+        className="flex flex-row justify-center md:justify-start cursor-pointer hover:text-reverse-50 w-full"
       >
         {isNoteActive && <MinusIcon className="w-6 h-6" />}
         {<div className={`${isNoteActive && "font-bold"}`}>NOTE</div>}
       </Link>
       <Link
         href={LINK}
-        className="flex flex-row justify-center md:justify-start cursor-pointer hover-text-effect w-full"
+        className="flex flex-row justify-center md:justify-start cursor-pointer hover:text-reverse-50 w-full"
       >
         {isLinkActive && <MinusIcon className="w-6 h-6" />}
         {<div className={`${isLinkActive && "font-bold"}`}>LINK</div>}
       </Link>
       <Link
         href={LIKE}
-        className="flex flex-row justify-center md:justify-start cursor-pointer hover-text-effect w-full"
+        className="flex flex-row justify-center md:justify-start cursor-pointer hover:text-reverse-50 w-full"
       >
         {isLikeActive && <MinusIcon className="w-6 h-6" />}
         {<div className={`${isLikeActive && "font-bold"}`}>LIKE</div>}
       </Link>
       <Link
         href={GROUP}
-        className="flex flex-row justify-center md:justify-start cursor-pointer hover-text-effect w-full"
+        className="flex flex-row justify-center md:justify-start cursor-pointer hover:text-reverse-50 w-full"
       >
         {isGroupActive && <MinusIcon className="w-6 h-6" />}
         {<div className={`${isGroupActive && "font-bold"}`}>GROUP</div>}

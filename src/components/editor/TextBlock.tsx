@@ -86,7 +86,7 @@ export default function TextBlock({ block }: TextBlockProps) {
           ${blockType === "H1" && "text-h1"}
           ${blockType === "H2" && "text-h2"}
           ${blockType === "H3" && "text-h3"} 
-          block w-full resize-none rounded-lg border-none bg-transparent px-3 py-1.5 fg-principal data-focus:outline-none`}
+          block w-full resize-none rounded-lg border-none bg-transparent px-3 py-1.5 text-foreground data-focus:outline-none`}
           rows={1}
           placeholder={
             id === focusedBlockId ? PostTrans("block.text.placeholder") : ""

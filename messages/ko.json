@@ -35,8 +35,8 @@
   },
 
   "LoginPage": {
-    "title": "로그인",
-    "content": ""
+    "title": "Notive",
+    "content": "Design Archiving Platform"
   },
 
   "Language": {
@@ -50,15 +50,23 @@
       "nickname": "닉네임",
       "email": "이메일"
     },
-    "language": "언어 설정"
+    "language": "언어 설정",
+
+    "message": {
+      "success": {
+        "profile": {
+          "image": "프로필 이미지가 성공적으로 변경되었습니다."
+        }
+      }
+    }
   },
 
   "PostPage": {
     "setting": {
       "group": {
         "create": {
-          "title": "그룹 생성",
-          "placeholder": "그룹명을 입력해주세요."
+          "title": "다음의 그룹을 생성하시겠습니까?",
+          "button": "그룹 추가"
         }
       },
       "thumbnail": {
@@ -82,10 +90,17 @@
       }
     },
     "message": {
+      "error": {
+        "groupCreation": "이미 존재하는 그룹명입니다."
+      },
       "warning": {
         "title": "제목을 입력해주세요.",
         "group": "그룹을 입력해주세요.",
-        "content": "내용을 입력해주세요."
+        "content": "내용을 입력해주세요.",
+        "groupCreation": "추가할 그룹명을 입력해주세요."
+      },
+      "success": {
+        "groupCreation": "그룹이 생성되었습니다."
       }
     }
   },

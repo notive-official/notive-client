@@ -41,13 +41,13 @@ export default function ImageBlock({ block }: ImageBlockProps) {
       >
         <div
           {...getRootProps()}
-          className="w-full p-3 border-2 border-dashed rounded-lg cursor-pointer my-3 border-primary bg-tertiary shadow-md"
+          className="w-full p-3 border-2 border-dashed rounded-lg cursor-pointer my-3 border-primary bg-secondary shadow-md"
         >
           <input {...getInputProps()} />
           {file ? (
-            <p className="fg-assistant">{file.name}</p>
+            <p className="text-muted-foreground">{file.name}</p>
           ) : (
-            <p className="fg-assistant">
+            <p className="text-muted-foreground">
               {PostTrans("block.image.placeholder")}
             </p>
           )}

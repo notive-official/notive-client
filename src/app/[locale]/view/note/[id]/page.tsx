@@ -1,6 +1,7 @@
 "use client";
 
 import { use } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import { useNoteDetailQuery } from "@/hooks/api/archive/note";
 import Viewer from "@/components/viewer/Viewer";
 
@@ -12,17 +13,19 @@ export default function NoteDetailPage({
   params: Promise<NoteeDetailProps>;
 }) {
   const { id } = use(params);
+  const { isAuthenticated } = useAuth();
   const { data } = useNoteDetailQuery(`api/archive/notes/${id}`, {
-    staleTime: 5 * 60 * 1000,
+    enabled: isAuthenticated,
   });
 
   return (
-    <div className="flex flex-col justify-start items-center w-full max-w-7xl p-16">
+    <div className="flex flex-col justify-start items-center w-full max-w-7xl py-12 lg:p-16">
       {data && (
         <Viewer
           title={data.meta.title}
           thumbnailPath={data.meta.thumbnailPath}
           tags={data.tags}
+          canEdit={data.canEdit}
           blocks={data.blocks}
         />
       )}
