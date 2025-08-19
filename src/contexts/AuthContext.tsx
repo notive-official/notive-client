@@ -38,11 +38,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [accessToken]);
 
-  useEffect(() => {
-    if (!accessToken) return;
-    setIsLoading(false);
-  }, [isAuthenticated]);
-
   // 새 토큰 헤더에 있으면 state 갱신
   useEffect(() => {
     const interceptor = api.interceptors.response.use((res) => {
@@ -62,7 +57,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // reissue 호출: 브라우저 fetch에 credentials: 'include' 로 쿠키 자동 전송
   useEffect(() => {
-    reissueMutate();
+    reissueMutate(undefined, {
+      onSettled: () => {
+        setIsLoading(false);
+      },
+    });
   }, []);
 
   const logout = () => {
