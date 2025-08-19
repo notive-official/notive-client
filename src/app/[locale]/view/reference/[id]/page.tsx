@@ -13,9 +13,9 @@ export default function ArchiveDetailPage({
   params: Promise<ArchiveDetailProps>;
 }) {
   const { id } = use(params);
-  const { isAuthenticated } = useAuth();
+  const { isLoading } = useAuth();
   const { data } = useNoteDetailQuery(`api/archive/notes/${id}`, {
-    enabled: isAuthenticated,
+    enabled: isLoading,
   });
 
   return (
