@@ -1,4 +1,4 @@
-import { createGetQueryWithParams } from "@/lib/reactQuery";
+import { createGetQuery } from "@/lib/reactQuery";
 
 type GetOEmbedParams = {
   url: string;
@@ -16,8 +16,11 @@ type GetOEmbedResponse = {
   thumbnailHeight: number;
   html: string;
 };
-export const getOEmbedKey = "getOEmbed";
-export const useGetOEmbedQuery = createGetQueryWithParams<
-  GetOEmbedResponse,
-  GetOEmbedParams
->("api/oembed", getOEmbedKey);
+export const GetOEmbed = {
+  url: () => "api/oembed",
+  key: (oEmbedUrl: string) => [oEmbedUrl, "getOEmbed"],
+};
+export const useGetOEmbedQuery = createGetQuery<
+  GetOEmbedParams,
+  GetOEmbedResponse
+>();

@@ -7,8 +7,7 @@ interface ModalProps {
   isOpen: boolean;
   open: () => void;
   close: () => void;
-  openNode?: ReactNode;
-  title: string;
+  title?: string;
   className?: string;
   content?: string;
   actionNode?: ReactNode;
@@ -18,25 +17,13 @@ export default function Modal({
   isOpen,
   open,
   close,
-  className = "",
-  openNode,
+  className = "max-w-md",
   title,
   content,
   actionNode,
 }: ModalProps) {
   return (
     <>
-      {openNode && (
-        <Button
-          className={className}
-          onMouseDown={(e) => {
-            open();
-          }}
-        >
-          {openNode}
-        </Button>
-      )}
-
       <Dialog
         open={isOpen}
         as="div"
@@ -47,8 +34,8 @@ export default function Modal({
           <div className="flex min-h-full items-center justify-center p-4">
             <DialogPanel
               transition
-              className="flex flex-col w-full max-w-md rounded-xl bg-secondary shadow-lg
-               p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
+              className={`flex flex-col w-full ${className} rounded-xl bg-secondary shadow-lg
+               p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0`}
             >
               <div className="flex-row flex w-full justify-between px-2">
                 <DialogTitle

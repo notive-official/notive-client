@@ -4,7 +4,8 @@ import Combo from "../common/Combo";
 import { Button } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/16/solid";
 import {
-  listGroupsKey,
+  listGroups,
+  PostGroup,
   PostGroupRequest,
   useListGroupsQuery,
   usePostGroupMutation,
@@ -18,44 +19,61 @@ import ImageUploader from "../common/ImageUploader";
 import { ComboSelection, useCombo } from "@/hooks/useCombo";
 import { useModal } from "@/hooks/useModal";
 import { useErrorBar } from "@/contexts/ErrorBarContext";
+import { useEffect } from "react";
+import { AxiosError } from "axios";
+import { ErrorRes } from "@/lib/type";
 
 export default function ArchiveSetting() {
   const queryClient = useQueryClient();
   const { isAuthenticated } = useAuth();
-  const { mutate: postGroup } = usePostGroupMutation();
-  const { isPublic, thumbnail, changeIsPublic, changeThumbnail } = useEditor();
+  const { mutate: postGroup } = usePostGroupMutation({ url: PostGroup.url() });
+  const { isPublic, thumbnail, changeIsPublic, changeThumbnail, changeGroup } =
+    useEditor();
   const { PostTrans } = useTranslation();
   const { open, close, modalBind } = useModal();
   const { pushWarning, pushSuccess, pushError } = useErrorBar();
 
-  const addGroup = (groupName: string) => {
-    const req: PostGroupRequest = { groupName };
-    postGroup(req, {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: [listGroupsKey] });
-        pushSuccess(PostTrans("message.success.groupCreation"));
-      },
-      onError: (e) => {
-        pushError(PostTrans("message.error.groupCreation"));
-      },
-    });
-  };
-
-  const { isLoading, data } = useListGroupsQuery({
-    staleTime: 1000 * 60 * 5,
-    enabled: isAuthenticated,
+  const { data } = useListGroupsQuery({
+    url: listGroups.url(),
+    key: listGroups.key(),
+    options: {
+      staleTime: 1000 * 60 * 5,
+      enabled: isAuthenticated,
+    },
   });
+
+  const groups =
+    data?.content.map((group) => {
+      const selection: ComboSelection = { id: group.id, name: group.name };
+      return selection;
+    }) ?? [];
+
+  const { selected, query, comboBind } = useCombo({ options: groups });
+
+  useEffect(() => {
+    changeGroup(selected);
+  }, [selected, changeGroup]);
 
   const deleteFile = () => {
     changeThumbnail(null);
   };
 
-  const groups = data?.content.map((group) => {
-    const selection: ComboSelection = { id: group.id, name: group.name };
-    return selection;
-  });
-
-  const { query, comboBind } = useCombo({ options: groups ?? [] });
+  const addGroup = (groupName: string) => {
+    const req: PostGroupRequest = { groupName };
+    postGroup(req, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: listGroups.key() });
+        pushSuccess(PostTrans("message.success.groupCreation"));
+        close();
+      },
+      onError: (e) => {
+        const err = e as AxiosError<ErrorRes>;
+        if (err.response?.data.message)
+          pushError(PostTrans(err.response.data.message));
+        pushError(PostTrans("message.error.groupCreation"));
+      },
+    });
+  };
 
   return (
     <div className="flex flex-col gap-4 w-full">
@@ -127,7 +145,6 @@ export default function ArchiveSetting() {
             />
             <Modal
               key={"addGroupModal"}
-              className="w-full"
               title={PostTrans("setting.group.create.title")}
               actionNode={
                 <div className="flex flex-col items-center justify-center gap-4">

@@ -1,19 +1,25 @@
 import {
-  createGetQueryWithPredefinedUrl,
+  createGetQuery,
   createInfiniteGetQueryWithParams,
   createPostMutation,
 } from "@/lib/reactQuery";
 import { ListRes } from "../../../lib/type";
 
+// 그룹 이름 리스트 조회
 export type GroupResponse = {
   id: string;
   name: string;
 };
-export const listGroupsKey = "listGroups";
-export const useListGroupsQuery = createGetQueryWithPredefinedUrl<
+export const listGroups = {
+  url: () => "api/group/names",
+  key: () => ["listGroups"],
+};
+export const useListGroupsQuery = createGetQuery<
+  void,
   ListRes<GroupResponse>
->("api/group/names", listGroupsKey);
+>();
 
+// 그룹 상세 조회
 type GroupDetailParams = {
   page?: number;
 };
@@ -29,9 +35,15 @@ export const useListGroupDetailsQuery = createInfiniteGetQueryWithParams<
   GroupDetailParams
 >("api/group/metas", listGroupDetailsKey);
 
+// 그룹 생성
 export type PostGroupRequest = {
   groupName: string;
 };
-export const usePostGroupMutation = createPostMutation<PostGroupRequest, void>(
-  "api/group"
-);
+export const PostGroup = {
+  url: () => "api/group",
+};
+export const usePostGroupMutation = createPostMutation<
+  void,
+  PostGroupRequest,
+  void
+>();

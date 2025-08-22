@@ -5,7 +5,11 @@ import { usePathname, useRouter } from "@/i18n/routing";
 import { LanguageIcon, PencilSquareIcon } from "@heroicons/react/16/solid";
 import DropDown, { Item } from "@/components/common/DropDown";
 import { Language } from "@/common/consts/language";
-import { useGetUserProfileQuery, usePutProfileImage } from "@/hooks/api/user";
+import {
+  GetUserProfile,
+  useGetUserProfileQuery,
+  usePutProfileImage,
+} from "@/hooks/api/user";
 import { useAuth } from "@/contexts/AuthContext";
 import Image from "next/image";
 import ImageUploader from "@/components/common/ImageUploader";
@@ -25,7 +29,11 @@ export default function MyPage() {
   const { isAuthenticated } = useAuth();
   const [file, setFile] = useState<File>();
   const { data } = useGetUserProfileQuery({
-    enabled: isAuthenticated,
+    url: GetUserProfile.url(),
+    key: GetUserProfile.key(),
+    options: {
+      enabled: isAuthenticated,
+    },
   });
 
   useEffect(() => {

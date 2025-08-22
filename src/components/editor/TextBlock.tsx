@@ -83,9 +83,9 @@ export default function TextBlock({ block }: TextBlockProps) {
           ref={inputRef}
           value={payload.content}
           className={`${blockType === "PARAGRAPH" && "text-normal"}
-          ${blockType === "H1" && "text-h1"}
-          ${blockType === "H2" && "text-h2"}
-          ${blockType === "H3" && "text-h3"} 
+          ${blockType === "H1" && "text-4xl font-extrabold"}
+          ${blockType === "H2" && "text-2xl font-bold"}
+          ${blockType === "H3" && "text-xl font-semibold"} 
           block w-full resize-none rounded-lg border-none bg-transparent px-3 py-1.5 text-foreground data-focus:outline-none`}
           rows={1}
           placeholder={
