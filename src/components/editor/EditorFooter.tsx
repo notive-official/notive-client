@@ -7,11 +7,11 @@ import { useBlockEditor } from "@/contexts/BlockEditorContext";
 import { useEditor } from "@/contexts/EditorContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { listGroupDetailsKey } from "@/hooks/api/archive/group";
-import { listTagsKey } from "@/hooks/api/archive/tag";
 import { useErrorBar } from "@/contexts/ErrorBarContext";
 import useTranslation from "@/hooks/useTranslation";
 import { listNotesKey, usePostNote } from "@/hooks/api/archive/note";
 import { listArchivesKey } from "@/hooks/api/search";
+import { ListTag } from "@/hooks/api/archive/tag";
 
 export default function EditorFooter() {
   const router = useRouter();
@@ -52,7 +52,7 @@ export default function EditorFooter() {
 
     postNote(data).then((res) => {
       queryClient.invalidateQueries({
-        queryKey: [listTagsKey],
+        queryKey: ListTag.key(),
       });
       queryClient.invalidateQueries({
         queryKey: [listGroupDetailsKey],

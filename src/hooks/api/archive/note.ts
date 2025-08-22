@@ -46,13 +46,15 @@ type BlockResponse = {
 type NoteDetailResponse = {
   meta: NoteSummaryResponse;
   canEdit: boolean;
+  isMarked: boolean;
   tags: string[];
   blocks: BlockResponse[];
 };
-export const noteDetailKey = "listNote";
-
-export const useNoteDetailQuery =
-  createGetQuery<NoteDetailResponse>(listNotesKey);
+export const NoteDetail = {
+  url: (archiveId: string) => `api/archive/notes/${archiveId}`,
+  key: (archiveId: string) => [archiveId, "listNote"],
+};
+export const useNoteDetailQuery = createGetQuery<void, NoteDetailResponse>();
 
 type CreateNoteProps = {
   blocks: EditorBlock[];

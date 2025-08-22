@@ -16,13 +16,19 @@ export default function TextView({ blockType, text }: TextiewProps) {
             </div>
           )}
           {blockType === "H1" && (
-            <h1 className="text-h1">{line.length === 0 ? <br /> : line}</h1>
+            <h1 className="text-4xl font-extrabold">
+              {line.length === 0 ? <br /> : line}
+            </h1>
           )}
           {blockType === "H2" && (
-            <h2 className="text-h2">{line.length === 0 ? <br /> : line}</h2>
+            <h2 className="text-2xl font-bold">
+              {line.length === 0 ? <br /> : line}
+            </h2>
           )}
           {blockType === "H3" && (
-            <h3 className="text-h3">{line.length === 0 ? <br /> : line}</h3>
+            <h3 className="text-xl font-semibold">
+              {line.length === 0 ? <br /> : line}
+            </h3>
           )}
         </div>
       ))}

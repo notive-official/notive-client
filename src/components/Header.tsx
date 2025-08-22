@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@headlessui/react";
-import { useGetUserQuery } from "@/hooks/api/user";
+import { GetUser, useGetUserQuery } from "@/hooks/api/user";
 import Pop from "./common/Pop";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "@/i18n/routing";
@@ -35,8 +35,12 @@ export default function Header() {
   };
 
   const { isLoading: isUserLoading, data } = useGetUserQuery({
-    staleTime: 1000 * 60 * 5,
-    enabled: isAuthenticated,
+    url: GetUser.url(),
+    key: GetUser.key(),
+    options: {
+      staleTime: 1000 * 60 * 5,
+      enabled: isAuthenticated,
+    },
   });
 
   const popTopEntries: PopEntry[] = [
@@ -88,6 +92,7 @@ export default function Header() {
 
   return (
     <header className="w-full p-4 flex justify-between shadow-md text-foreground bg-primary">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <p
         className="flex flex-row items-center font-bold text-2xl cursor-pointer"
         onClick={handleLogoClick}

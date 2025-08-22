@@ -3,7 +3,7 @@
 import Tag from "@/components/common/Tag";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEditor } from "@/contexts/EditorContext";
-import { useListTagsQuery } from "@/hooks/api/archive/tag";
+import { ListTag, useListTagsQuery } from "@/hooks/api/archive/tag";
 import useTrans from "@/hooks/useTranslation";
 import { Button, Input } from "@headlessui/react";
 import Hangul from "hangul-js";
@@ -19,7 +19,11 @@ export default function Tagbar() {
   const [showStoredTag, setShowStoredTag] = useState(false);
 
   const { isAuthenticated } = useAuth();
-  const { data: getTagsRes } = useListTagsQuery({ enabled: isAuthenticated });
+  const { data: getTagsRes } = useListTagsQuery({
+    url: ListTag.url(),
+    key: ListTag.key(),
+    options: { enabled: isAuthenticated },
+  });
 
   const handleAddingTag = (value: string) => {
     addTag(value);

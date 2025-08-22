@@ -1,5 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { useListTagsQuery } from "@/hooks/api/archive/tag";
+import { ListTag, useListTagsQuery } from "@/hooks/api/archive/tag";
 import { Button } from "@headlessui/react";
 import Tag from "../common/Tag";
 
@@ -13,7 +13,11 @@ export default function TagSelectBar({
   selectedTag,
 }: TagSelectBarProps) {
   const { isAuthenticated } = useAuth();
-  const { data } = useListTagsQuery({ enabled: isAuthenticated });
+  const { data } = useListTagsQuery({
+    url: ListTag.url(),
+    key: ListTag.key(),
+    options: { enabled: isAuthenticated },
+  });
   const handleClick = (value: string) => {
     onClick(value);
   };

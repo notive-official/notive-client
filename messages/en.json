@@ -59,6 +59,12 @@
     }
   },
 
+  "ViewPage": {
+    "replicate": "replicate",
+    "edit": "edit",
+    "bookmark": "bookmark"
+  },
+
   "PostPage": {
     "setting": {
       "group": {

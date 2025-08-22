@@ -61,6 +61,12 @@
     }
   },
 
+  "ViewPage": {
+    "replicate": "복제",
+    "edit": "편집",
+    "bookmark": "북마크"
+  },
+
   "PostPage": {
     "setting": {
       "group": {
