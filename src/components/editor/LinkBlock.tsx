@@ -5,6 +5,8 @@ import InputBox from "../common/InputBox";
 import ViewBlock from "../viewer/BlockView";
 import { useFocusBlock } from "@/contexts/FocusBlockContext";
 import useTranslation from "@/hooks/useTranslation";
+import { isValidHttpUrl } from "@/common/utils";
+import { useErrorBar } from "@/contexts/ErrorBarContext";
 
 interface LinkBlockProps {
   block: EditorBlock;
@@ -14,10 +16,14 @@ export function LinkBlock({ block }: LinkBlockProps) {
   const { updateBlock } = useBlockEditor();
   const { focusedBlockId, setFocusedBlockId } = useFocusBlock();
   const { PostTrans } = useTranslation();
+  const { pushWarning } = useErrorBar();
   const [link, setLink] = useState("");
   const { id } = block;
 
   const handleEvent = useCallback(() => {
+    if (!isValidHttpUrl(link)) {
+      return pushWarning("Invalid Url");
+    }
     updateBlock(id, { content: link.trim() });
     setLink("");
   }, [updateBlock, id, link]);

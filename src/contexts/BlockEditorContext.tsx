@@ -2,7 +2,13 @@
 
 import { BlockType } from "@/common/types";
 import { nanoid } from "nanoid";
-import React, { createContext, useContext, useState, useCallback } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+} from "react";
 import { arrayMove } from "@dnd-kit/sortable";
 import { useFocusBlock } from "./FocusBlockContext";
 import { isTextBlock } from "@/common/utils";
@@ -43,6 +49,11 @@ export function BlockEditorProvider({
 }) {
   const { setFocusedBlockId } = useFocusBlock();
   const [blocks, setBlocks] = useState<EditorBlock[]>([]);
+
+  useEffect(() => {
+    const blockId = addNewBlock("PARAGRAPH");
+    setFocusedBlockId(blockId);
+  }, []);
 
   const addNewBlock = (blockType: BlockType): string => {
     const newBlock: EditorBlock = {

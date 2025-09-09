@@ -28,10 +28,11 @@ export default function NoteDetailPage({
         <Viewer
           id={data.meta.id}
           title={data.meta.title}
+          type={data.meta.type}
           thumbnailPath={data.meta.thumbnailPath}
           tags={data.tags}
           hasMarked={data.isMarked}
-          isReplicable={data.meta.isReplicable}
+          isDuplicable={data.meta.isDuplicable}
           canEdit={data.canEdit}
           blocks={data.blocks}
         />

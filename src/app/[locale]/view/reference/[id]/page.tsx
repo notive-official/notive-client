@@ -28,10 +28,11 @@ export default function ArchiveDetailPage({
         <Viewer
           id={data.meta.id}
           title={data.meta.title}
+          type={data.meta.type}
           thumbnailPath={data.meta.thumbnailPath}
           canEdit={data.canEdit}
           hasMarked={data.isMarked}
-          isReplicable={data.meta.isReplicable}
+          isDuplicable={data.meta.isDuplicable}
           tags={data.tags}
           blocks={data.blocks}
         />

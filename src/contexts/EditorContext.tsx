@@ -16,14 +16,16 @@ interface EditorContextType {
   thumbnail: File | null;
   isPublic: boolean;
   archiveType: ArchiveType;
-  isReplicable: boolean;
+  isDuplicable: boolean;
   group: ComboSelection | null;
+  url: string;
   changeTitle: Dispatch<SetStateAction<string>>;
   changeThumbnail: Dispatch<SetStateAction<File | null>>;
   changeGroup: Dispatch<SetStateAction<ComboSelection | null>>;
   changeIsPublic: Dispatch<SetStateAction<boolean>>;
   changeArchiveType: Dispatch<SetStateAction<ArchiveType>>;
-  changeIsReplicable: Dispatch<SetStateAction<boolean>>;
+  changeIsDuplicable: Dispatch<SetStateAction<boolean>>;
+  changeUrl: Dispatch<SetStateAction<string>>;
   addTag: (_tag: string) => void;
   removeTag: (_tag: string) => void;
 }
@@ -34,10 +36,11 @@ export function EditorProvider({ children }: { children: React.ReactNode }) {
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [isPublic, setIsPublic] = useState(false);
   const [archiveType, setArchiveType] = useState<ArchiveType>("NOTE");
-  const [isReplicable, setIsReplicable] = useState(false);
+  const [isDuplicable, setIsDuplicable] = useState(false);
   const [group, setGroup] = useState<ComboSelection | null>(null);
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState<string[]>([]);
+  const [url, setUrl] = useState<string>("");
 
   const addTag = (val: string) => {
     if (!tags.includes(val)) {
@@ -58,14 +61,16 @@ export function EditorProvider({ children }: { children: React.ReactNode }) {
         thumbnail,
         isPublic,
         archiveType,
-        isReplicable,
+        isDuplicable,
         group,
+        url,
         changeTitle: setTitle,
         changeThumbnail: setThumbnail,
         changeGroup: setGroup,
         changeIsPublic: setIsPublic,
         changeArchiveType: setArchiveType,
-        changeIsReplicable: setIsReplicable,
+        changeIsDuplicable: setIsDuplicable,
+        changeUrl: setUrl,
         addTag,
         removeTag,
       }}

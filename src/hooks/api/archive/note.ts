@@ -21,7 +21,7 @@ export type NoteSummaryResponse = {
   tags: string[];
   isPublic: boolean;
   type: ArchiveType;
-  isReplicable: boolean;
+  isDuplicable: boolean;
   summary: string;
   writer: {
     id: string;
@@ -43,7 +43,7 @@ type BlockResponse = {
   payload: string;
 };
 
-type NoteDetailResponse = {
+export type NoteDetailResponse = {
   meta: NoteSummaryResponse;
   canEdit: boolean;
   isMarked: boolean;
@@ -63,7 +63,7 @@ type CreateNoteProps = {
   groupId: string;
   isPublic: boolean;
   archiveType: ArchiveType;
-  isReplicable: boolean;
+  isDuplicable: boolean;
   thumbnail: File | null;
 };
 
@@ -71,7 +71,7 @@ export const usePostNote = () => {
   return {
     postNote: (data: CreateNoteProps) => {
       const form = generateNoteRequestForm(data);
-      return api.post("/api/archive", form, {
+      return api.post("/api/archive/note", form, {
         headers: { "Content-Type": "multipart/form-data" },
       });
     },
@@ -84,7 +84,7 @@ const generateNoteRequestForm = ({
   groupId,
   isPublic,
   archiveType,
-  isReplicable,
+  isDuplicable,
   thumbnail,
 }: CreateNoteProps): FormData => {
   const form = new FormData();
@@ -92,7 +92,7 @@ const generateNoteRequestForm = ({
   if (thumbnail) form.append("thumbnailImage", thumbnail);
   form.append("isPublic", String(isPublic));
   form.append("type", archiveType.toUpperCase());
-  form.append("isReplicable", String(isReplicable));
+  form.append("isDuplicable", String(isDuplicable));
   form.append("groupId", String(groupId));
   form.append("title", title);
   tags.forEach((t, i) => form.append(`tags[${i}]`, t));

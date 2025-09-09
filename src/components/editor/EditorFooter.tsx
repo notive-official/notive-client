@@ -10,19 +10,33 @@ import { listGroupDetailsKey } from "@/hooks/api/archive/group";
 import { useErrorBar } from "@/contexts/ErrorBarContext";
 import useTranslation from "@/hooks/useTranslation";
 import { listNotesKey, usePostNote } from "@/hooks/api/archive/note";
-import { listArchivesKey } from "@/hooks/api/search";
 import { ListTag } from "@/hooks/api/archive/tag";
+import {
+  PostReference,
+  usePostReferenceMutation,
+} from "@/hooks/api/archive/reference";
 
 export default function EditorFooter() {
   const router = useRouter();
   const { blocks } = useBlockEditor();
-  const { title, tags, group, isPublic, archiveType, isReplicable, thumbnail } =
-    useEditor();
+  const {
+    title,
+    tags,
+    group,
+    isPublic,
+    archiveType,
+    isDuplicable,
+    thumbnail,
+    url,
+  } = useEditor();
   const { trimContent } = useBlockEditor();
   const queryClient = useQueryClient();
   const { pushWarning } = useErrorBar();
   const { PostTrans } = useTranslation();
   const { postNote } = usePostNote();
+  const { mutate: postReference } = usePostReferenceMutation({
+    url: PostReference.url(),
+  });
 
   const onSave = () => {
     const trimmedBlocks = trimContent(blocks);
@@ -34,10 +48,6 @@ export default function EditorFooter() {
       pushWarning(PostTrans("message.warning.title"));
       return;
     }
-    if (trimmedBlocks.length === 0) {
-      pushWarning(PostTrans("message.warning.content"));
-      return;
-    }
 
     const data = {
       blocks: trimmedBlocks,
@@ -46,25 +56,53 @@ export default function EditorFooter() {
       groupId: group.id,
       isPublic,
       archiveType,
-      isReplicable,
+      isDuplicable,
       thumbnail,
     };
 
-    postNote(data).then((res) => {
-      queryClient.invalidateQueries({
-        queryKey: ListTag.key(),
+    if (data.archiveType === "NOTE") {
+      if (trimmedBlocks.length === 0) {
+        pushWarning(PostTrans("message.warning.content"));
+        return;
+      }
+      return postNote(data).then((res) => {
+        queryClient.invalidateQueries({
+          queryKey: ListTag.key(),
+        });
+        queryClient.invalidateQueries({
+          queryKey: [listGroupDetailsKey],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [listNotesKey, {}],
+        });
+        // queryClient.invalidateQueries({
+        //   queryKey: [listArchivesKey, {}],
+        // });
+        router.replace(`/view/note/${res.data.id}`);
       });
-      queryClient.invalidateQueries({
-        queryKey: [listGroupDetailsKey],
-      });
-      queryClient.invalidateQueries({
-        queryKey: [listNotesKey, {}],
-      });
-      queryClient.invalidateQueries({
-        queryKey: [listArchivesKey, {}],
-      });
-      router.replace(`/view/note/${res.data.id}`);
-    });
+    }
+
+    if (data.archiveType === "REFERENCE") {
+      if (!url) {
+        pushWarning(PostTrans("message.warning.url"));
+      }
+      return postReference(
+        {
+          title: data.title,
+          tags: data.tags,
+          groupId: data.groupId,
+          type: data.archiveType,
+          isPublic: data.isPublic,
+          isDuplicable: data.isDuplicable,
+          url: url,
+        },
+        {
+          onSuccess(res) {
+            router.replace(`/view/note/${res.id}`);
+          },
+        }
+      );
+    }
   };
 
   return (
