@@ -5,12 +5,15 @@ import { usePathname, useRouter } from "@/i18n/routing";
 import { LanguageIcon, PencilSquareIcon } from "@heroicons/react/16/solid";
 import DropDown, { Item } from "@/components/common/DropDown";
 import { Language } from "@/common/consts/language";
-import { useGetUserProfileQuery, usePutProfileImage } from "@/hooks/api/user";
+import {
+  GetUserProfile,
+  useGetUserProfileQuery,
+  usePutProfileImage,
+} from "@/hooks/api/user";
 import { useAuth } from "@/contexts/AuthContext";
 import Image from "next/image";
 import ImageUploader from "@/components/common/ImageUploader";
 import { useEffect, useState } from "react";
-import api from "@/lib/api";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { useErrorBar } from "@/contexts/ErrorBarContext";
 
@@ -25,7 +28,11 @@ export default function MyPage() {
   const { isAuthenticated } = useAuth();
   const [file, setFile] = useState<File>();
   const { data } = useGetUserProfileQuery({
-    enabled: isAuthenticated,
+    url: GetUserProfile.url(),
+    key: GetUserProfile.key(),
+    options: {
+      enabled: isAuthenticated,
+    },
   });
 
   useEffect(() => {
@@ -92,7 +99,4 @@ export default function MyPage() {
       </div>
     </div>
   );
-}
-function PostTrans(arg0: string): string {
-  throw new Error("Function not implemented.");
 }

@@ -38,6 +38,7 @@ export default function Combo({
       <Combobox value={selected} onChange={setSelected}>
         <div className="relative">
           <ComboboxInput
+            value={query}
             className={clsx(
               "w-full rounded-lg border-none bg-secondary py-1.5 pl-3 text-sm/6 text-foreground",
               "data-focus:outline-none shadow-sm"

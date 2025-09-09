@@ -27,3 +27,10 @@ export type SliceRes<T> = {
   content: Array<T>;
   meta: SliceMeta;
 };
+
+export type ErrorRes = {
+  timestamp: string;
+  status: number;
+  error: string;
+  message: string;
+};

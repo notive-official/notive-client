@@ -59,6 +59,15 @@
     }
   },
 
+  "ViewPage": {
+    "duplicate": "duplicate",
+    "edit": "edit",
+    "bookmark": "bookmark",
+    "link": {
+      "visit": "Visit site"
+    }
+  },
+
   "PostPage": {
     "setting": {
       "group": {
@@ -73,6 +82,7 @@
     },
     "title": { "placeholder": "Enter your title." },
     "tag": { "placeholder": "Press enter to add a tag." },
+    "link": { "placeholder": "Enter your link." },
     "block": {
       "text": {
         "placeholder": "Enter your content."
@@ -95,7 +105,8 @@
         "title": "Title is necessary.",
         "group": "Group is necessary.",
         "content": "Content is necessary.",
-        "groupCreation": "Enter your new group name."
+        "groupCreation": "Enter your new group name.",
+        "url": "Enter your url."
       },
       "success": {
         "groupCreation": "Group created."

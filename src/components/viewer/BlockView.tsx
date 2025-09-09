@@ -1,6 +1,5 @@
 "use client";
 
-import { EditorBlock } from "@/contexts/BlockEditorContext";
 import TextView from "./TextView";
 import LinkView from "./LinkView";
 import ImageView from "./ImageView";
@@ -21,9 +20,7 @@ export default function BlockView({ block }: ViewBlockProps) {
     <div className="rounded-xl w-full">
       {payload ? (
         <div>
-          {isImageBlock(type) && (
-            <ImageView filePath={payload} downloadable={true} />
-          )}
+          {isImageBlock(type) && <ImageView filePath={payload} />}
           {isLinkBlock(type) && <LinkView url={payload} />}
           {isTextBlock(type) && <TextView blockType={type} text={payload} />}
         </div>

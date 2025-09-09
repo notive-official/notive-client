@@ -17,3 +17,12 @@ export const isLinkBlock = (blockType: BlockType): boolean => {
   if (blockType === "LINK") return true;
   return false;
 };
+
+export function isValidHttpUrl(s: string): boolean {
+  try {
+    const u = new URL(s);
+    return u.protocol === "http:" || u.protocol === "https:";
+  } catch {
+    return false;
+  }
+}

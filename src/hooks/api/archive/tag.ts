@@ -1,7 +1,8 @@
-import { createGetQueryWithPredefinedUrl } from "@/lib/reactQuery";
+import { createGetQuery } from "@/lib/reactQuery";
 import { ListRes } from "../../../lib/type";
 
-export const listTagsKey = "listTags";
-export const useListTagsQuery = createGetQueryWithPredefinedUrl<
-  ListRes<string>
->("api/archive/tags", listTagsKey);
+export const ListTag = {
+  url: () => "api/archive/tags",
+  key: () => ["listTags"],
+};
+export const useListTagsQuery = createGetQuery<void, ListRes<string>>();

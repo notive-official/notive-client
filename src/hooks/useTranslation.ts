@@ -7,6 +7,7 @@ const useTranslation = () => {
   const LoginTrans = useTranslations("LoginPage");
   const MyTrans = useTranslations("MyPage");
   const PostTrans = useTranslations("PostPage");
+  const ViewTrans = useTranslations("ViewPage");
   return {
     LanguageSelectTrans,
     MainTrans,
@@ -14,6 +15,7 @@ const useTranslation = () => {
     LoginTrans,
     MyTrans,
     PostTrans,
+    ViewTrans,
   };
 };
 

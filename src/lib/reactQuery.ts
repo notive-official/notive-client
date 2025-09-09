@@ -1,5 +1,4 @@
 import {
-  MutationFunction,
   QueryFunction,
   useInfiniteQuery,
   useMutation,
@@ -10,92 +9,99 @@ import {
 import api from "./api";
 import { SliceRes } from "@/lib/type";
 
-export function createPostMutation<TRequest, TResponse>(url: string) {
-  const poster = async (body: TRequest): Promise<TResponse> => {
-    const { data } = await api.post<TResponse>(url, body);
-    return data;
-  };
-  return (
-    options?: Omit<UseMutationOptions<TResponse, Error, TRequest>, "mutationFn">
-  ) =>
-    useMutation<TResponse, Error, TRequest>({
-      mutationFn: poster as MutationFunction<TResponse, TRequest>,
-      ...options,
-    });
-}
-
-export function createPutMutation<TRequest, TResponse>(url: string) {
-  const poster = async (body: TRequest): Promise<TResponse> => {
-    const { data } = await api.put<TResponse>(url, body);
-    return data;
-  };
-  return (
-    options?: Omit<UseMutationOptions<TResponse, Error, TRequest>, "mutationFn">
-  ) =>
-    useMutation<TResponse, Error, TRequest>({
-      mutationFn: poster as MutationFunction<TResponse, TRequest>,
-      ...options,
-    });
-}
-
-export function createGetQuery<TResponse>(queryKey: string) {
-  const fetcher = async (url: string): Promise<TResponse> => {
-    const { data } = await api.get<TResponse>(url);
-    return data;
-  };
-  return (
+export function createPostMutation<TParams, TRequest, TResponse>() {
+  const poster = async (
     url: string,
-    options?: Omit<
-      UseQueryOptions<TResponse, unknown, TResponse>,
-      "queryKey" | "queryFn"
-    >
-  ) =>
-    useQuery<TResponse, unknown, TResponse>({
-      queryKey: [url, queryKey],
-      queryFn: () => fetcher(url),
-      ...options,
-    });
-}
-
-export function createGetQueryWithPredefinedUrl<TResponse>(
-  url: string,
-  queryKey: string
-) {
-  const fetcher = async (): Promise<TResponse> => {
-    const { data } = await api.get<TResponse>(url);
+    params?: TParams,
+    body?: TRequest
+  ): Promise<TResponse> => {
+    const { data } = await api.post<TResponse>(url, body, { params });
     return data;
   };
-  return (
+
+  type Props = {
+    url: string;
+    params?: TParams;
     options?: Omit<
-      UseQueryOptions<TResponse, unknown, TResponse>,
-      "queryKey" | "queryFn"
-    >
-  ) =>
-    useQuery<TResponse, unknown, TResponse>({
-      queryKey: [queryKey],
-      queryFn: fetcher,
+      UseMutationOptions<TResponse, Error, TRequest>,
+      "mutationFn"
+    >;
+  };
+
+  return ({ url, params, options }: Props) =>
+    useMutation<TResponse, Error, TRequest>({
+      mutationFn: (variables: TRequest) => poster(url, params, variables),
       ...options,
     });
 }
 
-export function createGetQueryWithParams<TResponse, TParams>(
-  url: string,
-  queryKey: string
-) {
-  const fetcher = async (params?: TParams): Promise<TResponse> => {
+export function createPutMutation<TParams, TRequest, TResponse>() {
+  const puter = async (
+    url: string,
+    params?: TParams,
+    body?: TRequest
+  ): Promise<TResponse> => {
+    const { data } = await api.put<TResponse>(url, body, { params });
+    return data;
+  };
+
+  type Props = {
+    url: string;
+    params?: TParams;
+    options?: Omit<
+      UseMutationOptions<TResponse, Error, TRequest>,
+      "mutationFn"
+    >;
+  };
+
+  return ({ url, params, options }: Props) =>
+    useMutation<TResponse, Error, TRequest>({
+      mutationFn: (variables: TRequest) => puter(url, params, variables),
+      ...options,
+    });
+}
+
+export function createDeleteMutation<TParams, TResponse>() {
+  const deleter = async (url: string, params?: TParams): Promise<TResponse> => {
+    const { data } = await api.delete<TResponse>(url, { params });
+    return data;
+  };
+
+  type Props = {
+    url: string;
+    params?: TParams;
+    options?: Omit<
+      UseMutationOptions<TResponse, Error, TResponse>,
+      "mutationFn"
+    >;
+  };
+
+  return ({ url, params, options }: Props) =>
+    useMutation<TResponse, Error, TResponse>({
+      mutationFn: () => deleter(url, params),
+      ...options,
+    });
+}
+
+export function createGetQuery<TParams, TResponse>() {
+  const fetcher = async (url: string, params?: TParams): Promise<TResponse> => {
     const { data } = await api.get<TResponse>(url, { params });
     return data;
   };
-  return (
-    params: TParams,
+
+  type Props = {
+    url: string;
+    key: string[];
+    params?: TParams;
     options?: Omit<
       UseQueryOptions<TResponse, unknown, TResponse>,
       "queryKey" | "queryFn"
-    >
-  ) =>
+    >;
+  };
+  return ({ url, key, params, options }: Props) =>
     useQuery<TResponse, unknown, TResponse>({
-      queryKey: [queryKey, params],
-      queryFn: () => fetcher(params),
+      queryKey: key,
+      queryFn: () => fetcher(url, params),
       ...options,
     });
 }

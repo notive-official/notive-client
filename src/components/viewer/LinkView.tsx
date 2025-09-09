@@ -1,23 +1,21 @@
-import { getOEmbedKey, useGetOEmbedQuery } from "@/hooks/api/archive/oembed";
-import { useQueryClient } from "@tanstack/react-query";
+"use client";
+
+import { GetOEmbed, useGetOEmbedQuery } from "@/hooks/api/archive/oembed";
 import Image from "next/image";
 import { useCallback, memo } from "react";
 
 export function LinkView({ url }: { url: string }) {
-  const queryClient = useQueryClient();
-  const { data: oEmbed, isError } = useGetOEmbedQuery(
-    { url },
-    {
+  const { data: oEmbed, isError } = useGetOEmbedQuery({
+    url: GetOEmbed.url(),
+    key: GetOEmbed.key(url),
+    params: { url },
+    options: {
       enabled: Boolean(url),
       retry: false,
       staleTime: 1000 * 60 * 5, // 5분
       refetchOnWindowFocus: false,
-    }
-  );
-
-  if (isError) {
-    queryClient.invalidateQueries({ queryKey: [getOEmbedKey, { url }] });
-  }
+    },
+  });
 
   const handleClick = useCallback(() => {
     window.open(
