@@ -1,11 +1,8 @@
 import Image from "next/image";
-import { ArrowDownTrayIcon } from "@heroicons/react/16/solid";
-import { useState } from "react";
 import path from "path";
 
 interface ImageViewProps {
   filePath: string;
-  downloadable?: boolean;
   width?: number;
   height?: number;
 }

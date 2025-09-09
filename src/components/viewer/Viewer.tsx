@@ -2,7 +2,7 @@
 
 import BlockView from "./BlockView";
 import Tag from "../common/Tag";
-import { BlockType } from "@/common/types";
+import { ArchiveType, BlockType } from "@/common/types";
 import ThumbnailView from "./ThumbnailView";
 import { Button } from "@headlessui/react";
 import { PencilIcon, DocumentArrowUpIcon } from "@heroicons/react/24/outline";
@@ -18,6 +18,7 @@ import {
 import { useErrorBar } from "@/contexts/ErrorBarContext";
 import { AxiosError } from "axios";
 import { ErrorRes } from "@/lib/type";
+import { LinkDetailView } from "./LinkDetailView";
 
 interface ViewerProps {
   id: string;
@@ -26,7 +27,8 @@ interface ViewerProps {
   tags: string[];
   canEdit: boolean;
   hasMarked: boolean;
-  isReplicable: boolean;
+  isDuplicable: boolean;
+  type: ArchiveType;
   blocks: {
     id: string;
     type: BlockType;
@@ -39,8 +41,9 @@ export default function Viewer({
   id,
   title,
   thumbnailPath,
-  isReplicable,
+  isDuplicable,
   hasMarked,
+  type,
   tags,
   canEdit,
   blocks,
@@ -92,11 +95,11 @@ export default function Viewer({
             return <Tag key={tag} value={tag} />;
           })}
         </div>
-        <ThumbnailView thumbnailPath={thumbnailPath} />
+        {type === "NOTE" && <ThumbnailView thumbnailPath={thumbnailPath} />}
         <div className="flex flex-row gap-2">
-          {isReplicable && (
+          {isDuplicable && (
             <span
-              title={ViewTrans("replicate")}
+              title={ViewTrans("duplicate")}
               className="cursor-pointer rounded-md bg-muted w-fit"
             >
               <Button className="rounded-md click-effect w-fit py-1 px-3 text-muted-foreground">
@@ -130,13 +133,22 @@ export default function Viewer({
         </div>
       </div>
 
-      <div className="flex flex-col w-full gap-8 lg:p-8 lg:overflow-y-auto">
-        <div className="flex flex-col gap-2">
-          {blocks.map((block) => (
-            <BlockView key={block.id} block={block} />
-          ))}
+      {type === "NOTE" && (
+        <div className="flex flex-col w-full gap-8 lg:p-8 lg:overflow-y-auto">
+          <div className="flex flex-col gap-2">
+            {blocks?.map((block) => (
+              <BlockView key={block.id} block={block} />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
+      {type === "REFERENCE" && (
+        <div className="flex flex-col w-full gap-8 lg:p-8 lg:overflow-y-auto">
+          <div className="flex flex-col gap-2">
+            <LinkDetailView url={blocks[0].payload} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

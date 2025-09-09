@@ -14,7 +14,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import Image from "next/image";
 import ImageUploader from "@/components/common/ImageUploader";
 import { useEffect, useState } from "react";
-import api from "@/lib/api";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { useErrorBar } from "@/contexts/ErrorBarContext";
 
@@ -100,7 +99,4 @@ export default function MyPage() {
       </div>
     </div>
   );
-}
-function PostTrans(arg0: string): string {
-  throw new Error("Function not implemented.");
 }

@@ -7,24 +7,17 @@ import Tagbar from "./Tagbar";
 import ToolBar from "./ToolBar";
 import useTrans from "@/hooks/useTranslation";
 import { useBlockEditor } from "@/contexts/BlockEditorContext";
-import { useEffect } from "react";
 import { useEditor } from "@/contexts/EditorContext";
-import { useFocusBlock } from "@/contexts/FocusBlockContext";
 
-export default function Editor() {
+export default function BlockEditor() {
   const { PostTrans } = useTrans();
-  const { blocks, reorderBlocks, addNewBlock } = useBlockEditor();
-  const { setFocusedBlockId } = useFocusBlock();
-  const { changeTitle } = useEditor();
-
-  useEffect(() => {
-    const blockId = addNewBlock("PARAGRAPH");
-    setFocusedBlockId(blockId);
-  }, []);
+  const { blocks, reorderBlocks } = useBlockEditor();
+  const { title, changeTitle } = useEditor();
 
   return (
-    <div>
+    <div className="pb-32">
       <Input
+        value={title}
         className="text-h1 px-6 py-4 bg-reverse-5 w-full rounded-xl data-focus-outline-effect"
         placeholder={PostTrans("title.placeholder")}
         onChange={(e) => changeTitle(e.target.value)}

@@ -62,9 +62,12 @@
   },
 
   "ViewPage": {
-    "replicate": "복제",
+    "duplicate": "복제",
     "edit": "편집",
-    "bookmark": "북마크"
+    "bookmark": "북마크",
+    "link": {
+      "visit": "사이트 방문하기"
+    }
   },
 
   "PostPage": {
@@ -81,6 +84,7 @@
     },
     "title": { "placeholder": "제목을 입력해주세요." },
     "tag": { "placeholder": "Enter를 눌러 태그를 등록해주세요." },
+    "link": { "placeholder": "링크를 입력해주세요." },
     "block": {
       "text": {
         "placeholder": "내용을 입력해주세요."
@@ -103,7 +107,8 @@
         "title": "제목을 입력해주세요.",
         "group": "그룹을 입력해주세요.",
         "content": "내용을 입력해주세요.",
-        "groupCreation": "추가할 그룹명을 입력해주세요."
+        "groupCreation": "추가할 그룹명을 입력해주세요.",
+        "url": "Link 타입일 경우 url을 입력해주세요."
       },
       "success": {
         "groupCreation": "그룹이 생성되었습니다."

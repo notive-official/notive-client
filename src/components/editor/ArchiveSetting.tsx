@@ -23,12 +23,25 @@ import { useEffect } from "react";
 import { AxiosError } from "axios";
 import { ErrorRes } from "@/lib/type";
 
-export default function ArchiveSetting() {
+interface ArchiveSettingProps {
+  thumnailUpload?: boolean;
+}
+
+export default function ArchiveSetting({
+  thumnailUpload = true,
+}: ArchiveSettingProps) {
   const queryClient = useQueryClient();
   const { isAuthenticated } = useAuth();
   const { mutate: postGroup } = usePostGroupMutation({ url: PostGroup.url() });
-  const { isPublic, thumbnail, changeIsPublic, changeThumbnail, changeGroup } =
-    useEditor();
+  const {
+    isPublic,
+    thumbnail,
+    isDuplicable,
+    changeIsPublic,
+    changeThumbnail,
+    changeGroup,
+    changeIsDuplicable,
+  } = useEditor();
   const { PostTrans } = useTranslation();
   const { open, close, modalBind } = useModal();
   const { pushWarning, pushSuccess, pushError } = useErrorBar();
@@ -78,34 +91,36 @@ export default function ArchiveSetting() {
   return (
     <div className="flex flex-col gap-4 w-full">
       {/* 썸네일 선택 */}
-      <section className="flex flex-col h-full md:gap-5">
-        <div className="relative w-full aspect-video bg-transparent md:block">
-          <ImageUploader
-            button={
-              <div className="w-full h-full rounded-xl overflow-hidden items-center justify-center">
-                {thumbnail ? (
-                  <ImageView filePath={URL.createObjectURL(thumbnail)} />
-                ) : (
-                  <div className="flex justify-center items-center w-full h-full cursor-pointer bg-reverse-25 text-white border-primary border-2 border-dashed ">
-                    <p>{PostTrans("setting.thumbnail.placeholder")}</p>
-                  </div>
-                )}
-              </div>
-            }
-            handleFileChange={(file) => changeThumbnail(file)}
-          />
-          {thumbnail && (
-            <Button
-              className="absolute -top-2 -right-2 flex justify-center items-center click-effect"
-              onClick={deleteFile}
-            >
-              <div className="w-full h-full p-1 rounded-xl bg-reverse-75">
-                <XMarkIcon className="w-5 h-5 text-white" />
-              </div>
-            </Button>
-          )}
-        </div>
-      </section>
+      {thumnailUpload && (
+        <section className="flex flex-col h-full md:gap-5">
+          <div className="relative w-full aspect-video bg-transparent md:block">
+            <ImageUploader
+              button={
+                <div className="w-full h-full rounded-xl overflow-hidden items-center justify-center">
+                  {thumbnail ? (
+                    <ImageView filePath={URL.createObjectURL(thumbnail)} />
+                  ) : (
+                    <div className="flex justify-center items-center w-full h-full cursor-pointer bg-reverse-25 text-white border-primary border-2 border-dashed ">
+                      <p>{PostTrans("setting.thumbnail.placeholder")}</p>
+                    </div>
+                  )}
+                </div>
+              }
+              handleFileChange={(file) => changeThumbnail(file)}
+            />
+            {thumbnail && (
+              <Button
+                className="absolute -top-2 -right-2 flex justify-center items-center click-effect"
+                onClick={deleteFile}
+              >
+                <div className="w-full h-full p-1 rounded-xl bg-reverse-75">
+                  <XMarkIcon className="w-5 h-5 text-white" />
+                </div>
+              </Button>
+            )}
+          </div>
+        </section>
+      )}
 
       <section className="flex flex-col gap-2 w-full">
         {/* 공개 선택 */}
@@ -116,6 +131,20 @@ export default function ArchiveSetting() {
               {isPublic ? "public" : "private"}
             </p>
             <ToggleSwitch enabled={isPublic} onChange={changeIsPublic} />
+          </div>
+        </div>
+
+        {/* 복제 선택 */}
+        <div className="flex flex-row items-center justify-between">
+          <p className="text-md text-foreground p-2">{"Duplicability"}</p>
+          <div className="flex flex-row justify-between items-center gap-4">
+            <p className="text-sm text-muted-foreground">
+              {isDuplicable ? "allow" : "deny"}
+            </p>
+            <ToggleSwitch
+              enabled={isDuplicable}
+              onChange={changeIsDuplicable}
+            />
           </div>
         </div>
 

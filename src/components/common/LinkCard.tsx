@@ -1,6 +1,8 @@
+import useTranslation from "@/hooks/useTranslation";
 import { useRouter } from "@/i18n/routing";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/16/solid";
 import Image from "next/image";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 interface CardProps {
   id: string;
@@ -12,16 +14,18 @@ interface CardProps {
   thumbnailUrl: string;
 }
 
-export default function MainCard({
+export default function LinkCard({
   id,
   title,
   writer,
   thumbnailUrl,
 }: CardProps) {
   const router = useRouter();
+  const { ViewTrans } = useTranslation();
   const handleClick = () => {
     router.push(`/view/note/${id}`);
   };
+
   return (
     <div className="flex flex-col w-auto cursor-pointer" onClick={handleClick}>
       {/* 썸네일: 높이 통일, 가로는 이미지 비율에 맞춤 */}

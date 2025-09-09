@@ -56,7 +56,7 @@ export default function Tagbar() {
         {showStoredTag && (
           <div
             className="absolute left-0 right-0 top-full
-                 mt-1 z-20 rounded-xl bg-contrast-sub p-2 shadow-lg
+                 mt-1 z-20 rounded-xl bg-muted p-2 shadow-lg
                  min-h-10 max-h-40 overflow-y-auto"
             onMouseDown={(e) => e.preventDefault()}
           >
