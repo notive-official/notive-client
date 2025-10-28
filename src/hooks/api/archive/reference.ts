@@ -1,9 +1,5 @@
 import { ArchiveType } from "@/common/types";
-import {
-  createGetQuery,
-  createInfiniteGetQueryWithParams,
-  createPostMutation,
-} from "@/lib/reactQuery";
+import { createPostMutation, createPutMutation } from "@/lib/reactQuery";
 
 type PostReferenceRequest = {
   title: string;
@@ -26,29 +22,23 @@ export const usePostReferenceMutation = createPostMutation<
   PostReferenceResponse
 >();
 
-type LinkParams = {
-  search?: string;
-  tag?: string;
-  sort?: string;
-  order?: "asc" | "desc";
+type PutReferenceRequest = {
+  title?: string;
+  tags?: string[];
+  groupId?: string;
+  isPublic?: boolean;
+  type?: ArchiveType;
+  isDuplicable?: boolean;
+  url?: string;
 };
-export type LinkSummaryResponse = {
+type PutReferenceResponse = {
   id: string;
-  title: string;
-  thumbnailPath: string;
-  tags: string[];
-  isPublic: boolean;
-  type: ArchiveType;
-  isDuplicable: boolean;
-  writer: {
-    id: string;
-    nickname: string;
-    profileImagePath: string;
-  };
 };
-
-export const listLinksKey = "listReferences";
-export const useListLinksQuery = createInfiniteGetQueryWithParams<
-  LinkSummaryResponse,
-  LinkParams
->("api/archive/references", listLinksKey);
+export const PutReference = {
+  url: (archiveId: string) => `api/archive/reference/${archiveId}`,
+};
+export const usePutReferenceMutation = createPutMutation<
+  void,
+  PutReferenceRequest,
+  PutReferenceResponse
+>();

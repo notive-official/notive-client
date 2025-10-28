@@ -12,7 +12,7 @@ import { useState } from "react";
 
 export default function Tagbar() {
   const { PostTrans } = useTrans();
-  const { tags: addedTags, addTag, removeTag } = useEditor();
+  const { state, addTag, removeTag } = useEditor();
 
   const [input, setInput] = useState("");
   const [isComposing, setIsComposing] = useState(false);
@@ -75,10 +75,10 @@ export default function Tagbar() {
         )}
       </div>
       <div className="flex flex-row flex-wrap gap-2 my-3">
-        {addedTags.map((addedTag) => {
+        {state.tags.map((tag) => {
           return (
-            <div key={addedTag} onClick={() => removeTag(addedTag)}>
-              <Tag value={addedTag} isRemovable={true} />
+            <div key={tag} onClick={() => removeTag(tag)}>
+              <Tag value={tag} isRemovable={true} />
             </div>
           );
         })}

@@ -1,13 +1,11 @@
 import { useCallback, useMemo, useState } from "react";
 
-type UseModalnit = {
-  isOpened?: boolean | null;
-};
-
-export function useModal(init?: {
+type UseModalInit = {
   isOpened?: boolean;
   onChange?: (v: boolean) => void;
-}) {
+};
+
+export function useModal(init?: UseModalInit) {
   const [isOpen, setIsOpen] = useState(false);
 
   const open = useCallback(() => setIsOpen(true), [setIsOpen]);

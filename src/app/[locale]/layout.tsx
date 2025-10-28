@@ -37,7 +37,6 @@ export default async function RootLayout({
           <ErrorBarProvider listenGlobal position="bottom" align="left">
             <Header />
             <main className="flex-1 h-full overflow-hidden">{children}</main>
-            <Footer />
           </ErrorBarProvider>
         </ClientProviders>
       </body>

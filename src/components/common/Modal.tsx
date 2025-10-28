@@ -1,7 +1,5 @@
-import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { Dispatch, ReactNode, SetStateAction } from "react";
-import { XMarkIcon } from "@heroicons/react/24/solid";
-import { useModal } from "@/hooks/useModal";
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import { ReactNode } from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -34,17 +32,17 @@ export default function Modal({
           <div className="flex min-h-full items-center justify-center p-4">
             <DialogPanel
               transition
-              className={`flex flex-col w-full ${className} rounded-xl bg-secondary shadow-lg
+              className={`flex flex-col w-full ${className} rounded-xl bg-surface border-4 border-muted-foreground shadow-lg
                p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0`}
             >
-              <div className="flex-row flex w-full justify-between px-2">
+              <div className="flex-col flex w-full justify-between px-2">
                 <DialogTitle
                   as="h3"
                   className="text-base/7 font-medium text-foreground"
                 >
                   {title}
                 </DialogTitle>
-                <p className="mt- text-sm/6 text-white/50">{content}</p>
+                <p className="mt- text-sm/6 text-muted-foreground">{content}</p>
               </div>
               {actionNode}
             </DialogPanel>
