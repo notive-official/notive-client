@@ -13,13 +13,10 @@ import EditorFooter, {
 import { EditorProvider } from "@/contexts/EditorContext";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { useErrorBar } from "@/contexts/ErrorBarContext";
+import { usePatchNote } from "@/hooks/api/archive/note";
 import {
-  generateNotePatchRequestForm,
-  usePatchNote,
-} from "@/hooks/api/archive/note";
-import {
-  usePostReferenceMutation,
-  PostReference,
+  PutReference,
+  usePutReferenceMutation,
 } from "@/hooks/api/archive/reference";
 import useTranslation from "@/hooks/useTranslation";
 import { useRouter } from "@/i18n/routing";
@@ -48,8 +45,8 @@ export default function ArchiveEditPage({
   const { pushWarning } = useErrorBar();
   const { PostTrans } = useTranslation();
   const { patchNote } = usePatchNote();
-  const { mutate: postReference } = usePostReferenceMutation({
-    url: PostReference.url(),
+  const { mutate: putReference } = usePutReferenceMutation({
+    url: PutReference.url(id),
   });
 
   const onUpdate = (data: UpdateEditorState) => {
@@ -80,10 +77,6 @@ export default function ArchiveEditPage({
       thumbnail: data.thumbnail?.file,
     };
 
-    generateNotePatchRequestForm(body).forEach((v, k) =>
-      console.log(k + ": " + v)
-    );
-
     if (data.type === "NOTE") {
       if (data.blocks?.length === 0) {
         pushWarning(PostTrans("message.warning.content"));
@@ -91,24 +84,26 @@ export default function ArchiveEditPage({
       }
 
       return patchNote(id, body).then((res) => {
-        router.push(`/post/${res.data.id}`);
         queryClient.invalidateQueries({ queryKey: ArchiveDetail.key(id) });
+        router.push(`/post/${res.data.id}`);
       });
     }
 
-    // if (data.type === "REFERENCE") {
-    //   if (!state.url) {
-    //     pushWarning(PostTrans("message.warning.url"));
-    //   }
-    //   return postReference(
-    //     { ...data, url: state.url },
-    //     {
-    //       onSuccess(res) {
-    //         router.push(`/post/${res.id}`);
-    //       },
-    //     }
-    //   );
-    // }
+    if (data.type === "REFERENCE") {
+      if (data.url && data.url.length === 0) {
+        pushWarning(PostTrans("message.warning.url"));
+      }
+      console.log(data);
+      return putReference(
+        { ...data, url: data.url },
+        {
+          onSuccess(res) {
+            queryClient.invalidateQueries({ queryKey: ArchiveDetail.key(id) });
+            router.push(`/post/${res.id}`);
+          },
+        }
+      );
+    }
   };
 
   if (!archive)
