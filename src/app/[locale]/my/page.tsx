@@ -16,6 +16,7 @@ import ImageUploader from "@/components/common/ImageUploader";
 import { useEffect, useState } from "react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { useErrorBar } from "@/contexts/ErrorBarContext";
+import { DEFAULT_PROFILE_PATH } from "@/common/consts/defaultImage";
 
 export default function MyPage() {
   useRequireAuth();
@@ -57,7 +58,11 @@ export default function MyPage() {
             <div className="relative size-[120px]">
               <div className="relative w-[120px] h-[120px] rounded-full overflow-hidden">
                 <Image
-                  src={file ? URL.createObjectURL(file) : data.profileImagePath}
+                  src={
+                    file
+                      ? URL.createObjectURL(file)
+                      : data.profileImagePath ?? DEFAULT_PROFILE_PATH
+                  }
                   alt={"profile"}
                   fill
                   sizes="100px"

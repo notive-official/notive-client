@@ -15,7 +15,15 @@ interface LinkEditorProps {
 
 export function LinkEditor() {
   const { PostTrans } = useTranslation();
-  const { title, changeTitle, changeUrl, url: editorUrl } = useEditor();
+  const { state, setState } = useEditor();
+
+  const changeTitle = (newTitle: string) => {
+    setState({ ...state, title: newTitle });
+  };
+
+  const changeUrl = (newUrl: string) => {
+    setState({ ...state, url: newUrl });
+  };
   const [url, setUrl] = useState("");
   const { pushWarning } = useErrorBar();
 
@@ -23,14 +31,14 @@ export function LinkEditor() {
     if (!isValidHttpUrl(url)) {
       return pushWarning("Invalid Url");
     }
-    changeUrl(url);
+    changeUrl(url.trim());
     setUrl("");
   }, [changeUrl, url]);
 
   return (
     <div className="pb-32">
       <Input
-        value={title}
+        value={state.title}
         className="px-6 py-4 bg-reverse-5 w-full rounded-xl data-focus-outline-effect"
         placeholder={PostTrans("title.placeholder")}
         onChange={(e) => changeTitle(e.target.value)}
@@ -45,7 +53,7 @@ export function LinkEditor() {
           buttonIcon={<ArrowUpIcon className="w-5 h-5" />}
         />
 
-        {editorUrl && <LinkDetailView url={editorUrl} />}
+        {state.url && <LinkDetailView url={state.url} />}
       </div>
     </div>
   );

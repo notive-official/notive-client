@@ -42,14 +42,14 @@ export default function InputBox({
               onAction?.();
             }
           }}
-          className="block w-full rounded-xl border-none text-foreground px-4 py-2 bg-reverse-5 data-focus-outline-effect"
+          className="block w-full rounded-xl border-none text-foreground px-4 py-2 bg-reverse-5 outline-none"
           placeholder={placeholder}
           onChange={(e) => handleChange(e.target.value)}
           value={value}
           autoFocus={autoFocus}
         />
         <Button
-          className="p-2 flex justify-center items-center click-effect"
+          className="p-2 flex justify-center items-center click-effect text-muted-foreground hover:text-foreground"
           onClick={() => {
             if (!isComposing && value !== "") {
               onAction?.();

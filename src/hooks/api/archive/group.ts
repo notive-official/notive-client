@@ -1,16 +1,19 @@
 import {
+  createDeleteMutation,
   createGetQuery,
   createInfiniteGetQueryWithParams,
   createPostMutation,
+  createPutMutation,
 } from "@/lib/reactQuery";
 import { ListRes } from "../../../lib/type";
+import { ArchiveType } from "@/common/types";
 
 // 그룹 이름 리스트 조회
 export type GroupResponse = {
   id: string;
   name: string;
 };
-export const listGroups = {
+export const ListGroups = {
   url: () => "api/group/names",
   key: () => ["listGroups"],
 };
@@ -19,21 +22,28 @@ export const useListGroupsQuery = createGetQuery<
   ListRes<GroupResponse>
 >();
 
-// 그룹 상세 조회
-type GroupDetailParams = {
-  page?: number;
+// 그룹 메타 조회
+export const getGroupMeta = {
+  url: (groupId: string) => `api/group/metas/${groupId}`,
+  key: (groupId: string) => [groupId, "getGroupMeta"],
 };
+export const useGetGroupMetaQuery = createGetQuery<void, GroupResponse>();
+
+// 그룹 상세 조회
 export type GroupDetailResponse = {
   id: string;
   name: string;
-  thumbnails: string[];
+  thumbnails: Array<string | null>;
   totalElements: number;
 };
-export const listGroupDetailsKey = "listGroupDetails";
+export const ListGroupDetails = {
+  url: () => "api/group/metas",
+  key: () => ["listGroupDetails"],
+};
 export const useListGroupDetailsQuery = createInfiniteGetQueryWithParams<
   GroupDetailResponse,
-  GroupDetailParams
->("api/group/metas", listGroupDetailsKey);
+  void
+>();
 
 // 그룹 생성
 export type PostGroupRequest = {
@@ -47,3 +57,45 @@ export const usePostGroupMutation = createPostMutation<
   PostGroupRequest,
   void
 >();
+
+// 그룹 수정
+export type PutGroupRequest = {
+  groupName: string;
+};
+export const PutGroup = {
+  url: (groupId: string) => `api/group/${groupId}`,
+};
+export const usePutGroupMutation = createPutMutation<
+  void,
+  PutGroupRequest,
+  void
+>();
+
+export type ArchiveSummaryResponse = {
+  id: string;
+  title: string;
+  thumbnailPath: string | null;
+  tags: string[];
+  isPublic: boolean;
+  type: ArchiveType;
+  isDuplicable: boolean;
+  summary: string;
+  writer: {
+    id: string;
+    nickname: string;
+    profileImagePath: string | null;
+  };
+};
+export const ListArchivesByGroup = {
+  url: (groupId: string) => `api/group/${groupId}/archives`,
+  key: (groupId: string): string[] => [groupId, "listArchivesByGroup"],
+};
+export const useListArchivesByGroupQuery = createInfiniteGetQueryWithParams<
+  ArchiveSummaryResponse,
+  void
+>();
+
+export const DeleteGroup = {
+  url: (groupId: string) => `api/group/${groupId}`,
+};
+export const useDeleteGroupMutation = createDeleteMutation<void, void>();

@@ -4,9 +4,10 @@ import TagSearchBar from "@/components/archive/TagSearchBar";
 import NoteCard from "@/components/archive/NoteCard";
 import { useAuth } from "@/contexts/AuthContext";
 import {
-  NoteSummaryResponse,
-  useListNotesQuery,
-} from "@/hooks/api/archive/note";
+  ArchiveSummaryResponse,
+  ListArchives,
+  useListArchivesQuery,
+} from "@/hooks/api/archive/archive";
 import InfiniteScroll from "@/components/common/InfiniteScroll";
 import { useEffect, useRef, useState } from "react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
@@ -15,14 +16,16 @@ export default function NotePage() {
   const { isAuthenticated } = useAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [selectedTag, setSelectedTad] = useState<string>();
-  const [payloads, setPayloads] = useState<NoteSummaryResponse[]>();
+  const [payloads, setPayloads] = useState<ArchiveSummaryResponse[]>();
 
   useRequireAuth();
 
-  const result = useListNotesQuery(
-    {},
-    { enabled: isAuthenticated, staleTime: 5 * 60 * 1000 }
-  );
+  const result = useListArchivesQuery({
+    url: ListArchives.url(),
+    key: ListArchives.key(),
+    params: { type: "NOTE" },
+    options: { enabled: isAuthenticated, staleTime: 5 * 60 * 1000 },
+  });
 
   useEffect(() => {
     if (!selectedTag) return;
@@ -51,7 +54,7 @@ export default function NotePage() {
                 <NoteCard
                   id={note.id}
                   title={note.title}
-                  thumbnailUrl={note.thumbnailPath}
+                  thumbnailPath={note.thumbnailPath}
                   writer={note.writer}
                   content={note.summary}
                 />

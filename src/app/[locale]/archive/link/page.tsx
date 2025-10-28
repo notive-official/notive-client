@@ -6,23 +6,26 @@ import InfiniteScroll from "@/components/common/InfiniteScroll";
 import { useEffect, useRef, useState } from "react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import {
-  LinkSummaryResponse,
-  useListLinksQuery,
-} from "@/hooks/api/archive/reference";
-import LinkCard from "@/components/common/LinkCard";
+  ArchiveSummaryResponse,
+  ListArchives,
+  useListArchivesQuery,
+} from "@/hooks/api/archive/archive";
+import LinkCard from "@/components/archive/LinkCard";
 
 export default function LinkPage() {
   const { isAuthenticated } = useAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [selectedTag, setSelectedTad] = useState<string>();
-  const [payloads, setPayloads] = useState<LinkSummaryResponse[]>();
+  const [payloads, setPayloads] = useState<ArchiveSummaryResponse[]>();
 
   useRequireAuth();
 
-  const result = useListLinksQuery(
-    {},
-    { enabled: isAuthenticated, staleTime: 5 * 60 * 1000 }
-  );
+  const result = useListArchivesQuery({
+    url: ListArchives.url(),
+    key: ListArchives.key(),
+    params: { type: "REFERENCE" },
+    options: { enabled: isAuthenticated, staleTime: 5 * 60 * 1000 },
+  });
 
   useEffect(() => {
     if (!selectedTag) return;
@@ -56,7 +59,7 @@ export default function LinkPage() {
                 <LinkCard
                   id={note.id}
                   title={note.title}
-                  thumbnailUrl={note.thumbnailPath}
+                  thumbnailPath={note.thumbnailPath}
                   writer={note.writer}
                 />
               </div>

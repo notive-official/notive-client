@@ -19,7 +19,12 @@ export default function ImageBlock({ block }: ImageBlockProps) {
   const { file } = payload;
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    updateBlock(id, { file: acceptedFiles[0] });
+    updateBlock(id, {
+      payload: {
+        content: URL.createObjectURL(acceptedFiles[0]),
+        file: acceptedFiles[0],
+      },
+    });
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -53,12 +58,12 @@ export default function ImageBlock({ block }: ImageBlockProps) {
           )}
         </div>
       </div>
-      {block.payload.file && (
+      {block.payload.content.length > 0 && (
         <ViewBlock
           key={block.id}
           block={{
             ...block,
-            payload: URL.createObjectURL(block.payload.file),
+            payload: block.payload.content,
           }}
         />
       )}

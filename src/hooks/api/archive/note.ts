@@ -1,60 +1,7 @@
-import { ArchiveType, BlockType } from "@/common/types";
-import { isImageBlock, isLinkBlock } from "@/common/utils";
+import { ArchiveType } from "@/common/types";
+import { isImageBlock, isLinkBlock, isTextBlock } from "@/common/utils";
 import { EditorBlock } from "@/contexts/BlockEditorContext";
 import api from "@/lib/api";
-import {
-  createInfiniteGetQueryWithParams,
-  createGetQuery,
-} from "@/lib/reactQuery";
-
-type NoteParams = {
-  search?: string;
-  tag?: string;
-  sort?: string;
-  order?: "asc" | "desc";
-};
-
-export type NoteSummaryResponse = {
-  id: string;
-  title: string;
-  thumbnailPath: string;
-  tags: string[];
-  isPublic: boolean;
-  type: ArchiveType;
-  isDuplicable: boolean;
-  summary: string;
-  writer: {
-    id: string;
-    nickname: string;
-    profileImagePath: string;
-  };
-};
-
-export const listNotesKey = "listNote";
-export const useListNotesQuery = createInfiniteGetQueryWithParams<
-  NoteSummaryResponse,
-  NoteParams
->("api/archive/notes", listNotesKey);
-
-type BlockResponse = {
-  id: string;
-  type: BlockType;
-  position: number;
-  payload: string;
-};
-
-export type NoteDetailResponse = {
-  meta: NoteSummaryResponse;
-  canEdit: boolean;
-  isMarked: boolean;
-  tags: string[];
-  blocks: BlockResponse[];
-};
-export const NoteDetail = {
-  url: (archiveId: string) => `api/archive/notes/${archiveId}`,
-  key: (archiveId: string) => [archiveId, "listNote"],
-};
-export const useNoteDetailQuery = createGetQuery<void, NoteDetailResponse>();
 
 type CreateNoteProps = {
   blocks: EditorBlock[];
@@ -62,7 +9,7 @@ type CreateNoteProps = {
   tags: string[];
   groupId: string;
   isPublic: boolean;
-  archiveType: ArchiveType;
+  type: ArchiveType;
   isDuplicable: boolean;
   thumbnail: File | null;
 };
@@ -83,7 +30,7 @@ const generateNoteRequestForm = ({
   tags,
   groupId,
   isPublic,
-  archiveType,
+  type,
   isDuplicable,
   thumbnail,
 }: CreateNoteProps): FormData => {
@@ -91,25 +38,149 @@ const generateNoteRequestForm = ({
 
   if (thumbnail) form.append("thumbnailImage", thumbnail);
   form.append("isPublic", String(isPublic));
-  form.append("type", archiveType.toUpperCase());
+  form.append("type", type.toUpperCase());
   form.append("isDuplicable", String(isDuplicable));
   form.append("groupId", String(groupId));
   form.append("title", title);
   tags.forEach((t, i) => form.append(`tags[${i}]`, t));
 
-  blocks.forEach((b, idx) => {
-    form.append(`blocks[${idx}].position`, String(idx));
-    if (
-      (isImageBlock(b.type) && !b.payload.file) ||
-      (isLinkBlock(b.type) && b.payload.content.length < 1)
-    ) {
-      form.append(`blocks[${idx}].content`, "");
-      form.append(`blocks[${idx}].type`, "paragraph".toUpperCase());
-      return;
-    }
-    form.append(`blocks[${idx}].type`, b.type.toUpperCase());
-    form.append(`blocks[${idx}].content`, b.payload.content);
-    if (b.payload.file) form.append(`blocks[${idx}].image`, b.payload.file);
+  blocks.forEach((block, idx) => {
+    appendIfImageBlock(form, { block, idx, position: idx });
+    appendIfLinkBlock(form, { block, idx, position: idx });
+    appendIfTextBlock(form, { block, idx, position: idx });
   });
   return form;
+};
+
+type UpdateNoteProps = {
+  blocks: EditorBlock[];
+  addedBlockIdxes: number[];
+  updatedBlockIdxes: number[];
+  reorderedBlockIdxes: number[];
+  deletedBlockIds: string[];
+  title?: string;
+  tags?: string[];
+  groupId?: string;
+  isPublic?: boolean;
+  type?: ArchiveType;
+  isDuplicable?: boolean;
+  thumbnail?: File | null;
+};
+
+export const usePatchNote = () => {
+  return {
+    patchNote: (archiveId: string, data: UpdateNoteProps) => {
+      const form = generateNotePatchRequestForm(data);
+      return api.patch(`/api/archive/note/${archiveId}`, form, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+    },
+  };
+};
+
+export const generateNotePatchRequestForm = ({
+  blocks,
+  addedBlockIdxes,
+  updatedBlockIdxes,
+  reorderedBlockIdxes,
+  deletedBlockIds,
+  title,
+  tags,
+  groupId,
+  isPublic,
+  type,
+  isDuplicable,
+  thumbnail,
+}: UpdateNoteProps): FormData => {
+  const form = new FormData();
+
+  if (thumbnail !== undefined && thumbnail !== null)
+    form.append("thumbnailImage", thumbnail);
+  if (isPublic !== undefined) form.append("isPublic", String(isPublic));
+  if (type !== undefined) form.append("type", type.toUpperCase());
+  if (isDuplicable !== undefined)
+    form.append("isDuplicable", String(isDuplicable));
+  if (groupId !== undefined) form.append("groupId", String(groupId));
+  if (title !== undefined) form.append("title", title);
+  if (tags !== undefined) tags.forEach((t, i) => form.append(`tags[${i}]`, t));
+
+  addedBlockIdxes.forEach((position, idx) => {
+    const blockInfo = {
+      block: blocks[position],
+      idx,
+      position,
+      name: "_addedBlocks",
+    };
+    appendIfImageBlock(form, blockInfo);
+    appendIfLinkBlock(form, blockInfo);
+    appendIfTextBlock(form, blockInfo);
+  });
+
+  updatedBlockIdxes.forEach((position, idx) => {
+    const blockInfo = {
+      block: blocks[position],
+      idx,
+      position,
+      name: "_updatedBlocks",
+    };
+    appendIfImageBlock(form, blockInfo);
+    appendIfLinkBlock(form, blockInfo);
+    appendIfTextBlock(form, blockInfo);
+  });
+
+  reorderedBlockIdxes.forEach((idx, i) => {
+    form.append(`_reorderedBlocks[${i}].id`, String(blocks[idx].id));
+    form.append(`_reorderedBlocks[${i}].position`, String(idx));
+  });
+
+  deletedBlockIds.forEach((id, i) => {
+    form.append(`_deletedBlocks[${i}]`, id);
+  });
+  return form;
+};
+
+type BlockInfo = {
+  block: EditorBlock;
+  idx: number;
+  position: number;
+  name?: string;
+};
+
+const appendIfImageBlock = (
+  form: FormData,
+  { block, idx, position, name = "_blocks" }: BlockInfo
+) => {
+  if (!isImageBlock(block.type)) {
+    return;
+  }
+  form.append(`${name}[${idx}].id`, block.id);
+  form.append(`${name}[${idx}].position`, String(position));
+  form.append(`${name}[${idx}].type`, block.type.toUpperCase());
+  form.append(`${name}[${idx}].file`, block.payload.file!);
+};
+
+const appendIfLinkBlock = (
+  form: FormData,
+  { block, idx, position, name = "_blocks" }: BlockInfo
+) => {
+  if (!isLinkBlock(block.type)) {
+    return;
+  }
+  form.append(`${name}[${idx}].id`, block.id);
+  form.append(`${name}[${idx}].position`, String(position));
+  form.append(`${name}[${idx}].type`, block.type.toUpperCase());
+  form.append(`${name}[${idx}].content`, block.payload.content);
+};
+
+const appendIfTextBlock = (
+  form: FormData,
+  { block, idx, position, name = "_blocks" }: BlockInfo
+) => {
+  if (!isTextBlock(block.type)) {
+    return;
+  }
+  form.append(`${name}[${idx}].id`, block.id);
+  form.append(`${name}[${idx}].position`, String(position));
+  form.append(`${name}[${idx}].type`, block.type.toUpperCase());
+  form.append(`${name}[${idx}].content`, block.payload.content);
 };

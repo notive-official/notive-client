@@ -11,13 +11,19 @@ import { useEditor } from "@/contexts/EditorContext";
 
 export default function BlockEditor() {
   const { PostTrans } = useTrans();
-  const { blocks, reorderBlocks } = useBlockEditor();
-  const { title, changeTitle } = useEditor();
+  const { blockState, reorderBlocks } = useBlockEditor();
+  const { state, setState } = useEditor();
+
+  const { blocks } = blockState;
+
+  const changeTitle = (newTitle: string) => {
+    setState({ ...state, title: newTitle });
+  };
 
   return (
     <div className="pb-32">
       <Input
-        value={title}
+        value={state.title}
         className="text-h1 px-6 py-4 bg-reverse-5 w-full rounded-xl data-focus-outline-effect"
         placeholder={PostTrans("title.placeholder")}
         onChange={(e) => changeTitle(e.target.value)}

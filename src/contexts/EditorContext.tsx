@@ -2,81 +2,113 @@
 
 import { ArchiveType } from "@/common/types";
 import { ComboSelection } from "@/hooks/useCombo";
-import {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useState,
-} from "react";
+import { createContext, useContext, useMemo, useState } from "react";
+import { BlockEditorProvider, EditorBlock } from "./BlockEditorContext";
+import { FocusBlockProvider } from "./FocusBlockContext";
 
-interface EditorContextType {
+export interface EditorState {
+  id?: string;
   title: string;
   tags: string[];
-  thumbnail: File | null;
+  thumbnail: {
+    path: string;
+    file: File | null;
+  } | null;
   isPublic: boolean;
-  archiveType: ArchiveType;
+  type: ArchiveType;
   isDuplicable: boolean;
   group: ComboSelection | null;
   url: string;
-  changeTitle: Dispatch<SetStateAction<string>>;
-  changeThumbnail: Dispatch<SetStateAction<File | null>>;
-  changeGroup: Dispatch<SetStateAction<ComboSelection | null>>;
-  changeIsPublic: Dispatch<SetStateAction<boolean>>;
-  changeArchiveType: Dispatch<SetStateAction<ArchiveType>>;
-  changeIsDuplicable: Dispatch<SetStateAction<boolean>>;
-  changeUrl: Dispatch<SetStateAction<string>>;
+  mode: "create" | "edit";
+  blocks: EditorBlock[];
+}
+
+type EditorContextType = {
+  state: EditorState;
+  setState: React.Dispatch<React.SetStateAction<EditorState>>;
   addTag: (_tag: string) => void;
   removeTag: (_tag: string) => void;
-}
+  getDirty: () => Partial<EditorState>;
+};
 
 const EditorContext = createContext<EditorContextType | undefined>(undefined);
 
-export function EditorProvider({ children }: { children: React.ReactNode }) {
-  const [thumbnail, setThumbnail] = useState<File | null>(null);
-  const [isPublic, setIsPublic] = useState(false);
-  const [archiveType, setArchiveType] = useState<ArchiveType>("NOTE");
-  const [isDuplicable, setIsDuplicable] = useState(false);
-  const [group, setGroup] = useState<ComboSelection | null>(null);
-  const [title, setTitle] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
-  const [url, setUrl] = useState<string>("");
+type ProviderProps = {
+  initial: Partial<EditorState>;
+  postKey: string;
+  children: React.ReactNode;
+};
+
+export function EditorProvider({ initial, postKey, children }: ProviderProps) {
+  const defaults = useMemo(
+    () => ({
+      id: initial.id,
+      title: initial.title ?? "",
+      tags: initial.tags ?? [],
+      thumbnail: initial.thumbnail ?? null,
+      isPublic: initial.isPublic ?? false,
+      type: initial.type ?? "NOTE",
+      isDuplicable: initial.isDuplicable ?? false,
+      group: initial.group ?? null,
+      url: initial.url ?? "",
+      blocks: initial.blocks ?? [],
+      mode: (initial.mode ?? (initial.id ? "edit" : "create")) as
+        | "create"
+        | "edit",
+    }),
+    [postKey]
+  );
+  const [state, setState] = useState<EditorState>(defaults);
+  const [isTagDirty, setIsTagDirty] = useState(false);
 
   const addTag = (val: string) => {
-    if (!tags.includes(val)) {
-      tags.push(val);
-      setTags([...tags]);
+    if (!state.tags.includes(val)) {
+      const tags = [...state.tags, val];
+      setState({ ...state, tags });
+      setIsTagDirty(true);
     }
   };
 
   const removeTag = (val: string) => {
-    setTags(tags.filter((tag) => tag !== val));
+    const tags = state.tags.filter((tag) => tag !== val);
+    setState({ ...state, tags });
+    setIsTagDirty(true);
   };
 
+  const getDirty = () => {
+    const dirty: Partial<EditorState> = {
+      title: defaults.title !== state.title.trim() ? state.title : undefined,
+      thumbnail:
+        defaults.thumbnail?.path !== state.thumbnail?.path
+          ? state.thumbnail
+          : undefined,
+      isPublic:
+        defaults.isPublic !== state.isPublic ? state.isPublic : undefined,
+      type: defaults.type !== state.type ? state.type : undefined,
+      isDuplicable:
+        defaults.isDuplicable !== state.isDuplicable
+          ? state.isDuplicable
+          : undefined,
+      group: defaults.group !== state.group ? state.group : undefined,
+      url: defaults.url !== state.url ? state.url : undefined,
+      tags: isTagDirty ? state.tags : undefined,
+    };
+    return dirty;
+  };
+
+  const value = useMemo(
+    () => ({ state, setState, addTag, removeTag, getDirty }),
+    [state]
+  );
+
   return (
-    <EditorContext.Provider
-      value={{
-        title,
-        tags,
-        thumbnail,
-        isPublic,
-        archiveType,
-        isDuplicable,
-        group,
-        url,
-        changeTitle: setTitle,
-        changeThumbnail: setThumbnail,
-        changeGroup: setGroup,
-        changeIsPublic: setIsPublic,
-        changeArchiveType: setArchiveType,
-        changeIsDuplicable: setIsDuplicable,
-        changeUrl: setUrl,
-        addTag,
-        removeTag,
-      }}
-    >
-      {children}
-    </EditorContext.Provider>
+    <FocusBlockProvider>
+      <BlockEditorProvider initial={state.blocks} postKey={postKey}>
+        <EditorContext.Provider value={value} key={postKey}>
+          {children}
+        </EditorContext.Provider>
+      </BlockEditorProvider>
+    </FocusBlockProvider>
   );
 }
 

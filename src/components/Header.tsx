@@ -14,6 +14,7 @@ import {
   ArchiveBoxIcon,
   PencilIcon,
 } from "@heroicons/react/24/solid";
+import { DEFAULT_PROFILE_PATH } from "@/common/consts/defaultImage";
 
 interface PopEntry {
   title: string;
@@ -56,7 +57,7 @@ export default function Header() {
     },
     {
       title: HeaderTrans("userMenu.posting.title"),
-      onClick: () => router.push("/post"),
+      onClick: () => router.push("/post/new"),
       icon: <PencilIcon className="w-6 h-6 text-muted-foreground" />,
     },
   ];
@@ -114,7 +115,7 @@ export default function Header() {
               <div className="flex flex-row items-center m-2 gap-2">
                 <Image
                   className="w-7 h-7 rounded-full bg-white"
-                  src={data.profileImagePath}
+                  src={data.profileImagePath ?? DEFAULT_PROFILE_PATH}
                   width={30}
                   height={30}
                   alt="profile image"
