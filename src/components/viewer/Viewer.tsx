@@ -5,7 +5,11 @@ import Tag from "../common/Tag";
 import { ArchiveType, BlockType } from "@/common/types";
 import ThumbnailView from "./ThumbnailView";
 import { Button } from "@headlessui/react";
-import { PencilIcon, DocumentArrowUpIcon } from "@heroicons/react/24/outline";
+import {
+  PencilIcon,
+  DocumentArrowUpIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
 import useTranslation from "@/hooks/useTranslation";
 import Bookmark from "../common/Bookmark";
 import { useState } from "react";
@@ -16,18 +20,28 @@ import {
   usePostBookmarkMutation,
 } from "@/hooks/api/archive/boomark";
 import { useErrorBar } from "@/contexts/ErrorBarContext";
-import { AxiosError } from "axios";
-import { ErrorRes } from "@/lib/type";
 import { LinkDetailView } from "./LinkDetailView";
+import { useRouter } from "@/i18n/routing";
+import {
+  ArchiveDetail,
+  DeleteArchive,
+  ListArchives,
+  useDeleteArchiveMutation,
+} from "@/hooks/api/archive/archive";
+import { useQueryClient } from "@tanstack/react-query";
+import { useModal } from "@/hooks/useModal";
+import Modal from "../common/Modal";
+import { DEFAULT_ARCHIVE_THUMBNAIL_PATH } from "@/common/consts/defaultImage";
 
 interface ViewerProps {
   id: string;
   title: string;
-  thumbnailPath: string;
+  thumbnailPath: string | null;
   tags: string[];
   canEdit: boolean;
+  canDelete: boolean;
   hasMarked: boolean;
-  isDuplicable: boolean;
+  canDuplicate: boolean;
   type: ArchiveType;
   blocks: {
     id: string;
@@ -41,7 +55,8 @@ export default function Viewer({
   id,
   title,
   thumbnailPath,
-  isDuplicable,
+  canDuplicate,
+  canDelete,
   hasMarked,
   type,
   tags,
@@ -49,6 +64,9 @@ export default function Viewer({
   blocks,
 }: ViewerProps) {
   const [isMarked, setIsMarked] = useState(hasMarked);
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const { open, close, modalBind } = useModal();
   const { pushWarning, pushError } = useErrorBar();
   const toggleBookmark = () => {
     if (!isMarked) postBookmark();
@@ -60,9 +78,8 @@ export default function Viewer({
       onSuccess: () => {
         setIsMarked(true);
       },
-      onError: (e) => {
-        const err = e as AxiosError<ErrorRes>;
-        if (err.response?.data.message) pushWarning(err.response.data.message);
+      onError: (err) => {
+        if (err.status === 401 || err.status === 403) router.push("/login");
         else pushError("해당 작업을 수행할 수 없습니다.");
       },
     },
@@ -74,9 +91,23 @@ export default function Viewer({
       onSuccess: () => {
         setIsMarked(false);
       },
-      onError: (e) => {
-        const err = e as AxiosError<ErrorRes>;
-        if (err.response?.data.message) pushWarning(err.response.data.message);
+      onError: (err) => {
+        if (err.status === 401 || err.status === 403) router.push("/login");
+        else pushError("해당 작업을 수행할 수 없습니다.");
+      },
+    },
+  });
+
+  const { mutate: deleteArchive } = useDeleteArchiveMutation({
+    url: DeleteArchive.url(id),
+    options: {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ListArchives.key() });
+        queryClient.invalidateQueries({ queryKey: ArchiveDetail.key(id) });
+        router.back();
+      },
+      onError: (err) => {
+        if (err.status === 401 || err.status === 403) router.push("/login");
         else pushError("해당 작업을 수행할 수 없습니다.");
       },
     },
@@ -84,8 +115,7 @@ export default function Viewer({
 
   const { ViewTrans } = useTranslation();
   return (
-    <div className="flex flex-col lg:flex-row gap-16 w-full h-full overflow-y-auto lg:overflow-hidden p-4">
-      <meta></meta>
+    <div className="flex flex-col lg:flex-row gap-16 w-full h-full overflow-y-auto p-4">
       <div className="flex flex-col gap-5">
         <h1 className="text-foreground text-4xl font-extrabold whitespace-normal break-words">
           {title.length === 0 ? <br /> : title}
@@ -95,11 +125,15 @@ export default function Viewer({
             return <Tag key={tag} value={tag} />;
           })}
         </div>
-        {type === "NOTE" && <ThumbnailView thumbnailPath={thumbnailPath} />}
+        {type === "NOTE" && (
+          <ThumbnailView
+            thumbnailPath={thumbnailPath ?? DEFAULT_ARCHIVE_THUMBNAIL_PATH}
+          />
+        )}
         <div className="flex flex-row gap-2">
-          {isDuplicable && (
+          {canDuplicate && (
             <span
-              title={ViewTrans("duplicate")}
+              title={ViewTrans("duplicate.button")}
               className="cursor-pointer rounded-md bg-muted w-fit"
             >
               <Button className="rounded-md click-effect w-fit py-1 px-3 text-muted-foreground">
@@ -109,8 +143,11 @@ export default function Viewer({
           )}
           {canEdit && (
             <span
-              title={ViewTrans("edit")}
+              title={ViewTrans("edit.button")}
               className="cursor-pointer rounded-md bg-muted w-fit"
+              onClick={(e) => {
+                router.push(`/post/${id}/edit`);
+              }}
             >
               <Button className="rounded-md click-effect w-fit py-1 px-3 text-muted-foreground">
                 <PencilIcon className="w-5 h-5" />
@@ -119,7 +156,7 @@ export default function Viewer({
           )}
 
           <span
-            title={ViewTrans("bookmark")}
+            title={ViewTrans("bookmark.button")}
             className="cursor-pointer rounded-md bg-muted w-fit"
             onClick={(e) => {
               e.preventDefault();
@@ -130,6 +167,42 @@ export default function Viewer({
               <Bookmark isMarked={isMarked} className="w-5 h-5" />
             </Button>
           </span>
+          {canDelete && (
+            <span
+              title={ViewTrans("delete.button")}
+              className="cursor-pointer rounded-md bg-muted w-fit"
+              onClick={(e) => {
+                e.preventDefault();
+                open();
+              }}
+            >
+              <Button className="rounded-md click-effect w-fit py-1 px-3 text-muted-foreground">
+                <TrashIcon className="w-5 h-5" />
+              </Button>
+            </span>
+          )}
+          <Modal
+            key={"deleteArchivepModal"}
+            title={ViewTrans("delete.modal.title")}
+            actionNode={
+              <div className="flex flex-row justify-center items-center gap-8">
+                <Button
+                  className="px-4 p-2 click-effect"
+                  onClick={() => close()}
+                >
+                  {ViewTrans("delete.modal.no")}
+                </Button>
+                <Button
+                  className="px-4 p-2 click-effect"
+                  onClick={() => deleteArchive()}
+                >
+                  {ViewTrans("delete.modal.yes")}
+                </Button>
+              </div>
+            }
+            className="max-w-md gap-4"
+            {...modalBind}
+          />
         </div>
       </div>
 

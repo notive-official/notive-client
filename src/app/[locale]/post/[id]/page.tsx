@@ -2,7 +2,10 @@
 
 import { use } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { NoteDetail, useNoteDetailQuery } from "@/hooks/api/archive/note";
+import {
+  ArchiveDetail,
+  useArchiveDetailQuery,
+} from "@/hooks/api/archive/archive";
 import Viewer from "@/components/viewer/Viewer";
 
 type ArchiveDetailProps = { id: string };
@@ -14,16 +17,16 @@ export default function ArchiveDetailPage({
 }) {
   const { id } = use(params);
   const { isLoading } = useAuth();
-  const { data } = useNoteDetailQuery({
-    url: NoteDetail.url(id),
-    key: NoteDetail.key(id),
+  const { data } = useArchiveDetailQuery({
+    url: ArchiveDetail.url(id),
+    key: ArchiveDetail.key(id),
     options: {
       enabled: !isLoading,
     },
   });
 
   return (
-    <div className="flex flex-col justify-start items-center w-full max-w-6xl p-16">
+    <div className="flex flex-col justify-start items-center w-full h-full max-w-6xl p-16">
       {data && (
         <Viewer
           id={data.meta.id}
@@ -32,7 +35,8 @@ export default function ArchiveDetailPage({
           thumbnailPath={data.meta.thumbnailPath}
           canEdit={data.canEdit}
           hasMarked={data.isMarked}
-          isDuplicable={data.meta.isDuplicable}
+          canDuplicate={data.canDuplicate}
+          canDelete={data.canDelete}
           tags={data.tags}
           blocks={data.blocks}
         />

@@ -8,6 +8,6 @@ export function useRequireAuth() {
 
   useEffect(() => {
     if (isLoading || isAuthenticated) return;
-    router.replace("/login");
+    router.push("/login");
   }, [isLoading, isAuthenticated, router]);
 }

@@ -16,7 +16,7 @@ export function LinkDetailView({ url }: { url: string }) {
     key: GetOEmbed.key(url),
     params: { url },
     options: {
-      enabled: Boolean(url),
+      enabled: url.length > 0,
       retry: false,
       staleTime: 1000 * 60 * 5, // 5분
       refetchOnWindowFocus: false, // 포커스시 X

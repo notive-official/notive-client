@@ -7,7 +7,8 @@ import {
   UseQueryOptions,
 } from "@tanstack/react-query";
 import api from "./api";
-import { SliceRes } from "@/lib/type";
+import { ErrorRes, SliceRes } from "@/lib/type";
+import { AxiosError } from "axios";
 
 export function createPostMutation<TParams, TRequest, TResponse>() {
   const poster = async (
@@ -23,13 +24,13 @@ export function createPostMutation<TParams, TRequest, TResponse>() {
     url: string;
     params?: TParams;
     options?: Omit<
-      UseMutationOptions<TResponse, Error, TRequest>,
+      UseMutationOptions<TResponse, AxiosError<ErrorRes>, TRequest>,
       "mutationFn"
     >;
   };
 
   return ({ url, params, options }: Props) =>
-    useMutation<TResponse, Error, TRequest>({
+    useMutation<TResponse, AxiosError<ErrorRes>, TRequest>({
       mutationFn: (variables: TRequest) => poster(url, params, variables),
       ...options,
     });
@@ -49,13 +50,13 @@ export function createPutMutation<TParams, TRequest, TResponse>() {
     url: string;
     params?: TParams;
     options?: Omit<
-      UseMutationOptions<TResponse, Error, TRequest>,
+      UseMutationOptions<TResponse, AxiosError<ErrorRes>, TRequest>,
       "mutationFn"
     >;
   };
 
   return ({ url, params, options }: Props) =>
-    useMutation<TResponse, Error, TRequest>({
+    useMutation<TResponse, AxiosError<ErrorRes>, TRequest>({
       mutationFn: (variables: TRequest) => puter(url, params, variables),
       ...options,
     });
@@ -71,13 +72,13 @@ export function createDeleteMutation<TParams, TResponse>() {
     url: string;
     params?: TParams;
     options?: Omit<
-      UseMutationOptions<TResponse, Error, TResponse>,
+      UseMutationOptions<TResponse, AxiosError<ErrorRes>, TResponse>,
       "mutationFn"
     >;
   };
 
   return ({ url, params, options }: Props) =>
-    useMutation<TResponse, Error, TResponse>({
+    useMutation<TResponse, AxiosError<ErrorRes>, TResponse>({
       mutationFn: () => deleter(url, params),
       ...options,
     });
@@ -94,12 +95,12 @@ export function createGetQuery<TParams, TResponse>() {
     key: string[];
     params?: TParams;
     options?: Omit<
-      UseQueryOptions<TResponse, unknown, TResponse>,
+      UseQueryOptions<TResponse, AxiosError<ErrorRes>, TResponse>,
       "queryKey" | "queryFn"
     >;
   };
   return ({ url, key, params, options }: Props) =>
-    useQuery<TResponse, unknown, TResponse>({
+    useQuery<TResponse, AxiosError<ErrorRes>, TResponse>({
       queryKey: key,
       queryFn: () => fetcher(url, params),
       ...options,
@@ -111,11 +112,8 @@ type InfiniteQueryProp<TParams> = {
   params?: Omit<TParams, "page">;
 };
 
-export function createInfiniteGetQueryWithParams<TResponse, TParams>(
-  url: string,
-  queryKey: string
-) {
-  const fetcher = async ({ pageParam, params }: InfiniteQueryProp<TParams>) => {
+export function createInfiniteGetQueryWithParams<TResponse, TParams>() {
+  const fetcher = async (url: string, pageParam: number, params?: TParams) => {
     const { data } = await api.get<SliceRes<TResponse>>(url, {
       params: {
         page: pageParam,
@@ -124,17 +122,21 @@ export function createInfiniteGetQueryWithParams<TResponse, TParams>(
     });
     return data;
   };
-  return (
-    params: TParams,
-    options: Omit<
+
+  type Props = {
+    url: string;
+    key: string[];
+    params?: TParams;
+    options?: Omit<
       QueryFunction<SliceRes<TResponse>, readonly unknown[], unknown>,
       "queryKey" | "queryFn" | "initialPageParam" | "getNextPageParam"
-    >
-  ) =>
+    >;
+  };
+  return ({ url, key, params, options }: Props) =>
     useInfiniteQuery({
-      queryKey: [queryKey, params],
+      queryKey: key,
       initialPageParam: 0,
-      queryFn: (params: InfiniteQueryProp<TParams>) => fetcher({ ...params }),
+      queryFn: ({ pageParam }) => fetcher(url, pageParam, params),
       getNextPageParam: (lastPage: SliceRes<TResponse>) => {
         return lastPage.meta.hasNext ? lastPage.meta.page + 1 : undefined;
       },

@@ -1,26 +1,36 @@
 import { Tab, TabGroup, TabList } from "@headlessui/react";
+import { useState } from "react";
 
-interface TabsProps {
+interface TabsProps<T> {
   categories: {
-    index: number;
     name: string;
+    value: T;
   }[];
-  selectedIndex: number;
-  setSelectedIndex: (index: number) => void;
+  initialValue: string;
+  setSelectedValue: (value: T) => void;
   className?: string;
 }
 
-export default function Tabs({
+export default function Tabs<T>({
   categories,
-  selectedIndex,
-  setSelectedIndex,
+  initialValue,
+  setSelectedValue,
   className = "flex w-full justify-center px-4",
-}: TabsProps) {
+}: TabsProps<T>) {
+  const defaultIndex =
+    categories.findIndex((category) => category.value === initialValue) ?? 0;
+  const [selectedIndex, setSelectedIndex] = useState(defaultIndex);
+
+  const setSelected = (targetIndex: number) => {
+    setSelectedIndex(targetIndex);
+    setSelectedValue(categories[targetIndex].value);
+  };
+
   return (
     <div className={className}>
-      <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
+      <TabGroup selectedIndex={selectedIndex} onChange={setSelected}>
         <TabList className="flex gap-4">
-          {categories.map(({ index, name }) => (
+          {categories.map(({ name, value }, index) => (
             <Tab
               key={name}
               className={`rounded-full px-3 py-1 text-sm/6 font-semibold text-foreground ${

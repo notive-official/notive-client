@@ -9,8 +9,13 @@ interface TextBlockProps {
 }
 
 export default function TextBlock({ block }: TextBlockProps) {
-  const { updateBlock, addNewBlockAfter, getPrevTextBlock, getNextTextBlock } =
-    useBlockEditor();
+  const {
+    updateBlock,
+    addBlock,
+    splitToNewBlock,
+    getPrevTextBlock,
+    getNextTextBlock,
+  } = useBlockEditor();
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { focusedBlockId, setFocusedBlockId } = useFocusBlock();
   const { mergeWithPrevBlock } = useBlockEditor();
@@ -42,33 +47,38 @@ export default function TextBlock({ block }: TextBlockProps) {
     if (isComposing) return;
     if (inputRef.current) {
       const { selectionStart, selectionEnd, value } = inputRef.current;
+      // enter key
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
         const before = value.slice(0, selectionStart);
         const after = value.slice(selectionEnd);
+        const newBlockId = splitToNewBlock(id, before, after);
 
-        updateBlock(id, { content: before });
-        const newBlockId = addNewBlockAfter(id, "PARAGRAPH");
-        updateBlock(newBlockId, { content: after });
+        // updateBlock(id, { payload: { content: before } });
+        // const newBlockId = addBlock("PARAGRAPH", id);
+        // updateBlock(newBlockId, { payload: { content: after } });
         setFocusedBlockId(newBlockId);
       }
+      // backspace key with start position
       if (e.key === "Backspace" && !e.shiftKey) {
-        if (selectionStart === 0 && selectionEnd === 0) {
-          e.preventDefault();
-          const prevBlock = getPrevTextBlock(id);
-          if (!prevBlock) return;
-          mergeWithPrevBlock(id);
-          setTimeout(() => {
-            setFocusedBlockId(prevBlock.id);
-          });
-        }
+        if (selectionStart !== 0 || selectionEnd !== 0) return;
+
+        e.preventDefault();
+        const prevBlock = getPrevTextBlock(id);
+        if (!prevBlock) return;
+        mergeWithPrevBlock(id);
+        setTimeout(() => {
+          setFocusedBlockId(prevBlock.id);
+        });
       }
     }
+    // arrowdown key
     if (e.key === "ArrowDown") {
       const nextBlock = getNextTextBlock(id);
       if (!nextBlock) return;
       setFocusedBlockId(nextBlock.id);
     }
+    // arrowup key
     if (e.key === "ArrowUp") {
       const prevBlock = getPrevTextBlock(id);
       if (!prevBlock) return;
@@ -91,7 +101,9 @@ export default function TextBlock({ block }: TextBlockProps) {
           placeholder={
             id === focusedBlockId ? PostTrans("block.text.placeholder") : ""
           }
-          onChange={(e) => updateBlock(id, { content: e.target.value })}
+          onChange={(e) =>
+            updateBlock(id, { payload: { content: e.target.value } })
+          }
           onFocus={() => setFocusedBlockId(id)}
           onBlur={() => {
             if (focusedBlockId === id) setFocusedBlockId(null);

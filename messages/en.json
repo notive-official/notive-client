@@ -60,9 +60,17 @@
   },
 
   "ViewPage": {
-    "duplicate": "duplicate",
-    "edit": "edit",
-    "bookmark": "bookmark",
+    "duplicate": { "button": "duplicate" },
+    "edit": { "button": "edit" },
+    "bookmark": { "button": "bookmark" },
+    "delete": {
+      "button": "delete",
+      "modal": {
+        "title": "Do you want to delete the following archive?",
+        "no": "Cancle",
+        "yes": "Delete"
+      }
+    },
     "link": {
       "visit": "Visit site"
     }

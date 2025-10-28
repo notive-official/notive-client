@@ -24,7 +24,7 @@ export function LinkBlock({ block }: LinkBlockProps) {
     if (!isValidHttpUrl(link)) {
       return pushWarning("Invalid Url");
     }
-    updateBlock(id, { content: link.trim() });
+    updateBlock(id, { payload: { content: link.trim() } });
     setLink("");
   }, [updateBlock, id, link]);
 

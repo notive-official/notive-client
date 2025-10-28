@@ -4,7 +4,7 @@ import Combo from "../common/Combo";
 import { Button } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/16/solid";
 import {
-  listGroups,
+  ListGroups,
   PostGroup,
   PostGroupRequest,
   useListGroupsQuery,
@@ -33,22 +33,14 @@ export default function ArchiveSetting({
   const queryClient = useQueryClient();
   const { isAuthenticated } = useAuth();
   const { mutate: postGroup } = usePostGroupMutation({ url: PostGroup.url() });
-  const {
-    isPublic,
-    thumbnail,
-    isDuplicable,
-    changeIsPublic,
-    changeThumbnail,
-    changeGroup,
-    changeIsDuplicable,
-  } = useEditor();
+  const { state, setState } = useEditor();
   const { PostTrans } = useTranslation();
   const { open, close, modalBind } = useModal();
   const { pushWarning, pushSuccess, pushError } = useErrorBar();
 
   const { data } = useListGroupsQuery({
-    url: listGroups.url(),
-    key: listGroups.key(),
+    url: ListGroups.url(),
+    key: ListGroups.key(),
     options: {
       staleTime: 1000 * 60 * 5,
       enabled: isAuthenticated,
@@ -61,21 +53,43 @@ export default function ArchiveSetting({
       return selection;
     }) ?? [];
 
-  const { selected, query, comboBind } = useCombo({ options: groups });
+  const { selected, query, comboBind } = useCombo({
+    options: groups,
+    selected: state.group,
+    query: state.group?.name,
+  });
 
   useEffect(() => {
-    changeGroup(selected);
-  }, [selected, changeGroup]);
+    setState({ ...state, group: selected });
+  }, [selected]);
 
-  const deleteFile = () => {
-    changeThumbnail(null);
+  const changeThumbnail = (newThumbnail: File) => {
+    setState({
+      ...state,
+      thumbnail: {
+        path: URL.createObjectURL(newThumbnail),
+        file: newThumbnail,
+      },
+    });
+  };
+
+  const deleteThumbnail = () => {
+    setState({ ...state, thumbnail: null });
+  };
+
+  const changePublic = (isPublic: boolean) => {
+    setState({ ...state, isPublic });
+  };
+
+  const changeDuplicable = (isDuplicable: boolean) => {
+    setState({ ...state, isDuplicable });
   };
 
   const addGroup = (groupName: string) => {
     const req: PostGroupRequest = { groupName };
     postGroup(req, {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: listGroups.key() });
+        queryClient.invalidateQueries({ queryKey: ListGroups.key() });
         pushSuccess(PostTrans("message.success.groupCreation"));
         close();
       },
@@ -97,8 +111,8 @@ export default function ArchiveSetting({
             <ImageUploader
               button={
                 <div className="w-full h-full rounded-xl overflow-hidden items-center justify-center">
-                  {thumbnail ? (
-                    <ImageView filePath={URL.createObjectURL(thumbnail)} />
+                  {state.thumbnail ? (
+                    <ImageView filePath={state.thumbnail.path} />
                   ) : (
                     <div className="flex justify-center items-center w-full h-full cursor-pointer bg-reverse-25 text-white border-primary border-2 border-dashed ">
                       <p>{PostTrans("setting.thumbnail.placeholder")}</p>
@@ -108,10 +122,10 @@ export default function ArchiveSetting({
               }
               handleFileChange={(file) => changeThumbnail(file)}
             />
-            {thumbnail && (
+            {state.thumbnail && (
               <Button
                 className="absolute -top-2 -right-2 flex justify-center items-center click-effect"
-                onClick={deleteFile}
+                onClick={deleteThumbnail}
               >
                 <div className="w-full h-full p-1 rounded-xl bg-reverse-75">
                   <XMarkIcon className="w-5 h-5 text-white" />
@@ -128,9 +142,9 @@ export default function ArchiveSetting({
           <p className="text-md text-foreground p-2">{"Visibility"}</p>
           <div className="flex flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
-              {isPublic ? "public" : "private"}
+              {state.isPublic ? "public" : "private"}
             </p>
-            <ToggleSwitch enabled={isPublic} onChange={changeIsPublic} />
+            <ToggleSwitch enabled={state.isPublic} onChange={changePublic} />
           </div>
         </div>
 
@@ -139,11 +153,11 @@ export default function ArchiveSetting({
           <p className="text-md text-foreground p-2">{"Duplicability"}</p>
           <div className="flex flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
-              {isDuplicable ? "allow" : "deny"}
+              {state.isDuplicable ? "allow" : "deny"}
             </p>
             <ToggleSwitch
-              enabled={isDuplicable}
-              onChange={changeIsDuplicable}
+              enabled={state.isDuplicable}
+              onChange={changeDuplicable}
             />
           </div>
         </div>

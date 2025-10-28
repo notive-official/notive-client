@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 
 interface ToggleSwitchProps {
   enabled: boolean;
-  onChange: Dispatch<SetStateAction<boolean>>;
+  onChange: (value: boolean) => void;
 }
 export default function ToggleSwitch({ enabled, onChange }: ToggleSwitchProps) {
   return (

@@ -1,22 +1,24 @@
 import { createInfiniteGetQueryWithParams } from "@/lib/reactQuery";
 
-type ArchiveParams = {
+type SearchParams = {
   tags?: string[];
 };
-export type ArchiveResponse = {
+export type SearchResponse = {
   id: string;
   title: string;
-  thumbnailPath: string;
+  thumbnailPath: string | null;
   summary: string;
   writer: {
     id: string;
     nickname: string;
-    profileImagePath: string;
+    profileImagePath: string | null;
   };
 };
-export const listArchivesKey = "listArchive";
-
-export const useListArchivesQuery = createInfiniteGetQueryWithParams<
-  ArchiveResponse,
-  ArchiveParams
->("api/search", listArchivesKey);
+export const Search = {
+  url: () => "api/search",
+  key: () => ["search"],
+};
+export const useSearchQuery = createInfiniteGetQueryWithParams<
+  SearchResponse,
+  SearchParams
+>();

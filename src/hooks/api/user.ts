@@ -1,9 +1,5 @@
 import api from "@/lib/api";
-import {
-  createGetQuery,
-  createPutMutation,
-  createPostMutation,
-} from "@/lib/reactQuery";
+import { createGetQuery, createPostMutation } from "@/lib/reactQuery";
 
 export const PostReissue = {
   url: () => "api/auth/reissue",
@@ -18,7 +14,7 @@ export const usePostLogoutMutation = createPostMutation<void, void, void>();
 // 사용자 기본 정보 조회
 export type GetUserResponse = {
   nickname: string;
-  profileImagePath: string;
+  profileImagePath: string | null;
 };
 export const GetUser = {
   url: () => "api/user/header",
@@ -31,7 +27,7 @@ export type GetUserProfileResponse = {
   name: string;
   nickname: string;
   email: string;
-  profileImagePath: string;
+  profileImagePath: string | null;
 };
 export const GetUserProfile = {
   url: () => "api/user/profile",

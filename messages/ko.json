@@ -62,9 +62,17 @@
   },
 
   "ViewPage": {
-    "duplicate": "복제",
-    "edit": "편집",
-    "bookmark": "북마크",
+    "duplicate": { "button": "복제" },
+    "edit": { "button": "편집" },
+    "bookmark": { "button": "북마크" },
+    "delete": {
+      "button": "삭제",
+      "modal": {
+        "title": "정말로 삭제하시겠습니까?",
+        "no": "취소",
+        "yes": "삭제"
+      }
+    },
     "link": {
       "visit": "사이트 방문하기"
     }

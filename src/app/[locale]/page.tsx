@@ -1,19 +1,24 @@
 "use client";
 
-import MainCard from "@/components/common/MainCard";
+import MainCard from "@/components/archive/MainCard";
 import InputBox from "@/components/common/InputBox";
 import useTrans from "@/hooks/useTranslation";
 import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
 import { useRef, useState } from "react";
-import { useListArchivesQuery } from "@/hooks/api/search";
+import { Search, useSearchQuery } from "@/hooks/api/search";
 import InfiniteScroll from "@/components/common/InfiniteScroll";
+import Footer from "@/components/Footer";
 
 export default function MainPage() {
   const { MainTrans } = useTrans();
   const [search, setSearch] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const result = useListArchivesQuery({}, { staleTime: 5 * 60 * 1000 });
+  const result = useSearchQuery({
+    url: Search.url(),
+    key: Search.key(),
+    options: { staleTime: 5 * 60 * 1000 },
+  });
 
   return (
     <div
@@ -52,13 +57,14 @@ export default function MainPage() {
               <MainCard
                 id={archive.id}
                 title={archive.title}
-                thumbnailUrl={archive.thumbnailPath}
+                thumbnailPath={archive.thumbnailPath}
                 writer={archive.writer}
               />
             </div>
           )}
         </InfiniteScroll>
       </div>
+      <Footer />
     </div>
   );
 }

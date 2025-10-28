@@ -6,32 +6,33 @@ import ArchiveSetting from "@/components/editor/ArchiveSetting";
 import BlockEditor from "@/components/editor/BlockEditor";
 import { LinkEditor } from "@/components/editor/LinkEditor";
 import { useEditor } from "@/contexts/EditorContext";
-import { useRequireAuth } from "@/hooks/useRequireAuth";
-import { useState } from "react";
-export default function PostPage() {
-  useRequireAuth();
-  const { changeArchiveType } = useEditor();
 
-  const categories = [
-    { index: 0, name: "NOTE", value: "NOTE" as ArchiveType },
-    { index: 1, name: "LINK", value: "REFERENCE" as ArchiveType },
+export default function Editor() {
+  const { state, setState } = useEditor();
+
+  const categories: { name: string; value: ArchiveType }[] = [
+    { name: "NOTE", value: "NOTE" },
+    { name: "LINK", value: "REFERENCE" as ArchiveType },
   ];
 
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const changeArchiveType = (archiveType: ArchiveType) => {
+    setState({ ...state, type: archiveType });
+  };
 
   return (
     <div className="h-full w-full flex flex-col items-center mx-auto">
       <div className="h-full w-full flex flex-col max-w-5xl">
-        <Tabs
-          className="flex w-full max-w-6xl justify-end p-4"
-          categories={categories}
-          selectedIndex={selectedIndex}
-          setSelectedIndex={(index) => {
-            setSelectedIndex(index);
-            changeArchiveType(categories[index].value as ArchiveType);
-          }}
-        />
-        {selectedIndex === 0 && (
+        {state.mode === "create" && (
+          <Tabs
+            className="flex w-full max-w-6xl justify-end p-4"
+            categories={categories}
+            initialValue={state.type}
+            setSelectedValue={(value) => {
+              changeArchiveType(value);
+            }}
+          />
+        )}
+        {state.type === "NOTE" && (
           <div className="flex flex-col md:flex-row justify-center w-full h-full p-4 gap-4 md:gap-8 overflow-y-auto lg:overflow-hidden">
             <section className="md:min-w-32 md:max-w-72 h-fit w-full">
               <ArchiveSetting />
@@ -41,7 +42,7 @@ export default function PostPage() {
             </section>
           </div>
         )}
-        {selectedIndex === 1 && (
+        {state.type === "REFERENCE" && (
           <div className="flex flex-col md:flex-row justify-center w-full h-full p-4 gap-4 md:gap-8 overflow-y-auto lg:overflow-hidden">
             <section className="md:min-w-32 md:max-w-72 h-fit w-full">
               <ArchiveSetting thumnailUpload={false} />

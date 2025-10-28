@@ -3,7 +3,10 @@
 import GroupCard from "@/components/archive/GroupCard";
 import InfiniteScroll from "@/components/common/InfiniteScroll";
 import { useAuth } from "@/contexts/AuthContext";
-import { useListGroupDetailsQuery } from "@/hooks/api/archive/group";
+import {
+  ListGroupDetails,
+  useListGroupDetailsQuery,
+} from "@/hooks/api/archive/group";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { useRef } from "react";
 
@@ -11,13 +14,15 @@ export default function GroupPage() {
   useRequireAuth();
   const { isAuthenticated } = useAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const result = useListGroupDetailsQuery(
-    {},
-    {
+  const result = useListGroupDetailsQuery({
+    url: ListGroupDetails.url(),
+    key: ListGroupDetails.key(),
+    options: {
       enabled: isAuthenticated,
       staleTime: 0,
-    }
-  );
+    },
+  });
+
   return (
     <div
       ref={scrollRef}
@@ -34,6 +39,7 @@ export default function GroupPage() {
               <div className="flex justify-center w-full" key={group.id}>
                 <GroupCard
                   key={group.id}
+                  id={group.id}
                   thumbnails={group.thumbnails}
                   name={group.name}
                   totalElements={group.totalElements}
