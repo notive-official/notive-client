@@ -125,11 +125,10 @@ export default function Viewer({
             return <Tag key={tag} value={tag} />;
           })}
         </div>
-        {type === "NOTE" && (
-          <ThumbnailView
-            thumbnailPath={thumbnailPath ?? DEFAULT_ARCHIVE_THUMBNAIL_PATH}
-          />
-        )}
+        <ThumbnailView
+          thumbnailPath={thumbnailPath ?? DEFAULT_ARCHIVE_THUMBNAIL_PATH}
+          referenceUrl={type === "REFERENCE" ? blocks[0].payload : undefined}
+        />
         <div className="flex flex-row gap-2">
           {canDuplicate && (
             <span
