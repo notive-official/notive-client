@@ -9,10 +9,6 @@ import LinkDetailView from "../viewer/LinkDetailView";
 import { isValidHttpUrl } from "@/common/utils";
 import { useErrorBar } from "@/contexts/ErrorBarContext";
 
-interface LinkEditorProps {
-  link: string;
-}
-
 export function LinkEditor() {
   const { PostTrans } = useTranslation();
   const { state, setState } = useEditor();
@@ -36,7 +32,7 @@ export function LinkEditor() {
   }, [changeUrl, url]);
 
   return (
-    <div className="pb-32">
+    <div className="flex flex-col w-full h-full">
       <Input
         value={state.title}
         className="px-6 py-4 bg-reverse-5 w-full rounded-xl data-focus-outline-effect"
@@ -44,7 +40,7 @@ export function LinkEditor() {
         onChange={(e) => changeTitle(e.target.value)}
       />
       <Tagbar />
-      <div className="flex flex-col justify-between items-center">
+      <div className="flex flex-col w-full h-full">
         <InputBox
           value={url}
           placeholder={PostTrans("link.placeholder")}
@@ -53,7 +49,9 @@ export function LinkEditor() {
           buttonIcon={<ArrowUpIcon className="w-5 h-5" />}
         />
 
-        {state.url && <LinkDetailView url={state.url} />}
+        <div className="flex flex-col">
+          {state.url && <LinkDetailView url={state.url} />}
+        </div>
       </div>
     </div>
   );

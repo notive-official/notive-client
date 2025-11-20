@@ -21,7 +21,7 @@ export default function BlockEditor() {
   };
 
   return (
-    <div className="pb-32">
+    <div className="flex flex-col w-full h-full">
       <Input
         value={state.title}
         className="text-h1 px-6 py-4 bg-reverse-5 w-full rounded-xl data-focus-outline-effect"

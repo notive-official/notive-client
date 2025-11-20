@@ -49,7 +49,7 @@ export default function EditorFooter({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 z-10 bg-muted w-full flex justify-center items-center p-2">
+    <div className=" flex justify-center bg-muted w-full items-center p-2">
       <div className="flex flex-row items-center justify-center cursor-pointer rounded-xl">
         <Button
           onClick={() => router.back()}

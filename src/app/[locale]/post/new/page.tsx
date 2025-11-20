@@ -64,10 +64,14 @@ export default function PostPage() {
   };
 
   return (
-    <div className="relative h-screen pb-16">
+    <div className="relative h-screen">
       <EditorProvider initial={{ mode: "create" }} postKey={"new"}>
-        <Editor />
-        <EditorFooter placeholder="저장하기" onSave={onSave} />
+        <div className="flex flex-col w-full h-full">
+          <Editor />
+        </div>
+        <div className="fixed bottom-0 left-0 z-10 w-full pb-32">
+          <EditorFooter placeholder="저장하기" onSave={onSave} />
+        </div>
       </EditorProvider>
     </div>
   );

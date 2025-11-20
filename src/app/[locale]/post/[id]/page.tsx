@@ -26,7 +26,7 @@ export default function ArchiveDetailPage({
   });
 
   return (
-    <div className="flex flex-col justify-start items-center w-full h-full max-w-6xl p-16">
+    <div className="flex flex-col justify-center items-center w-full h-full py-4 lg:p-16">
       {data && (
         <Viewer
           id={data.meta.id}

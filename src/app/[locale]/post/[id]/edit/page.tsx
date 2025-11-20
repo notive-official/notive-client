@@ -135,7 +135,7 @@ export default function ArchiveEditPage({
         };
 
   return (
-    <div className="relative h-screen pb-16">
+    <div className="relative h-screen">
       <EditorProvider
         initial={{
           ...meta,
@@ -144,8 +144,12 @@ export default function ArchiveEditPage({
         }}
         postKey={id}
       >
-        <Editor />
-        <EditorFooter placeholder="수정하기" onUpdate={onUpdate} />
+        <div className="flex flex-col w-full h-full pb-32">
+          <Editor />
+        </div>
+        <div className="fixed bottom-0 left-0 z-10 w-full">
+          <EditorFooter placeholder="수정하기" onUpdate={onUpdate} />
+        </div>
       </EditorProvider>
     </div>
   );
