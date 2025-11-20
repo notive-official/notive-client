@@ -32,26 +32,15 @@ export default function Editor() {
             }}
           />
         )}
-        {state.type === "NOTE" && (
-          <div className="flex flex-col md:flex-row justify-center w-full h-full p-4 gap-4 md:gap-8 overflow-y-auto lg:overflow-hidden">
-            <section className="md:min-w-32 md:max-w-72 h-fit w-full">
-              <ArchiveSetting />
-            </section>
-            <section className="relative md:min-w-xl max-w-3xl h-full lg:overflow-y-auto text-center w-full">
-              <BlockEditor />
-            </section>
-          </div>
-        )}
-        {state.type === "REFERENCE" && (
-          <div className="flex flex-col md:flex-row justify-center w-full h-full p-4 gap-4 md:gap-8 overflow-y-auto lg:overflow-hidden">
-            <section className="md:min-w-32 md:max-w-72 h-fit w-full">
-              <ArchiveSetting thumnailUpload={false} />
-            </section>
-            <section className="relative md:min-w-xl max-w-3xl h-full lg:overflow-y-auto text-center w-full">
-              <LinkEditor />
-            </section>
-          </div>
-        )}
+        <div className="flex flex-col md:flex-row justify-center w-full h-full p-4 gap-4 md:gap-8 overflow-y-auto lg:overflow-hidden">
+          <section className="md:min-w-32 md:max-w-72 h-fit w-full">
+            <ArchiveSetting thumnailUpload={state.type !== "REFERENCE"} />
+          </section>
+          <section className="flex md:min-w-xl max-w-3xl w-full h-full lg:overflow-y-auto text-center px-4">
+            {state.type === "NOTE" && <BlockEditor />}
+            {state.type === "REFERENCE" && <LinkEditor />}
+          </section>
+        </div>
       </div>
     </div>
   );

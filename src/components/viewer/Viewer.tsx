@@ -115,7 +115,7 @@ export default function Viewer({
 
   const { ViewTrans } = useTranslation();
   return (
-    <div className="flex flex-col lg:flex-row gap-16 w-full h-full overflow-y-auto p-4">
+    <div className="flex flex-col max-w-6xl lg:flex-row gap-16 w-full h-full overflow-y-auto lg:overflow-y-hidden p-4">
       <div className="flex flex-col gap-5">
         <h1 className="text-foreground text-4xl font-extrabold whitespace-normal break-words">
           {title.length === 0 ? <br /> : title}
@@ -205,23 +205,21 @@ export default function Viewer({
           />
         </div>
       </div>
-
-      {type === "NOTE" && (
-        <div className="flex flex-col w-full gap-8 lg:p-8 lg:overflow-y-auto">
+      {/* Content 뷰어 */}
+      <div className="flex flex-col w-full h-full gap-8 lg:p-8 lg:overflow-y-auto">
+        {type === "NOTE" && (
           <div className="flex flex-col gap-2">
             {blocks?.map((block) => (
               <BlockView key={block.id} block={block} />
             ))}
           </div>
-        </div>
-      )}
-      {type === "REFERENCE" && (
-        <div className="flex flex-col w-full gap-8 lg:p-8 lg:overflow-y-auto">
-          <div className="flex flex-col gap-2">
+        )}
+        {type === "REFERENCE" && (
+          <div className="flex flex-col">
             <LinkDetailView url={blocks[0].payload} />
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
