@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { use, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   ArchiveDetail,
@@ -14,10 +14,6 @@ import { EditorProvider } from "@/contexts/EditorContext";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { useErrorBar } from "@/contexts/ErrorBarContext";
 import { usePatchNote } from "@/hooks/api/archive/note";
-import {
-  PutReference,
-  usePutReferenceMutation,
-} from "@/hooks/api/archive/reference";
 import useTranslation from "@/hooks/useTranslation";
 import { useRouter } from "@/i18n/routing";
 import { useQueryClient } from "@tanstack/react-query";
@@ -41,13 +37,16 @@ export default function ArchiveEditPage({
       enabled: !isLoading,
     },
   });
+  useEffect(() => {
+    if (!archive) return;
+    if (archive.meta.type === "REFERENCE") {
+      router.push(`/post/${id}/edit/reference`);
+    }
+  }, [archive]);
 
   const { pushWarning } = useErrorBar();
   const { PostTrans } = useTranslation();
   const { patchNote } = usePatchNote();
-  const { mutate: putReference } = usePutReferenceMutation({
-    url: PutReference.url(id),
-  });
 
   const onUpdate = (data: UpdateEditorState) => {
     if (data.title?.length === 0) {
@@ -97,9 +96,6 @@ export default function ArchiveEditPage({
     );
 
   const { meta } = archive;
-  if (meta.type === "REFERENCE") {
-    router.push(`/post/${id}/edit/reference`);
-  }
   const init = {
     url: "",
     blocks: archive.blocks

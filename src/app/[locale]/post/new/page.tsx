@@ -1,12 +1,5 @@
 "use client";
 
-import { EditorState } from "@/contexts/EditorContext";
-import { useErrorBar } from "@/contexts/ErrorBarContext";
-import { usePostNote } from "@/hooks/api/archive/note";
-import {
-  usePostReferenceMutation,
-  PostReference,
-} from "@/hooks/api/archive/reference";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import useTranslation from "@/hooks/useTranslation";
 import { useRouter } from "@/i18n/routing";

@@ -12,9 +12,6 @@ import {
   ArchiveSummaryResponse,
   useGetGroupMetaQuery,
   getGroupMeta,
-  DeleteGroup,
-  ListGroupDetails,
-  useDeleteGroupMutation,
   usePutGroupMutation,
   PutGroup,
 } from "@/hooks/api/archive/group";
@@ -22,9 +19,6 @@ import { Button } from "@headlessui/react";
 import { PencilIcon } from "@heroicons/react/20/solid";
 import InputBox from "@/components/common/InputBox";
 import { useQueryClient } from "@tanstack/react-query";
-import { useErrorBar } from "@/contexts/ErrorBarContext";
-import { TrashIcon } from "@heroicons/react/16/solid";
-import { useRouter } from "@/i18n/routing";
 
 type GroupArchiveProps = { id: string };
 
@@ -36,8 +30,6 @@ export default function GroupArchivePage({
   const { id } = use(params);
   const { isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
-  const router = useRouter();
-  const { pushError } = useErrorBar();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [selectedTag, setSelectedTad] = useState<string>();
   const [payloads, setPayloads] = useState<ArchiveSummaryResponse[]>();

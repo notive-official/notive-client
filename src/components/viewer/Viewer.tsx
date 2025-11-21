@@ -25,7 +25,6 @@ import { useRouter } from "@/i18n/routing";
 import {
   ArchiveDetail,
   DeleteArchive,
-  ListArchives,
   useDeleteArchiveMutation,
 } from "@/hooks/api/archive/archive";
 import { useQueryClient } from "@tanstack/react-query";
@@ -67,7 +66,7 @@ export default function Viewer({
   const router = useRouter();
   const queryClient = useQueryClient();
   const { open, close, modalBind } = useModal();
-  const { pushWarning, pushError } = useErrorBar();
+  const { pushError } = useErrorBar();
   const toggleBookmark = () => {
     if (!isMarked) postBookmark();
     if (isMarked) deleteBookmark();
@@ -152,7 +151,7 @@ export default function Viewer({
               <span
                 title={ViewTrans("edit.button")}
                 className="cursor-pointer rounded-md bg-muted w-fit"
-                onClick={(e) => {
+                onClick={() => {
                   if (type === "NOTE") router.push(`/post/${id}/edit/note`);
                   if (type === "REFERENCE")
                     router.push(`/post/${id}/edit/reference`);

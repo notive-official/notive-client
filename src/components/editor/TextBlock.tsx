@@ -9,13 +9,8 @@ interface TextBlockProps {
 }
 
 export default function TextBlock({ block }: TextBlockProps) {
-  const {
-    updateBlock,
-    addBlock,
-    splitToNewBlock,
-    getPrevTextBlock,
-    getNextTextBlock,
-  } = useBlockEditor();
+  const { updateBlock, splitToNewBlock, getPrevTextBlock, getNextTextBlock } =
+    useBlockEditor();
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { focusedBlockId, setFocusedBlockId } = useFocusBlock();
   const { mergeWithPrevBlock } = useBlockEditor();

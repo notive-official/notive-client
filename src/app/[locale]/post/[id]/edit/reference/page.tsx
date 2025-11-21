@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { use, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   ArchiveDetail,
@@ -48,6 +48,13 @@ export default function ArchiveEditPage({
   const { mutate: putReference } = usePutReferenceMutation({
     url: PutReference.url(id),
   });
+
+  useEffect(() => {
+    if (!archive) return;
+    if (archive.meta.type === "NOTE") {
+      router.push(`/post/${id}/edit/note`);
+    }
+  }, [archive]);
 
   const onUpdate = (data: UpdateEditorState) => {
     if (data.title?.length === 0) {
@@ -111,9 +118,6 @@ export default function ArchiveEditPage({
     );
 
   const { meta } = archive;
-  if (meta.type === "NOTE") {
-    router.push(`/post/${id}/edit/note`);
-  }
   const init = {
     url: archive.blocks[0].payload,
     blocks: [],

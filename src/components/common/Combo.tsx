@@ -7,8 +7,7 @@ import {
 } from "@headlessui/react";
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
-import { Dispatch, ReactNode, SetStateAction, useState } from "react";
-import Hangul from "hangul-js";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 import { ComboSelection } from "@/hooks/useCombo";
 
 interface ComboProps {
