@@ -58,6 +58,7 @@ type UpdateNoteProps = {
   updatedBlockIdxes: number[];
   reorderedBlockIdxes: number[];
   deletedBlockIds: string[];
+  isThumbnailDeleted: boolean;
   title?: string;
   tags?: string[];
   groupId?: string;
@@ -84,6 +85,7 @@ export const generateNotePatchRequestForm = ({
   updatedBlockIdxes,
   reorderedBlockIdxes,
   deletedBlockIds,
+  isThumbnailDeleted,
   title,
   tags,
   groupId,
@@ -93,7 +95,7 @@ export const generateNotePatchRequestForm = ({
   thumbnail,
 }: UpdateNoteProps): FormData => {
   const form = new FormData();
-
+  form.append("isThumbnailDeleted", String(isThumbnailDeleted));
   if (thumbnail !== undefined && thumbnail !== null)
     form.append("thumbnailImage", thumbnail);
   if (isPublic !== undefined) form.append("isPublic", String(isPublic));

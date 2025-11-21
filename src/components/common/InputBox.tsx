@@ -42,7 +42,7 @@ export default function InputBox({
               onAction?.();
             }
           }}
-          className="block w-full rounded-xl border-none text-foreground px-4 py-2 bg-reverse-5 outline-none"
+          className="block w-full rounded-xl border-none text-foreground bg-muted px-4 py-2 outline-none"
           placeholder={placeholder}
           onChange={(e) => handleChange(e.target.value)}
           value={value}

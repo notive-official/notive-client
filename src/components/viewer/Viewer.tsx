@@ -117,18 +117,24 @@ export default function Viewer({
   return (
     <div className="flex flex-col max-w-6xl lg:flex-row gap-16 w-full h-full overflow-y-auto lg:overflow-y-hidden p-4">
       <div className="flex flex-col gap-5">
+        {/* 제목 */}
         <h1 className="text-foreground text-4xl font-extrabold whitespace-normal break-words">
           {title.length === 0 ? <br /> : title}
         </h1>
+        {/* 태그 */}
         <div className="flex flex-row flex-wrap gap-2">
           {tags.map((tag) => {
             return <Tag key={tag} value={tag} />;
           })}
         </div>
-        <ThumbnailView
-          thumbnailPath={thumbnailPath ?? DEFAULT_ARCHIVE_THUMBNAIL_PATH}
-          referenceUrl={type === "REFERENCE" ? blocks[0].payload : undefined}
-        />
+        {/* 썸네일 */}
+        <div className="max-w-md">
+          <ThumbnailView
+            thumbnailPath={thumbnailPath ?? DEFAULT_ARCHIVE_THUMBNAIL_PATH}
+            referenceUrl={type === "REFERENCE" ? blocks[0].payload : undefined}
+          />
+        </div>
+        {/* 동작 옵션 */}
         <div className="flex flex-row gap-2">
           {canDuplicate && (
             <span

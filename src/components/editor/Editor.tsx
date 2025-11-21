@@ -6,9 +6,17 @@ import ArchiveSetting from "@/components/editor/ArchiveSetting";
 import BlockEditor from "@/components/editor/BlockEditor";
 import { LinkEditor } from "@/components/editor/LinkEditor";
 import { useEditor } from "@/contexts/EditorContext";
+import { Input } from "@headlessui/react";
+import Tagbar from "./Tagbar";
+import useTranslation from "@/hooks/useTranslation";
 
 export default function Editor() {
   const { state, setState } = useEditor();
+  const { PostTrans } = useTranslation();
+
+  const changeTitle = (newTitle: string) => {
+    setState({ ...state, title: newTitle });
+  };
 
   const categories: { name: string; value: ArchiveType }[] = [
     { name: "NOTE", value: "NOTE" },
@@ -36,7 +44,14 @@ export default function Editor() {
           <section className="md:min-w-32 md:max-w-72 h-fit w-full">
             <ArchiveSetting thumnailUpload={state.type !== "REFERENCE"} />
           </section>
-          <section className="flex md:min-w-xl max-w-3xl w-full h-full lg:overflow-y-auto text-center px-4">
+          <section className="flex flex-col md:min-w-xl max-w-3xl w-full h-full lg:overflow-y-auto text-center px-4">
+            <Input
+              value={state.title}
+              className="text-2xl py-4 bg-surface w-full outline-none px-4"
+              placeholder={PostTrans("title.placeholder")}
+              onChange={(e) => changeTitle(e.target.value)}
+            />
+            <Tagbar />
             {state.type === "NOTE" && <BlockEditor />}
             {state.type === "REFERENCE" && <LinkEditor />}
           </section>

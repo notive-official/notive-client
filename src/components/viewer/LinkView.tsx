@@ -40,7 +40,7 @@ export function LinkView({ url }: { url: string }) {
     <div className="w-full">
       {oEmbed ? (
         <div
-          className="bg-secondary rounded-lg overflow-hidden shadow-lg h-48"
+          className="bg-muted rounded-lg overflow-hidden shadow-lg h-48"
           onClick={handleClick}
         >
           <div className="cursor-pointer hover-bg-effect flex flex-row h-full">

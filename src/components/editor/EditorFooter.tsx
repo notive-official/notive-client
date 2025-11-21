@@ -8,6 +8,7 @@ import { EditorState, useEditor } from "@/contexts/EditorContext";
 
 export interface UpdateEditorState extends Partial<EditorState> {
   blocks: EditorBlock[];
+  isThumbnailDeleted: boolean;
   deletedBlockIds: string[];
   updatedBlockIds: string[];
   addedBlockIds: string[];
@@ -38,6 +39,7 @@ export default function EditorFooter({
     const dirtyMeta = getDirtyMeta();
     return {
       ...dirtyMeta,
+      isThumbnailDeleted: dirtyMeta.thumbnail === null,
       title: dirtyMeta.title?.trim(),
       blocks: trimContent(blocks),
       deletedBlockIds: [...deleted],

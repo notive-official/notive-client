@@ -31,7 +31,7 @@ export default function ThumbnailView({
   return (
     <>
       <div
-        className="relative group cursor-pointer rounded drop-shadow-lg w-fit h-fit"
+        className="relative group cursor-pointer rounded drop-shadow-lg w-full h-fit"
         onClick={handleThumbnailClick}
       >
         <Image

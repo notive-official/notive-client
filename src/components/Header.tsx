@@ -92,7 +92,7 @@ export default function Header() {
   });
 
   return (
-    <header className="w-full p-4 flex justify-between shadow-md text-foreground bg-primary">
+    <header className="w-full p-4 flex justify-between shadow-md text-foreground bg-muted">
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <p
         className="flex flex-row items-center font-bold text-2xl cursor-pointer"
@@ -120,7 +120,7 @@ export default function Header() {
                   height={30}
                   alt="profile image"
                 />
-                <p className="text-md font-medium text-current">
+                <p className="text-md font-medium text-foreground">
                   {data.nickname}
                 </p>
               </div>

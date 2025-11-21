@@ -22,6 +22,8 @@ import { useErrorBar } from "@/contexts/ErrorBarContext";
 import { useEffect } from "react";
 import { AxiosError } from "axios";
 import { ErrorRes } from "@/lib/type";
+import ThumbnailView from "../viewer/ThumbnailView";
+import { DEFAULT_ARCHIVE_THUMBNAIL_PATH } from "@/common/consts/defaultImage";
 
 interface ArchiveSettingProps {
   thumnailUpload?: boolean;
@@ -105,7 +107,7 @@ export default function ArchiveSetting({
   return (
     <div className="flex flex-col gap-4 w-full">
       {/* 썸네일 선택 */}
-      {thumnailUpload && (
+      {thumnailUpload ? (
         <section className="flex flex-col h-full md:gap-5">
           <div className="relative w-full aspect-video bg-transparent md:block">
             <ImageUploader
@@ -114,7 +116,7 @@ export default function ArchiveSetting({
                   {state.thumbnail ? (
                     <ImageView filePath={state.thumbnail.path} />
                   ) : (
-                    <div className="flex justify-center items-center w-full h-full cursor-pointer bg-reverse-25 text-white border-primary border-2 border-dashed ">
+                    <div className="flex justify-center items-center w-full h-full cursor-pointer bg-muted text-muted-foreground border-reverse-25 border-3 border-dashed">
                       <p>{PostTrans("setting.thumbnail.placeholder")}</p>
                     </div>
                   )}
@@ -134,38 +136,61 @@ export default function ArchiveSetting({
             )}
           </div>
         </section>
+      ) : (
+        <ThumbnailView
+          thumbnailPath={
+            state.thumbnail?.path ?? DEFAULT_ARCHIVE_THUMBNAIL_PATH
+          }
+          referenceUrl={state.url}
+        />
       )}
 
       <section className="flex flex-col gap-2 w-full">
         {/* 공개 선택 */}
-        <div className="flex flex-row items-center justify-between">
-          <p className="text-md text-foreground p-2">{"Visibility"}</p>
-          <div className="flex flex-row justify-between items-center gap-4">
-            <p className="text-sm text-muted-foreground">
-              {state.isPublic ? "public" : "private"}
+        <div className="flex flex-col p-2 gap-1">
+          <div className="flex flex-row items-center justify-between">
+            <p className="text-lg text-foreground font-medium">
+              {"Visibility"}
             </p>
-            <ToggleSwitch enabled={state.isPublic} onChange={changePublic} />
+            <div className="flex flex-row justify-end items-center gap-4">
+              <p className="text-md text-muted-foreground">
+                {state.isPublic ? "public" : "private"}
+              </p>
+              <ToggleSwitch enabled={state.isPublic} onChange={changePublic} />
+            </div>
+          </div>
+          <div className="text-sm text-reverse-50">
+            {"노트를 나만 보거나 다른 사람과 공유할 수 있어요"}
           </div>
         </div>
 
         {/* 복제 선택 */}
-        <div className="flex flex-row items-center justify-between">
-          <p className="text-md text-foreground p-2">{"Duplicability"}</p>
-          <div className="flex flex-row justify-between items-center gap-4">
-            <p className="text-sm text-muted-foreground">
-              {state.isDuplicable ? "allow" : "deny"}
+        <div className="flex flex-col p-2 gap-1">
+          <div className="flex flex-row items-center justify-between">
+            <p className="text-lg text-foreground font-medium">
+              {"Duplicability"}
             </p>
-            <ToggleSwitch
-              enabled={state.isDuplicable}
-              onChange={changeDuplicable}
-            />
+            <div className="flex flex-row justify-between items-center gap-4">
+              <p className="text-md text-muted-foreground">
+                {state.isDuplicable ? "allowed" : "denied"}
+              </p>
+              <ToggleSwitch
+                enabled={state.isDuplicable}
+                onChange={changeDuplicable}
+              />
+            </div>
+          </div>
+          <div className="text-sm text-reverse-50">
+            {
+              "다른 사용자가 이 노트를 복제해서 자신만의 노트로 만들 수 있게 할지 정해요"
+            }
           </div>
         </div>
 
         {/* 그룹 선택 */}
-        <div className="flex flex-row justify-between items-center w-full gap-2">
-          <p className="w-1/4 text-md text-foreground p-2">Group</p>
-          <div className="flex flex-row items-end gap-2">
+        <div className="flex flex-col justify-center items-start w-full p-2 gap-1">
+          <p className="text-md text-foreground">Group</p>
+          <div className="flex flex-row w-full items-end gap-2">
             <Combo
               {...comboBind}
               buttons={[
@@ -178,9 +203,9 @@ export default function ArchiveSetting({
                     }
                     open();
                   }}
-                  className="group flex w-full cursor-pointer justify-center items-center gap-2 rounded-xl px-3 py-1.5 select-none click-effect bg-reverse-50"
+                  className="group flex w-full cursor-pointer justify-center items-center gap-2 rounded-xl select-none click-effect"
                 >
-                  <div className="text-sm/6 text-surface">
+                  <div className="text-sm/6 font-semibold text-foreground bg-reverse-10 w-full px-3 py-1.5 rounded-xl">
                     {PostTrans("setting.group.create.button")}
                   </div>
                 </Button>,

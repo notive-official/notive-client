@@ -40,8 +40,8 @@ export default function Combo({
           <ComboboxInput
             value={query}
             className={clsx(
-              "w-full rounded-lg border-none bg-secondary py-1.5 pl-3 text-sm/6 text-foreground",
-              "data-focus:outline-none shadow-sm"
+              "w-full rounded-lg border-2 border-reverse-10 bg-surface py-1.5 pl-3 text-sm/6 text-foreground",
+              "data-focus:outline-none shadow-xs"
             )}
             displayValue={(opt: { id: number; name: string }) => opt?.name}
             onChange={(e) => setQuery(e.target.value)}
@@ -56,7 +56,7 @@ export default function Combo({
           transition
           unmount={false}
           className={clsx(
-            "w-(--input-width) rounded-xl bg-secondary p-1 [--anchor-gap:--spacing(1)] empty:invisible",
+            "w-(--input-width) rounded-xl bg-surface p-1 [--anchor-gap:--spacing(1)] empty:invisible",
             "transition duration-100 ease-in data-leave:data-closed:opacity-0 z-20 shadow-lg"
           )}
           style={{ height: `${height}px` }}

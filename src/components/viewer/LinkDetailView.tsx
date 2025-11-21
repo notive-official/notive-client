@@ -39,12 +39,12 @@ export function LinkDetailView({ url }: { url: string }) {
 
   if (isError) {
     return (
-      <p
+      <div
         className="p-2 text-start underline text-blue-500 cursor-pointer hover:text-blue-600"
         onClick={handleClick}
       >
         {url}
-      </p>
+      </div>
     );
   }
 
@@ -63,7 +63,7 @@ export function LinkDetailView({ url }: { url: string }) {
           </p>
           <div
             key="oembed-stable"
-            className="oembed-container w-full h-full flex-1 min-h-[320px]"
+            className="oembed-container w-full h-full flex-1 min-h-[320px] bg-muted rounded-xl"
             dangerouslySetInnerHTML={{ __html: customizedHtml }}
           />
           <div className="text-sm text-reverse-25">{url}</div>
