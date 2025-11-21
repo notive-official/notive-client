@@ -40,7 +40,7 @@ export default function LinkPage() {
   return (
     <div
       ref={scrollRef}
-      className="relative h-full w-full flex flex-row justify-start mx-auto overflow-y-auto p-8"
+      className="relative h-full w-full flex flex-row justify-start p-8"
     >
       <section className="flex flex-row justify-between items-start h-full w-full max-w-7xl">
         <div className="flex flex-col gap-20 w-full">

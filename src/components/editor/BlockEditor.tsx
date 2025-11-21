@@ -1,38 +1,21 @@
 "use client";
 
 import { SortableElementProvider } from "@/contexts/SortableElementContext";
-import { Input } from "@headlessui/react";
 import EditorBlock from "./ContentBlock";
-import Tagbar from "./Tagbar";
 import ToolBar from "./ToolBar";
-import useTrans from "@/hooks/useTranslation";
 import { useBlockEditor } from "@/contexts/BlockEditorContext";
-import { useEditor } from "@/contexts/EditorContext";
 
 export default function BlockEditor() {
-  const { PostTrans } = useTrans();
   const { blockState, reorderBlocks } = useBlockEditor();
-  const { state, setState } = useEditor();
 
   const { blocks } = blockState;
 
-  const changeTitle = (newTitle: string) => {
-    setState({ ...state, title: newTitle });
-  };
-
   return (
-    <div className="pb-32">
-      <Input
-        value={state.title}
-        className="text-h1 px-6 py-4 bg-reverse-5 w-full rounded-xl data-focus-outline-effect"
-        placeholder={PostTrans("title.placeholder")}
-        onChange={(e) => changeTitle(e.target.value)}
-      />
-      <Tagbar />
-      <div className="sticky top-0 z-10 mb-4">
+    <div className="flex flex-col w-full h-full">
+      <div className="sticky -top-0 z-10 mb-4">
         <ToolBar />
       </div>
-      <div className="rounded-2xl p-2 mb-4">
+      <div className="rounded-2xl mb-4">
         <SortableElementProvider
           elements={blocks}
           handleReorderElements={reorderBlocks}

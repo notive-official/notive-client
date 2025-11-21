@@ -50,13 +50,13 @@ export default function Tagbar() {
           }}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="w-full rounded-xl bg-reverse-5 px-4 py-2 focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus-outline-effect"
+          className="w-full rounded-xl bg-transparent py-2 outline-none px-4"
           placeholder={PostTrans("tag.placeholder")}
         />
         {showStoredTag && (
           <div
             className="absolute left-0 right-0 top-full
-                 mt-1 z-20 rounded-xl bg-muted p-2 shadow-lg
+                 mt-1 z-20 rounded-xl bg-muted p-2 drop-shadow-xl
                  min-h-10 max-h-40 overflow-y-auto"
             onMouseDown={(e) => e.preventDefault()}
           >
@@ -67,14 +67,14 @@ export default function Tagbar() {
                   className="w-fit"
                   onClick={() => handleAddingTag(v)}
                 >
-                  <Tag value={v} />
+                  <Tag value={v} className="bg-transparent" />
                 </Button>
               ))}
             </div>
           </div>
         )}
       </div>
-      <div className="flex flex-row flex-wrap gap-2 my-3">
+      <div className="flex flex-row flex-wrap gap-2 my-3 ">
         {state.tags.map((tag) => {
           return (
             <div key={tag} onClick={() => removeTag(tag)}>

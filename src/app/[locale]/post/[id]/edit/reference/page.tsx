@@ -93,7 +93,6 @@ export default function ArchiveEditPage({
       if (data.url && data.url.length === 0) {
         pushWarning(PostTrans("message.warning.url"));
       }
-      console.log(data);
       return putReference(
         { ...data, url: data.url },
         {
@@ -112,30 +111,18 @@ export default function ArchiveEditPage({
     );
 
   const { meta } = archive;
-  const init =
-    meta.type === "REFERENCE"
-      ? {
-          url: archive.blocks[0].payload,
-          blocks: [],
-          thumbnail: null,
-          tags: archive.tags,
-        }
-      : {
-          url: "",
-          blocks: archive.blocks
-            .sort((a, b) => a.position - b.position)
-            .map((block) => {
-              const payload = { content: block.payload };
-              return { id: block.id, type: block.type, payload };
-            }),
-          thumbnail: meta.thumbnailPath
-            ? { path: meta.thumbnailPath, file: null }
-            : null,
-          tags: archive.tags,
-        };
+  if (meta.type === "NOTE") {
+    router.push(`/post/${id}/edit/note`);
+  }
+  const init = {
+    url: archive.blocks[0].payload,
+    blocks: [],
+    thumbnail: null,
+    tags: archive.tags,
+  };
 
   return (
-    <div className="relative h-screen pb-16">
+    <div className="relative h-full">
       <EditorProvider
         initial={{
           ...meta,
@@ -144,8 +131,12 @@ export default function ArchiveEditPage({
         }}
         postKey={id}
       >
-        <Editor />
-        <EditorFooter placeholder="수정하기" onUpdate={onUpdate} />
+        <div className="flex flex-col w-full h-full py-12">
+          <Editor />
+        </div>
+        <div className="fixed bottom-0 left-0 z-10 w-full">
+          <EditorFooter placeholder="수정하기" onUpdate={onUpdate} />
+        </div>
       </EditorProvider>
     </div>
   );

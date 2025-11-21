@@ -6,11 +6,11 @@ export default async function ArchiveLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex-col md:flex-row relative w-full h-screen pb-16 p-8">
-      <div className="flex flex-col gap-4 w-full h-fit md:w-1/4 md:h-full">
+    <div className="flex h-full w-full md:flex-row flex-col">
+      <div className="flex flex-col gap-4 w-full md:w-1/4 h-auto md:h-full p-4 md:px-8">
         <ArchiveMenu />
       </div>
-      {children}
+      <div className="flex-1 min-h-0 h-full overflow-y-auto">{children}</div>
     </div>
   );
 }

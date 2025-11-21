@@ -8,6 +8,7 @@ import { EditorState, useEditor } from "@/contexts/EditorContext";
 
 export interface UpdateEditorState extends Partial<EditorState> {
   blocks: EditorBlock[];
+  isThumbnailDeleted: boolean;
   deletedBlockIds: string[];
   updatedBlockIds: string[];
   addedBlockIds: string[];
@@ -38,6 +39,7 @@ export default function EditorFooter({
     const dirtyMeta = getDirtyMeta();
     return {
       ...dirtyMeta,
+      isThumbnailDeleted: dirtyMeta.thumbnail === null,
       title: dirtyMeta.title?.trim(),
       blocks: trimContent(blocks),
       deletedBlockIds: [...deleted],
@@ -49,7 +51,7 @@ export default function EditorFooter({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 z-10 bg-muted w-full flex justify-center items-center p-2">
+    <div className=" flex justify-center bg-muted w-full items-center p-2">
       <div className="flex flex-row items-center justify-center cursor-pointer rounded-xl">
         <Button
           onClick={() => router.back()}

@@ -1,7 +1,6 @@
 "use client";
-import Editor from "@/components/editor/Editor";
-import EditorFooter from "@/components/editor/EditorFooter";
-import { EditorProvider, EditorState } from "@/contexts/EditorContext";
+
+import { EditorState } from "@/contexts/EditorContext";
 import { useErrorBar } from "@/contexts/ErrorBarContext";
 import { usePostNote } from "@/hooks/api/archive/note";
 import {
@@ -11,64 +10,62 @@ import {
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import useTranslation from "@/hooks/useTranslation";
 import { useRouter } from "@/i18n/routing";
+import { Button } from "@headlessui/react";
+import { ArrowRightIcon } from "@heroicons/react/16/solid";
 
 export default function PostPage() {
   useRequireAuth();
   const router = useRouter();
-  const { pushWarning } = useErrorBar();
   const { PostTrans } = useTranslation();
-  const { postNote } = usePostNote();
-  const { mutate: postReference } = usePostReferenceMutation({
-    url: PostReference.url(),
-  });
-
-  const onSave = (data: EditorState) => {
-    if (!data.group) {
-      pushWarning(PostTrans("message.warning.group"));
-      return;
-    }
-    if (!data.title || data.title.length === 0) {
-      pushWarning(PostTrans("message.warning.title"));
-      return;
-    }
-
-    const body = {
-      ...data,
-      groupId: data.group.id,
-      thumbnail: data.thumbnail ? data.thumbnail.file : null,
-    };
-
-    if (data.type === "NOTE") {
-      if (data.blocks.length === 0) {
-        pushWarning(PostTrans("message.warning.content"));
-        return;
-      }
-      return postNote(body).then((res) => {
-        router.push(`/post/${res.data.id}`);
-      });
-    }
-
-    if (data.type === "REFERENCE") {
-      if (data.url.length == 0) {
-        pushWarning(PostTrans("message.warning.url"));
-      } else
-        return postReference(
-          { ...body },
-          {
-            onSuccess(res) {
-              router.push(`/post/${res.id}`);
-            },
-          }
-        );
-    }
-  };
 
   return (
-    <div className="relative h-screen pb-16">
-      <EditorProvider initial={{ mode: "create" }} postKey={"new"}>
-        <Editor />
-        <EditorFooter placeholder="저장하기" onSave={onSave} />
-      </EditorProvider>
+    <div className="flex flex-col justify-between items-center w-full h-full">
+      <section className="h-16" />
+      <div className="flex flex-col md:flex-row w-fit h-fit justify-center items-center gap-16 p-4">
+        {/* Note */}
+        <div
+          className="flex flex-col justify-between w-full max-w-sm h-full overflow-hidden rounded-2xl bg-muted p-6 text-left align-middle shadow-xl gap-4"
+          onClick={() => router.push(`/post/new/note`)}
+        >
+          {/* title */}
+          <p className="text-xl font-medium leading-6 text-foreground pb-4">
+            {PostTrans("note.name")}
+          </p>
+          {/* description */}
+          <p className="text-foreground whitespace-pre-line">
+            {PostTrans("note.description")}
+          </p>
+          {/* button */}
+          <div className="flex justify-end items-center">
+            <Button className="flex flex-row gap-2 w-fit shadow-lg px-4 py-2 cursor-pointer rounded-xl bg-primary text-on-primary">
+              <p>{PostTrans("note.button")}</p>
+              <ArrowRightIcon className="w-5 h-5" />
+            </Button>
+          </div>
+        </div>
+        {/* Reference */}
+        <div
+          className="flex flex-col justify-between w-full max-w-sm h-full overflow-hidden rounded-2xl bg-primary p-6 text-left align-middle shadow-xl gap-4"
+          onClick={() => router.push(`/post/new/reference`)}
+        >
+          {/* title */}
+          <p className="text-xl font-medium leading-6 text-on-primary pb-4">
+            {PostTrans("reference.name")}
+          </p>
+          {/* description */}
+          <p className="text-on-primary whitespace-pre-line">
+            {PostTrans("reference.description")}
+          </p>
+          {/* button */}
+          <div className="flex justify-end items-center">
+            <Button className="flex flex-row gap-2 w-fit shadow-lg px-4 py-2 cursor-pointer rounded-xl bg-muted text-foreground">
+              <p>{PostTrans("reference.button")}</p>
+              <ArrowRightIcon className="w-5 h-5" />
+            </Button>
+          </div>
+        </div>
+      </div>
+      <section className="h-32" />
     </div>
   );
 }

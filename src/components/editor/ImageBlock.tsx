@@ -46,7 +46,7 @@ export default function ImageBlock({ block }: ImageBlockProps) {
       >
         <div
           {...getRootProps()}
-          className="w-full p-3 border-2 border-dashed rounded-lg cursor-pointer my-3 border-primary bg-secondary shadow-md"
+          className="w-full p-3 border-2 border-dashed rounded-lg cursor-pointer my-3 border-reverse-25 bg-surface shadow-md"
         >
           <input {...getInputProps()} />
           {file ? (

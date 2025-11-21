@@ -24,7 +24,7 @@ export default function InputBox({
 }: InputBoxProps) {
   const [isComposing, setIsComposing] = useState(false);
   return (
-    <Field className="w-full m-2">
+    <Field className="w-full my-2">
       <div className="ml-2 flex flex-col justify-start">
         <Label className="text-sm/6 font-medium text-foreground text-left">
           {label}
@@ -42,7 +42,7 @@ export default function InputBox({
               onAction?.();
             }
           }}
-          className="block w-full rounded-xl border-none text-foreground px-4 py-2 bg-reverse-5 outline-none"
+          className="block w-full rounded-xl border-none text-foreground bg-muted px-4 py-2 outline-none"
           placeholder={placeholder}
           onChange={(e) => handleChange(e.target.value)}
           value={value}

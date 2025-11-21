@@ -30,7 +30,7 @@ export function LinkBlock({ block }: LinkBlockProps) {
 
   return (
     <div
-      className="flex flex-col justify-between items-center"
+      className="flex flex-col w-full"
       onBlur={() => {
         if (focusedBlockId === id) setFocusedBlockId(null);
       }}

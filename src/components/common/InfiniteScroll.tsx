@@ -71,7 +71,7 @@ export default function InfiniteScroll<T>({
   }
 
   return (
-    <div className="flex flex-col gap-20 w-full pb-32">
+    <div className="flex flex-col gap-20 w-full">
       <div className={className}>
         {notes.map((item, index) => children(item, index))}
       </div>

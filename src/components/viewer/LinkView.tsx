@@ -40,7 +40,7 @@ export function LinkView({ url }: { url: string }) {
     <div className="w-full">
       {oEmbed ? (
         <div
-          className="bg-secondary rounded-lg overflow-hidden shadow-lg h-48"
+          className="bg-muted rounded-lg overflow-hidden shadow-lg h-48"
           onClick={handleClick}
         >
           <div className="cursor-pointer hover-bg-effect flex flex-row h-full">
@@ -69,8 +69,8 @@ export function LinkView({ url }: { url: string }) {
           </div>
         </div>
       ) : null}
-      <div className="flex items-start w-full">
-        <p className="p-1 text-sm text-muted-foreground line-clamp-1">{url}</p>
+      <div className="p-1 w-full text-sm text-muted-foreground break-all line-clamp-1">
+        {url}
       </div>
     </div>
   );

@@ -77,7 +77,25 @@
   },
 
   "PostPage": {
+    "note": {
+      "name": "NOTE",
+      "description": "An archive where you can freely combine various types of content such as images, text, and files.\nIdeal for creating organized notes, scrapping materials, or composing content like a document.",
+      "button": "Create"
+    },
+    "reference": {
+      "name": "LINK",
+      "description": "A link-based archive that automatically generates a preview when you enter a URL.\nUseful for quickly saving web content such as YouTube videos, articles, or portfolios.",
+      "button": "Create"
+    },
     "setting": {
+      "access": {
+        "name": "Access",
+        "description": "Choose whether this note is visible only to you or can be shared with others"
+      },
+      "copy": {
+        "name": "Copying",
+        "description": "Decide whether other users can duplicate this note and create their own version from it"
+      },
       "group": {
         "create": {
           "title": "Do you want to create the following group?",

@@ -16,13 +16,16 @@ export default function ToolBar() {
   const { focusedBlockId, setFocusedBlockId } = useFocusBlock();
   const [showHeadings, setShowHeadings] = useState(false);
 
+  const toolButton = "cursor-pointer hover:text-on-primary text-on-secondary";
+  const toolBackground = "bg-secondary rounded-xl shadow-lg";
+
   return (
     <div
-      className="w-full flex flex-row justify-start gap-3 px-2 py-2 bg-secondary rounded-xl shadow-lg"
+      className={`w-full flex flex-row justify-start gap-3 px-2 py-2 ${toolBackground}`}
       onMouseDown={(e) => e.preventDefault()}
     >
       <Button
-        className="click-effect"
+        className={toolButton}
         onClick={() =>
           focusedBlockId ? addBlock("LINK", focusedBlockId) : addBlock("LINK")
         }
@@ -30,7 +33,7 @@ export default function ToolBar() {
         <LinkIcon className="w-5 h-5 m-2" />
       </Button>
       <Button
-        className="click-effect"
+        className={toolButton}
         onClick={() =>
           focusedBlockId ? addBlock("IMAGE", focusedBlockId) : addBlock("IMAGE")
         }
@@ -43,7 +46,7 @@ export default function ToolBar() {
         onMouseLeave={() => setShowHeadings(false)}
       >
         <Button
-          className="click-effect"
+          className={toolButton}
           onClick={() => {
             const newBlockId = focusedBlockId
               ? addBlock("PARAGRAPH", focusedBlockId)
@@ -56,7 +59,7 @@ export default function ToolBar() {
         <div
           className={`
             flex gap-1 absolute left-full top-0 px-2
-            transition-all duration-300 bg-reverse-5 rounded-r-2xl
+            transition-all duration-300 bg-reverse-5 rounded-2xl
             ${
               showHeadings
                 ? "opacity-100 translate-x-0"
@@ -65,7 +68,7 @@ export default function ToolBar() {
           `}
         >
           <Button
-            className="click-effect"
+            className={toolButton}
             onClick={() =>
               focusedBlockId
                 ? updateBlock(focusedBlockId, { type: "H1" })
@@ -75,7 +78,7 @@ export default function ToolBar() {
             <H1Icon className="w-5 h-5 m-2" />
           </Button>
           <Button
-            className="click-effect"
+            className={toolButton}
             onClick={() =>
               focusedBlockId
                 ? updateBlock(focusedBlockId, { type: "H2" })
@@ -85,7 +88,7 @@ export default function ToolBar() {
             <H2Icon className="w-5 h-5 m-2" />
           </Button>
           <Button
-            className="click-effect"
+            className={toolButton}
             onClick={() =>
               focusedBlockId
                 ? updateBlock(focusedBlockId, { type: "H3" })
@@ -95,7 +98,7 @@ export default function ToolBar() {
             <H3Icon className="w-5 h-5 m-2" />
           </Button>
           <Button
-            className="click-effect"
+            className={toolButton}
             onClick={() =>
               focusedBlockId &&
               updateBlock(focusedBlockId, { type: "PARAGRAPH" })
