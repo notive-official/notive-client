@@ -31,12 +31,14 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className="h-full overflow-hidden">
+    <html lang={locale} className="h-full">
       <body className="h-full flex flex-col text-foreground bg-surface">
         <ClientProviders locale={locale} messages={messages}>
           <ErrorBarProvider listenGlobal position="bottom" align="left">
-            <Header />
-            <main className="flex-1 h-full overflow-hidden">{children}</main>
+            <div className="flex h-full flex-col">
+              <Header />
+              <main className="flex-1 min-h-0 overflow-y-auto">{children}</main>
+            </div>
           </ErrorBarProvider>
         </ClientProviders>
       </body>

@@ -69,8 +69,8 @@ export function LinkView({ url }: { url: string }) {
           </div>
         </div>
       ) : null}
-      <div className="flex items-start w-full">
-        <p className="p-1 text-sm text-muted-foreground line-clamp-1">{url}</p>
+      <div className="p-1 w-full text-sm text-muted-foreground break-all line-clamp-1">
+        {url}
       </div>
     </div>
   );

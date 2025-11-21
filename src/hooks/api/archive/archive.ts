@@ -24,7 +24,7 @@ export type ArchiveSummaryResponse = {
 };
 export const ListArchives = {
   url: () => "api/archive",
-  key: () => ["listArchive"],
+  key: (type: ArchiveType) => ["listArchive", type],
 };
 export const useListArchivesQuery = createInfiniteGetQueryWithParams<
   ArchiveSummaryResponse,

@@ -11,11 +11,11 @@
     --color-border: #6f6f6f;
     --color-ring: #6f6f6f;
 
-    --color-primary: #0c0c0c;
+    --color-primary: #323232;
     --color-on-primary: #fafafa;
 
-    --color-secondary: #323232;
-    --color-on-secondary: #ebebeb;
+    --color-secondary: #464646;
+    --color-on-secondary: #dedede;
 
     --color-reverse-5: rgba(0, 0, 0, 0.05);
     --color-reverse-10: rgba(0, 0, 0, 0.1);

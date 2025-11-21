@@ -56,12 +56,12 @@ export default function PostPage() {
   };
 
   return (
-    <div className="relative h-screen">
+    <div className="relative min-h-screen">
       <EditorProvider
         initial={{ mode: "create", type: "REFERENCE" }}
         postKey={"new"}
       >
-        <div className="flex flex-col w-full h-full pb-32">
+        <div className="flex flex-1 flex-col w-full h-full md:pt-12 pb-12">
           <Editor />
         </div>
         <div className="fixed bottom-0 left-0 z-10 w-full">

@@ -51,7 +51,7 @@ export function LinkDetailView({ url }: { url: string }) {
   return (
     <div className="flex flex-col w-full h-full">
       {oEmbed ? (
-        <div className="flex flex-col justify-center items-start w-full h-full p-4 gap-4">
+        <div className="flex flex-col justify-center items-start w-full h-full gap-4">
           <h2
             className="text-foreground font-bold text-lg line-clamp-4 text-start"
             title={oEmbed.title}

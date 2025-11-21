@@ -24,7 +24,7 @@ export default function InputBox({
 }: InputBoxProps) {
   const [isComposing, setIsComposing] = useState(false);
   return (
-    <Field className="w-full m-2">
+    <Field className="w-full my-2">
       <div className="ml-2 flex flex-col justify-start">
         <Label className="text-sm/6 font-medium text-foreground text-left">
           {label}

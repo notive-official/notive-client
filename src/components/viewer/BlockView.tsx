@@ -17,7 +17,7 @@ interface ViewBlockProps {
 export default function BlockView({ block }: ViewBlockProps) {
   const { type, payload } = block;
   return (
-    <div className="rounded-xl w-full">
+    <div className="rounded-xl w-full self-stretch">
       {payload ? (
         <div>
           {isImageBlock(type) && <ImageView filePath={payload} />}

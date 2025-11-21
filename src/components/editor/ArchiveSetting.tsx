@@ -150,7 +150,7 @@ export default function ArchiveSetting({
         <div className="flex flex-col p-2 gap-1">
           <div className="flex flex-row items-center justify-between">
             <p className="text-lg text-foreground font-medium">
-              {"Visibility"}
+              {PostTrans("setting.access.name")}
             </p>
             <div className="flex flex-row justify-end items-center gap-4">
               <p className="text-md text-muted-foreground">
@@ -160,7 +160,7 @@ export default function ArchiveSetting({
             </div>
           </div>
           <div className="text-sm text-reverse-50">
-            {"노트를 나만 보거나 다른 사람과 공유할 수 있어요"}
+            {PostTrans("setting.access.description")}
           </div>
         </div>
 
@@ -168,7 +168,7 @@ export default function ArchiveSetting({
         <div className="flex flex-col p-2 gap-1">
           <div className="flex flex-row items-center justify-between">
             <p className="text-lg text-foreground font-medium">
-              {"Duplicability"}
+              {PostTrans("setting.copy.name")}
             </p>
             <div className="flex flex-row justify-between items-center gap-4">
               <p className="text-md text-muted-foreground">
@@ -181,9 +181,7 @@ export default function ArchiveSetting({
             </div>
           </div>
           <div className="text-sm text-reverse-50">
-            {
-              "다른 사용자가 이 노트를 복제해서 자신만의 노트로 만들 수 있게 할지 정해요"
-            }
+            {PostTrans("setting.copy.description")}
           </div>
         </div>
 

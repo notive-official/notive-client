@@ -12,7 +12,7 @@ export default function BlockEditor() {
 
   return (
     <div className="flex flex-col w-full h-full">
-      <div className="sticky top-0 z-10 mb-4">
+      <div className="sticky -top-0 z-10 mb-4">
         <ToolBar />
       </div>
       <div className="rounded-2xl mb-4">

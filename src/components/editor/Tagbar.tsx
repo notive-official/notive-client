@@ -50,7 +50,7 @@ export default function Tagbar() {
           }}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="w-full rounded-xl bg-surface py-2 outline-none px-4"
+          className="w-full rounded-xl bg-transparent py-2 outline-none px-4"
           placeholder={PostTrans("tag.placeholder")}
         />
         {showStoredTag && (

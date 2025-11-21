@@ -51,12 +51,12 @@ export default function PostPage() {
   };
 
   return (
-    <div className="relative h-screen">
+    <div className="relative h-full">
       <EditorProvider
         initial={{ mode: "create", type: "NOTE" }}
         postKey={"new"}
       >
-        <div className="flex flex-col w-full h-full pb-32">
+        <div className="flex flex-col w-full h-full py-12">
           <Editor />
         </div>
         <div className="fixed bottom-0 left-0 z-10 w-full">
