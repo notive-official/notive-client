@@ -15,7 +15,7 @@ import LinkCard from "@/components/archive/LinkCard";
 export default function LinkPage() {
   const { isAuthenticated } = useAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [selectedTag, setSelectedTad] = useState<string>();
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [payloads, setPayloads] = useState<ArchiveSummaryResponse[]>();
 
   useRequireAuth();
@@ -28,8 +28,14 @@ export default function LinkPage() {
   });
 
   useEffect(() => {
-    if (!selectedTag) return;
     if (!result.data) return;
+    if (!selectedTag) {
+      const filteredPayloads = result.data.pages.flatMap(
+        (page) => page.content
+      );
+      setPayloads(filteredPayloads);
+      return;
+    }
     const filteredPayloads =
       result.data.pages
         .flatMap((page) => page.content)
@@ -45,7 +51,7 @@ export default function LinkPage() {
       <section className="flex flex-row justify-between items-start h-full w-full max-w-7xl">
         <div className="flex flex-col gap-20 w-full">
           <TagSearchBar
-            onClick={(v) => setSelectedTad(v)}
+            onClick={(v) => setSelectedTag(v)}
             selectedTag={selectedTag}
           />
           <InfiniteScroll

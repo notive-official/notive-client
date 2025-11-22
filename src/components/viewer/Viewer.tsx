@@ -127,7 +127,7 @@ export default function Viewer({
             })}
           </div>
           {/* 썸네일 */}
-          <div className="max-w-md">
+          <div className="max-w-xl">
             <ThumbnailView
               thumbnailPath={thumbnailPath ?? DEFAULT_ARCHIVE_THUMBNAIL_PATH}
               referenceUrl={

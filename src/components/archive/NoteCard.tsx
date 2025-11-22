@@ -32,7 +32,7 @@ export default function NoteCard({
   };
   return (
     <div
-      className="grid grid-rows-1 lg:grid-cols-2 shadow-md bg-reverse-5 p-2 gap-2 rounded-md cursor-pointer w-full 
+      className="grid grid-rows-1 lg:grid-cols-2 shadow-md bg-surface p-2 gap-2 rounded-md cursor-pointer w-full 
       max-w-[300px] lg:max-w-[720px] hover-bg-effect overflow-hidden"
       onClick={handleClick}
       onMouseEnter={() => setHover(true)}

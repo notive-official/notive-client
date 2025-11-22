@@ -4,8 +4,8 @@ import { Button } from "@headlessui/react";
 import Tag from "../common/Tag";
 
 interface TagSelectBarProps {
-  onClick: (value: string) => void;
-  selectedTag?: string;
+  onClick: (value: string | null) => void;
+  selectedTag: string | null;
 }
 
 export default function TagSelectBar({
@@ -18,9 +18,6 @@ export default function TagSelectBar({
     key: ListTag.key(),
     options: { enabled: isAuthenticated },
   });
-  const handleClick = (value: string) => {
-    onClick(value);
-  };
 
   return (
     <div className="h-full w-full flex flex-col md:flex-row items-center mx-auto">
@@ -31,7 +28,11 @@ export default function TagSelectBar({
         >
           <div className="flex flex-wrap items-center gap-2">
             {data?.content.map((v) => (
-              <Button key={v} className="w-fit" onClick={() => handleClick(v)}>
+              <Button
+                key={v}
+                className="w-fit"
+                onClick={() => onClick(selectedTag === v ? null : v)}
+              >
                 <Tag value={v} isSelected={v === selectedTag} />
               </Button>
             ))}
