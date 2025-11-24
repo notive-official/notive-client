@@ -8,7 +8,7 @@ interface InputBoxProps {
   value: string;
   handleChange: Dispatch<SetStateAction<string>>;
   buttonIcon?: ReactNode;
-  onAction?: () => void;
+  onAction?: (v: string) => void;
   autoFocus?: boolean;
 }
 
@@ -39,20 +39,20 @@ export default function InputBox({
           onCompositionEnd={() => setIsComposing(false)}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !isComposing && value !== "") {
-              onAction?.();
+              onAction?.(value);
             }
           }}
           className="block w-full rounded-xl border-none text-foreground bg-muted px-4 py-2 outline-none"
           placeholder={placeholder}
           onChange={(e) => handleChange(e.target.value)}
-          value={value}
+          value={value ?? ""}
           autoFocus={autoFocus}
         />
         <Button
           className="p-2 flex justify-center items-center click-effect text-muted-foreground hover:text-foreground"
           onClick={() => {
             if (!isComposing && value !== "") {
-              onAction?.();
+              onAction?.(value);
             }
           }}
         >

@@ -4,10 +4,6 @@ import EditorFooter from "@/components/editor/EditorFooter";
 import { EditorProvider, EditorState } from "@/contexts/EditorContext";
 import { useErrorBar } from "@/contexts/ErrorBarContext";
 import { usePostNote } from "@/hooks/api/archive/note";
-import {
-  usePostReferenceMutation,
-  PostReference,
-} from "@/hooks/api/archive/reference";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import useTranslation from "@/hooks/useTranslation";
 import { useRouter } from "@/i18n/routing";
@@ -18,9 +14,6 @@ export default function PostPage() {
   const { pushWarning } = useErrorBar();
   const { PostTrans } = useTranslation();
   const { postNote } = usePostNote();
-  const { mutate: postReference } = usePostReferenceMutation({
-    url: PostReference.url(),
-  });
 
   const onSave = (data: EditorState) => {
     if (!data.group) {

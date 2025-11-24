@@ -25,7 +25,6 @@ import { useRouter } from "@/i18n/routing";
 import {
   ArchiveDetail,
   DeleteArchive,
-  ListArchives,
   useDeleteArchiveMutation,
 } from "@/hooks/api/archive/archive";
 import { useQueryClient } from "@tanstack/react-query";
@@ -67,7 +66,7 @@ export default function Viewer({
   const router = useRouter();
   const queryClient = useQueryClient();
   const { open, close, modalBind } = useModal();
-  const { pushWarning, pushError } = useErrorBar();
+  const { pushError } = useErrorBar();
   const toggleBookmark = () => {
     if (!isMarked) postBookmark();
     if (isMarked) deleteBookmark();
@@ -113,6 +112,16 @@ export default function Viewer({
   });
 
   const { ViewTrans } = useTranslation();
+
+  const handleSearchByTag = (tag: string) => {
+    router.push({
+      pathname: "/search",
+      query: {
+        tags: tag,
+      },
+    });
+  };
+
   return (
     <div className="flex flex-col max-w-xl md:max-w-6xl md:flex-row gap-16 w-full h-full p-4">
       <section className="md:min-w-32 md:max-w-72 w-full md:self-start md:sticky md:top-24">
@@ -124,11 +133,17 @@ export default function Viewer({
           {/* 태그 */}
           <div className="flex flex-row flex-wrap gap-2">
             {tags.map((tag) => {
-              return <Tag key={tag} value={tag} />;
+              return (
+                <Tag
+                  key={tag}
+                  value={tag}
+                  onClick={(value) => handleSearchByTag(value)}
+                />
+              );
             })}
           </div>
           {/* 썸네일 */}
-          <div className="max-w-md">
+          <div className="max-w-xl">
             <ThumbnailView
               thumbnailPath={thumbnailPath ?? DEFAULT_ARCHIVE_THUMBNAIL_PATH}
               referenceUrl={
@@ -152,7 +167,7 @@ export default function Viewer({
               <span
                 title={ViewTrans("edit.button")}
                 className="cursor-pointer rounded-md bg-muted w-fit"
-                onClick={(e) => {
+                onClick={() => {
                   if (type === "NOTE") router.push(`/post/${id}/edit/note`);
                   if (type === "REFERENCE")
                     router.push(`/post/${id}/edit/reference`);

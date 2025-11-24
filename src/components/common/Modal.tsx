@@ -13,7 +13,6 @@ interface ModalProps {
 
 export default function Modal({
   isOpen,
-  open,
   close,
   className = "max-w-md",
   title,

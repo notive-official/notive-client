@@ -4,11 +4,8 @@ import customizeIframeHtml, { extractSrc } from "@/common/htmlParser";
 import { GetOEmbed, useGetOEmbedQuery } from "@/hooks/api/archive/oembed";
 import { useCallback, memo, useMemo } from "react";
 import React from "react";
-import useTranslation from "@/hooks/useTranslation";
 
 export function LinkDetailView({ url }: { url: string }) {
-  const { ViewTrans } = useTranslation();
-
   const { data: oEmbed, isError } = useGetOEmbedQuery({
     url: GetOEmbed.url(),
     key: GetOEmbed.key(url),

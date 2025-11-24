@@ -1,6 +1,4 @@
-import { useModal } from "@/hooks/useModal";
 import Image from "next/image";
-import Modal from "../common/Modal";
 import useTranslation from "@/hooks/useTranslation";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/16/solid";
 import { useCallback } from "react";

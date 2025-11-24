@@ -12,9 +12,6 @@ import {
   ArchiveSummaryResponse,
   useGetGroupMetaQuery,
   getGroupMeta,
-  DeleteGroup,
-  ListGroupDetails,
-  useDeleteGroupMutation,
   usePutGroupMutation,
   PutGroup,
 } from "@/hooks/api/archive/group";
@@ -22,9 +19,7 @@ import { Button } from "@headlessui/react";
 import { PencilIcon } from "@heroicons/react/20/solid";
 import InputBox from "@/components/common/InputBox";
 import { useQueryClient } from "@tanstack/react-query";
-import { useErrorBar } from "@/contexts/ErrorBarContext";
-import { TrashIcon } from "@heroicons/react/16/solid";
-import { useRouter } from "@/i18n/routing";
+import { ListTag, useListTagsQuery } from "@/hooks/api/archive/tag";
 
 type GroupArchiveProps = { id: string };
 
@@ -36,10 +31,8 @@ export default function GroupArchivePage({
   const { id } = use(params);
   const { isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
-  const router = useRouter();
-  const { pushError } = useErrorBar();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [selectedTag, setSelectedTad] = useState<string>();
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [payloads, setPayloads] = useState<ArchiveSummaryResponse[]>();
 
   useRequireAuth();
@@ -54,6 +47,7 @@ export default function GroupArchivePage({
     key: getGroupMeta.key(id),
     options: { enabled: isAuthenticated, staleTime: 5 * 60 * 1000 },
   });
+
   const { mutate: changeGroupName } = usePutGroupMutation({
     url: PutGroup.url(id),
     options: {
@@ -64,13 +58,26 @@ export default function GroupArchivePage({
       },
     },
   });
+
+  const { data: tags } = useListTagsQuery({
+    url: ListTag.url(),
+    key: ListTag.key(),
+    options: { enabled: isAuthenticated },
+  });
+
   const [groupName, setGroupName] = useState<string>(groupMeta?.name ?? "");
   const [isGroupNameChanging, setIsGroupNameChanging] =
     useState<boolean>(false);
 
   useEffect(() => {
-    if (!selectedTag) return;
     if (!result.data) return;
+    if (!selectedTag) {
+      const filteredPayloads = result.data.pages.flatMap(
+        (page) => page.content
+      );
+      setPayloads(filteredPayloads);
+      return;
+    }
     const filteredPayloads =
       result.data.pages
         .flatMap((page) => page.content)
@@ -81,7 +88,7 @@ export default function GroupArchivePage({
   return (
     <div
       ref={scrollRef}
-      className="relative h-full w-full flex flex-col justify-start mx-auto overflow-y-auto p-8"
+      className="relative h-full w-full flex flex-col justify-start mx-auto p-8"
     >
       <section className="rounded-xl justify-start items-center h-fit w-full max-w-7xl">
         {!isGroupNameChanging ? (
@@ -113,10 +120,13 @@ export default function GroupArchivePage({
       </section>
       <section className="flex flex-row justify-between items-start h-full w-full max-w-7xl">
         <div className="flex flex-col gap-20 w-full">
-          <TagSearchBar
-            onClick={(v) => setSelectedTad(v)}
-            selectedTag={selectedTag}
-          />
+          {tags && (
+            <TagSearchBar
+              tags={tags.content}
+              onClick={(v) => setSelectedTag(v)}
+              selectedTag={selectedTag}
+            />
+          )}
           <InfiniteScroll result={result} root={scrollRef} payloads={payloads}>
             {(note) => (
               <div className="flex justify-center" key={note.id}>
