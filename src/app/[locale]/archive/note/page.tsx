@@ -11,6 +11,7 @@ import {
 import InfiniteScroll from "@/components/common/InfiniteScroll";
 import { useEffect, useRef, useState } from "react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
+import { ListTag, useListTagsQuery } from "@/hooks/api/archive/tag";
 
 export default function NotePage() {
   const { isAuthenticated } = useAuth();
@@ -25,6 +26,12 @@ export default function NotePage() {
     key: ListArchives.key("NOTE"),
     params: { type: "NOTE" },
     options: { enabled: isAuthenticated, staleTime: 5 * 60 * 1000 },
+  });
+
+  const { data: tags } = useListTagsQuery({
+    url: ListTag.url(),
+    key: ListTag.key(),
+    options: { enabled: isAuthenticated },
   });
 
   useEffect(() => {
@@ -50,10 +57,13 @@ export default function NotePage() {
     >
       <section className="flex flex-row justify-between items-start h-full w-full max-w-7xl">
         <div className="flex flex-col gap-20 w-full">
-          <TagSearchBar
-            onClick={(v) => setSelectedTag(v)}
-            selectedTag={selectedTag}
-          />
+          {tags && (
+            <TagSearchBar
+              tags={tags.content}
+              onClick={(v) => setSelectedTag(v)}
+              selectedTag={selectedTag}
+            />
+          )}
           <InfiniteScroll result={result} root={scrollRef} payloads={payloads}>
             {(note) => (
               <div className="flex justify-center" key={note.id}>

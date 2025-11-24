@@ -70,6 +70,16 @@ export default function InfiniteScroll<T>({
     );
   }
 
+  if (payloads?.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-20">
+        <div className="text-lg text-gray-500">
+          검색 조건과 일치하는 데이터가 없습니다.
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-20 w-full">
       <div className={className}>
@@ -81,11 +91,16 @@ export default function InfiniteScroll<T>({
         {isFetchingNextPage && (
           <div className="text-lg">다음 페이지 로딩 중...</div>
         )}
-        {!hasNextPage && notes.length > 0 && (
-          <div className="text-lg text-gray-500">
-            모든 데이터를 불러왔습니다.
-          </div>
-        )}
+        {!hasNextPage &&
+          (notes.length > 0 ? (
+            <div className="text-lg text-gray-500">
+              모든 데이터를 불러왔습니다.
+            </div>
+          ) : (
+            <div className="text-lg text-gray-500">
+              검색 조건과 일치하는 데이터가 없습니다.
+            </div>
+          ))}
       </div>
     </div>
   );

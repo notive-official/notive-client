@@ -8,36 +8,47 @@ import { useRef, useState } from "react";
 import { Search, useSearchQuery } from "@/hooks/api/search";
 import InfiniteScroll from "@/components/common/InfiniteScroll";
 import Footer from "@/components/Footer";
+import { useRouter } from "@/i18n/routing";
 
 export default function MainPage() {
+  const router = useRouter();
   const { MainTrans } = useTrans();
-  const [search, setSearch] = useState("");
+  const [query, setQuery] = useState<string>("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const result = useSearchQuery({
     url: Search.url(),
-    key: Search.key(),
+    key: Search.key({}),
     options: { staleTime: 5 * 60 * 1000 },
   });
+
+  const handleSearch = () => {
+    router.push({
+      pathname: "/search",
+      query: {
+        q: query,
+      },
+    });
+  };
 
   return (
     <div
       ref={scrollRef}
-      className="h-full overflow-y-auto flex flex-col items-center px-4 py-2"
+      className="h-full flex flex-col items-center px-4 py-2"
     >
       <div className="container mx-auto sm:px-6 lg:px-8 py-2 flex flex-col flex-1">
         {/* 검색 박스 */}
         <section className="flex justify-center w-full text-center pt-10">
           <div className="flex items-center justify-center w-full max-w-150 pl-8">
-            {/* <InputBox
+            <InputBox
               placeholder={MainTrans("search.placeholder")}
-              handleChange={setSearch}
-              value={search}
+              handleChange={setQuery}
+              value={query}
               buttonIcon={<MagnifyingGlassIcon className="w-6 h-6" />}
-            /> */}
+              onAction={() => handleSearch()}
+            />
           </div>
         </section>
-
         {/* 메인 타이틀 */}
         <section className="w-full text-center py-10 md:py-20">
           <h1 className="text-3xl font-bold mb-3">{MainTrans("pageTitle")}</h1>

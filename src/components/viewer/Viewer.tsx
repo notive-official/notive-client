@@ -112,6 +112,16 @@ export default function Viewer({
   });
 
   const { ViewTrans } = useTranslation();
+
+  const handleSearchByTag = (tag: string) => {
+    router.push({
+      pathname: "/search",
+      query: {
+        tags: tag,
+      },
+    });
+  };
+
   return (
     <div className="flex flex-col max-w-xl md:max-w-6xl md:flex-row gap-16 w-full h-full p-4">
       <section className="md:min-w-32 md:max-w-72 w-full md:self-start md:sticky md:top-24">
@@ -123,7 +133,13 @@ export default function Viewer({
           {/* 태그 */}
           <div className="flex flex-row flex-wrap gap-2">
             {tags.map((tag) => {
-              return <Tag key={tag} value={tag} />;
+              return (
+                <Tag
+                  key={tag}
+                  value={tag}
+                  onClick={(value) => handleSearchByTag(value)}
+                />
+              );
             })}
           </div>
           {/* 썸네일 */}
