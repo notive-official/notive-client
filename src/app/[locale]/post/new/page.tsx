@@ -3,8 +3,8 @@
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import useTranslation from "@/hooks/useTranslation";
 import { useRouter } from "@/i18n/routing";
-import { Button } from "@headlessui/react";
-import { ArrowRightIcon } from "@heroicons/react/16/solid";
+import { DocumentTextIcon, LinkIcon } from "@heroicons/react/24/outline";
+import { ArrowRightIcon } from "@heroicons/react/24/solid";
 
 export default function PostPage() {
   useRequireAuth();
@@ -12,53 +12,43 @@ export default function PostPage() {
   const { PostTrans } = useTranslation();
 
   return (
-    <div className="flex flex-col justify-between items-center w-full h-full">
-      <section className="h-16" />
-      <div className="flex flex-col md:flex-row w-fit h-fit justify-center items-center gap-16 p-4">
-        {/* Note */}
-        <div
-          className="flex flex-col justify-between w-full max-w-sm h-full overflow-hidden rounded-2xl bg-muted p-6 text-left align-middle shadow-xl gap-4"
-          onClick={() => router.push(`/post/new/note`)}
-        >
-          {/* title */}
-          <p className="text-xl font-medium leading-6 text-foreground pb-4">
-            {PostTrans("note.name")}
-          </p>
-          {/* description */}
-          <p className="text-foreground whitespace-pre-line">
-            {PostTrans("note.description")}
-          </p>
-          {/* button */}
-          <div className="flex justify-end items-center">
-            <Button className="flex flex-row gap-2 w-fit shadow-lg px-4 py-2 cursor-pointer rounded-xl bg-primary text-on-primary">
-              <p>{PostTrans("note.button")}</p>
-              <ArrowRightIcon className="w-5 h-5" />
-            </Button>
-          </div>
+    <div className="flex flex-col items-center justify-center w-full h-full px-5">
+      <div className="flex flex-col items-center gap-8 w-full max-w-lg">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold tracking-tight">New Archive</h1>
+          <p className="text-sm text-muted-foreground mt-2">Choose what you want to create</p>
         </div>
-        {/* Reference */}
-        <div
-          className="flex flex-col justify-between w-full max-w-sm h-full overflow-hidden rounded-2xl bg-primary p-6 text-left align-middle shadow-xl gap-4"
-          onClick={() => router.push(`/post/new/reference`)}
-        >
-          {/* title */}
-          <p className="text-xl font-medium leading-6 text-on-primary pb-4">
-            {PostTrans("reference.name")}
-          </p>
-          {/* description */}
-          <p className="text-on-primary whitespace-pre-line">
-            {PostTrans("reference.description")}
-          </p>
-          {/* button */}
-          <div className="flex justify-end items-center">
-            <Button className="flex flex-row gap-2 w-fit shadow-lg px-4 py-2 cursor-pointer rounded-xl bg-muted text-foreground">
-              <p>{PostTrans("reference.button")}</p>
-              <ArrowRightIcon className="w-5 h-5" />
-            </Button>
-          </div>
+
+        <div className="flex flex-col w-full gap-3">
+          <button
+            className="flex items-center gap-4 w-full p-5 rounded-xl border border-border hover:border-ring hover:shadow-sm transition-all cursor-pointer group text-left"
+            onClick={() => router.push("/post/new/note")}
+          >
+            <div className="w-11 h-11 rounded-lg bg-muted flex items-center justify-center shrink-0">
+              <DocumentTextIcon className="w-5 h-5 text-foreground" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-base font-semibold text-foreground">{PostTrans("note.name")}</p>
+              <p className="text-sm text-muted-foreground mt-0.5 whitespace-pre-line leading-relaxed">{PostTrans("note.description")}</p>
+            </div>
+            <ArrowRightIcon className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all shrink-0" />
+          </button>
+
+          <button
+            className="flex items-center gap-4 w-full p-5 rounded-xl border border-border hover:border-ring hover:shadow-sm transition-all cursor-pointer group text-left"
+            onClick={() => router.push("/post/new/reference")}
+          >
+            <div className="w-11 h-11 rounded-lg bg-foreground flex items-center justify-center shrink-0">
+              <LinkIcon className="w-5 h-5 text-surface" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-base font-semibold text-foreground">{PostTrans("reference.name")}</p>
+              <p className="text-sm text-muted-foreground mt-0.5 whitespace-pre-line leading-relaxed">{PostTrans("reference.description")}</p>
+            </div>
+            <ArrowRightIcon className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all shrink-0" />
+          </button>
         </div>
       </div>
-      <section className="h-32" />
     </div>
   );
 }

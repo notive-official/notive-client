@@ -2,46 +2,26 @@
 
 import { use } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import {
-  ArchiveDetail,
-  useArchiveDetailQuery,
-} from "@/hooks/api/archive/archive";
+import { ArchiveDetail, useArchiveDetailQuery } from "@/hooks/api/archive/archive";
 import Viewer from "@/components/viewer/Viewer";
 
-type ArchiveDetailProps = { id: string };
-
-export default function ArchiveDetailPage({
-  params,
-}: {
-  params: Promise<ArchiveDetailProps>;
-}) {
+export default function ArchiveDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { isLoading } = useAuth();
-  const { data } = useArchiveDetailQuery({
-    url: ArchiveDetail.url(id),
-    key: ArchiveDetail.key(id),
-    options: {
-      enabled: !isLoading,
-    },
+  const { data, isLoading: isDataLoading } = useArchiveDetailQuery({
+    url: ArchiveDetail.url(id), key: ArchiveDetail.key(id), options: { enabled: !isLoading },
   });
 
+  if (isDataLoading || !data) {
+    return <div className="flex items-center justify-center w-full h-[60vh]"><div className="w-4 h-4 border-[1.5px] border-border border-t-secondary rounded-full animate-spin" /></div>;
+  }
+
   return (
-    <div className="flex flex-col justify-center items-center w-full h-full">
-      <section className="h-16" />
-      {data && (
-        <Viewer
-          id={data.meta.id}
-          title={data.meta.title}
-          type={data.meta.type}
-          thumbnailPath={data.meta.thumbnailPath}
-          canEdit={data.canEdit}
-          hasMarked={data.isMarked}
-          canDuplicate={data.canDuplicate}
-          canDelete={data.canDelete}
-          tags={data.tags}
-          blocks={data.blocks}
-        />
-      )}
-    </div>
+    <Viewer
+      id={data.meta.id} title={data.meta.title} type={data.meta.type}
+      thumbnailPath={data.meta.thumbnailPath} writer={data.meta.writer} group={data.meta.group}
+      canEdit={data.canEdit} hasMarked={data.isMarked} canDuplicate={data.canDuplicate}
+      canDelete={data.canDelete} tags={data.tags} blocks={data.blocks}
+    />
   );
 }

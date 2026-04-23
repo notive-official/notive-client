@@ -6,25 +6,16 @@ import ImageView from "./ImageView";
 import { isImageBlock, isLinkBlock, isTextBlock } from "@/common/utils";
 import { BlockType } from "@/common/types";
 
-interface ViewBlockProps {
-  block: {
-    id: string;
-    type: BlockType;
-    payload: string;
-  };
-}
+interface ViewBlockProps { block: { id: string; type: BlockType; payload: string } }
 
 export default function BlockView({ block }: ViewBlockProps) {
   const { type, payload } = block;
+  if (!payload) return null;
   return (
-    <div className="rounded-xl w-full self-stretch">
-      {payload ? (
-        <div>
-          {isImageBlock(type) && <ImageView filePath={payload} />}
-          {isLinkBlock(type) && <LinkView url={payload} />}
-          {isTextBlock(type) && <TextView blockType={type} text={payload} />}
-        </div>
-      ) : null}
-    </div>
+    <>
+      {isImageBlock(type) && <ImageView filePath={payload} />}
+      {isLinkBlock(type) && <LinkView url={payload} />}
+      {isTextBlock(type) && <TextView blockType={type} text={payload} />}
+    </>
   );
 }

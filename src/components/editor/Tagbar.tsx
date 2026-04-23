@@ -7,22 +7,17 @@ import { ListTag, useListTagsQuery } from "@/hooks/api/archive/tag";
 import useTrans from "@/hooks/useTranslation";
 import { Button, Input } from "@headlessui/react";
 import Hangul from "hangul-js";
-
 import { useState } from "react";
 
 export default function Tagbar() {
   const { PostTrans } = useTrans();
   const { state, addTag, removeTag } = useEditor();
-
   const [input, setInput] = useState("");
   const [isComposing, setIsComposing] = useState(false);
   const [showStoredTag, setShowStoredTag] = useState(false);
-
   const { isAuthenticated } = useAuth();
   const { data: getTagsRes } = useListTagsQuery({
-    url: ListTag.url(),
-    key: ListTag.key(),
-    options: { enabled: isAuthenticated },
+    url: ListTag.url(), key: ListTag.key(), options: { enabled: isAuthenticated },
   });
 
   const handleAddingTag = (value: string) => {
@@ -31,13 +26,12 @@ export default function Tagbar() {
     setShowStoredTag(false);
   };
 
-  const filteredTags =
-    input === ""
-      ? getTagsRes?.content
-      : getTagsRes?.content.filter((tag) => Hangul.search(tag, input) > -1);
+  const filteredTags = input === ""
+    ? getTagsRes?.content
+    : getTagsRes?.content.filter((tag) => Hangul.search(tag, input) > -1);
 
   return (
-    <div className="w-full my-4">
+    <div className="w-full mt-2 mb-2">
       <div className="relative">
         <Input
           onClick={() => setShowStoredTag(true)}
@@ -45,44 +39,37 @@ export default function Tagbar() {
           onCompositionStart={() => setIsComposing(true)}
           onCompositionEnd={() => setIsComposing(false)}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && !isComposing && input !== "")
-              handleAddingTag(input);
+            if (e.key === "Enter" && !isComposing && input !== "") handleAddingTag(input);
           }}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="w-full rounded-xl bg-transparent py-2 outline-none px-4"
+          className="w-full bg-transparent py-2 outline-none text-base text-foreground placeholder:text-muted-foreground/40"
           placeholder={PostTrans("tag.placeholder")}
         />
-        {showStoredTag && (
+        {showStoredTag && filteredTags && filteredTags.length > 0 && (
           <div
-            className="absolute left-0 right-0 top-full
-                 mt-1 z-20 rounded-xl bg-muted p-2 drop-shadow-xl
-                 min-h-10 max-h-40 overflow-y-auto"
+            className="absolute left-0 right-0 top-full mt-1 z-20 rounded-xl bg-surface border border-border p-2.5 shadow-lg max-h-40 overflow-y-auto"
             onMouseDown={(e) => e.preventDefault()}
           >
             <div className="flex flex-wrap items-center gap-2">
-              {filteredTags?.map((v) => (
-                <Button
-                  key={v}
-                  className="w-fit"
-                  onClick={() => handleAddingTag(v)}
-                >
-                  <Tag value={v} className="bg-transparent" />
+              {filteredTags.map((v) => (
+                <Button key={v} className="w-fit" onClick={() => handleAddingTag(v)}>
+                  <Tag value={v} />
                 </Button>
               ))}
             </div>
           </div>
         )}
       </div>
-      <div className="flex flex-row flex-wrap gap-2 my-3 ">
-        {state.tags.map((tag) => {
-          return (
+      {state.tags.length > 0 && (
+        <div className="flex flex-wrap gap-2 mt-2">
+          {state.tags.map((tag) => (
             <div key={tag} onClick={() => removeTag(tag)}>
-              <Tag value={tag} isRemovable={true} />
+              <Tag value={tag} isRemovable />
             </div>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

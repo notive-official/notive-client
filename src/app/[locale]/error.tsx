@@ -11,20 +11,27 @@ export default function RootError({
   error: Error;
   reset: () => void;
 }) {
-  // 클라이언트에서만 로그를 남기고 싶다면
   useEffect(() => {
     console.error("[GlobalError]", error);
-    // Sentry.captureException(error) 등 외부 로깅 가능
   }, [error]);
 
   return (
     <html>
-      <body style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-        <h1>앗, 문제가 발생했어요.</h1>
-        <pre style={{ whiteSpace: "pre-wrap" }}>{error.message}</pre>
-        <Button onClick={() => reset()} style={{ marginTop: "1rem" }}>
-          다시 시도
-        </Button>
+      <body className="h-screen flex items-center justify-center bg-surface font-[Inter,sans-serif]">
+        <div className="flex flex-col items-center gap-4 text-center px-4">
+          <h1 className="text-xl font-semibold text-foreground">
+            문제가 발생했어요
+          </h1>
+          <p className="text-sm text-muted-foreground max-w-md leading-relaxed">
+            {error.message}
+          </p>
+          <Button
+            onClick={() => reset()}
+            className="mt-2 px-5 py-2.5 text-sm font-medium rounded-lg bg-primary text-on-primary hover:opacity-90 transition-opacity cursor-pointer"
+          >
+            다시 시도
+          </Button>
+        </div>
       </body>
     </html>
   );

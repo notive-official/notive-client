@@ -1,8 +1,7 @@
-import ImageView from "../viewer/ImageView";
 import ToggleSwitch from "../common/ToggleSwitch";
 import Combo from "../common/Combo";
 import { Button } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/16/solid";
+import { XMarkIcon, PlusIcon } from "@heroicons/react/16/solid";
 import {
   ListGroups,
   PostGroup,
@@ -10,234 +9,134 @@ import {
   useListGroupsQuery,
   usePostGroupMutation,
 } from "@/hooks/api/archive/group";
-import Modal from "../common/Modal";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEditor } from "@/contexts/EditorContext";
 import useTranslation from "@/hooks/useTranslation";
 import ImageUploader from "../common/ImageUploader";
 import { ComboSelection, useCombo } from "@/hooks/useCombo";
-import { useModal } from "@/hooks/useModal";
 import { useErrorBar } from "@/contexts/ErrorBarContext";
 import { useEffect } from "react";
 import { AxiosError } from "axios";
 import { ErrorRes } from "@/lib/type";
 import ThumbnailView from "../viewer/ThumbnailView";
 import { DEFAULT_ARCHIVE_THUMBNAIL_PATH } from "@/common/consts/defaultImage";
+import Image from "next/image";
 
 interface ArchiveSettingProps {
   thumnailUpload?: boolean;
 }
 
-export default function ArchiveSetting({
-  thumnailUpload = true,
-}: ArchiveSettingProps) {
+export default function ArchiveSetting({ thumnailUpload = true }: ArchiveSettingProps) {
   const queryClient = useQueryClient();
   const { isAuthenticated } = useAuth();
   const { mutate: postGroup } = usePostGroupMutation({ url: PostGroup.url() });
   const { state, setState } = useEditor();
   const { PostTrans } = useTranslation();
-  const { open, close, modalBind } = useModal();
   const { pushWarning, pushSuccess, pushError } = useErrorBar();
 
   const { data } = useListGroupsQuery({
-    url: ListGroups.url(),
-    key: ListGroups.key(),
-    options: {
-      staleTime: 1000 * 60 * 5,
-      enabled: isAuthenticated,
-    },
+    url: ListGroups.url(), key: ListGroups.key(),
+    options: { staleTime: 1000 * 60 * 5, enabled: isAuthenticated },
   });
 
-  const groups =
-    data?.content.map((group) => {
-      const selection: ComboSelection = { id: group.id, name: group.name };
-      return selection;
-    }) ?? [];
-
-  const { selected, query, comboBind } = useCombo({
-    options: groups,
-    selected: state.group,
-    query: state.group?.name,
-  });
+  const groups = data?.content.map((g) => ({ id: g.id, name: g.name } as ComboSelection)) ?? [];
+  const { selected, query, comboBind } = useCombo({ options: groups, selected: state.group, query: state.group?.name });
 
   useEffect(() => {
     setState({ ...state, group: selected });
   }, [selected]);
 
-  const changeThumbnail = (newThumbnail: File) => {
-    setState({
-      ...state,
-      thumbnail: {
-        path: URL.createObjectURL(newThumbnail),
-        file: newThumbnail,
-      },
-    });
+  const changeThumbnail = (file: File) => {
+    setState({ ...state, thumbnail: { path: URL.createObjectURL(file), file } });
   };
 
-  const deleteThumbnail = () => {
-    setState({ ...state, thumbnail: null });
-  };
-
-  const changePublic = (isPublic: boolean) => {
-    setState({ ...state, isPublic });
-  };
-
-  const changeDuplicable = (isDuplicable: boolean) => {
-    setState({ ...state, isDuplicable });
-  };
-
-  const addGroup = (groupName: string) => {
-    const req: PostGroupRequest = { groupName };
+  const addGroup = () => {
+    if (query.length === 0) { pushWarning(PostTrans("message.warning.groupCreation")); return; }
+    const req: PostGroupRequest = { groupName: query };
     postGroup(req, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ListGroups.key() });
         pushSuccess(PostTrans("message.success.groupCreation"));
-        close();
       },
       onError: (e) => {
         const err = e as AxiosError<ErrorRes>;
-        if (err.response?.data.message)
-          pushError(PostTrans(err.response.data.message));
-        pushError(PostTrans("message.error.groupCreation"));
+        if (err.response?.data.message) pushError(PostTrans(err.response.data.message));
+        else pushError(PostTrans("message.error.groupCreation"));
       },
     });
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full">
-      {/* 썸네일 선택 */}
+    <div className="flex flex-col gap-5 mt-4">
+      {/* Thumbnail */}
       {thumnailUpload ? (
-        <section className="flex flex-col h-full md:gap-5">
-          <div className="relative w-full aspect-video bg-transparent md:block">
-            <ImageUploader
-              button={
-                <div className="w-full h-full rounded-xl overflow-hidden items-center justify-center">
-                  {state.thumbnail ? (
-                    <ImageView filePath={state.thumbnail.path} />
-                  ) : (
-                    <div className="flex justify-center items-center w-full h-full cursor-pointer bg-muted text-muted-foreground border-reverse-25 border-3 border-dashed">
-                      <p>{PostTrans("setting.thumbnail.placeholder")}</p>
-                    </div>
-                  )}
+        <div className="relative">
+          <ImageUploader
+            button={
+              state.thumbnail ? (
+                <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-muted">
+                  <Image src={state.thumbnail.path} alt="thumbnail" fill className="object-cover" />
                 </div>
-              }
-              handleFileChange={(file) => changeThumbnail(file)}
-            />
-            {state.thumbnail && (
-              <Button
-                className="absolute -top-2 -right-2 flex justify-center items-center click-effect"
-                onClick={deleteThumbnail}
-              >
-                <div className="w-full h-full p-1 rounded-xl bg-reverse-75">
-                  <XMarkIcon className="w-5 h-5 text-white" />
+              ) : (
+                <div className="flex items-center justify-center w-full aspect-video rounded-xl border-2 border-dashed border-border bg-muted/50 cursor-pointer hover:border-ring hover:bg-muted transition-all">
+                  <span className="text-sm text-muted-foreground">{PostTrans("setting.thumbnail.placeholder")}</span>
                 </div>
-              </Button>
-            )}
-          </div>
-        </section>
+              )
+            }
+            handleFileChange={changeThumbnail}
+          />
+          {state.thumbnail && (
+            <Button
+              className="absolute -top-2 -right-2 p-1 rounded-full bg-foreground text-surface shadow-md hover:opacity-80 transition-opacity cursor-pointer"
+              onClick={() => setState({ ...state, thumbnail: null })}
+            >
+              <XMarkIcon className="w-4 h-4" />
+            </Button>
+          )}
+        </div>
       ) : (
-        <ThumbnailView
-          thumbnailPath={
-            state.thumbnail?.path ?? DEFAULT_ARCHIVE_THUMBNAIL_PATH
-          }
-          referenceUrl={state.url}
-        />
+        <ThumbnailView thumbnailPath={state.thumbnail?.path ?? DEFAULT_ARCHIVE_THUMBNAIL_PATH} referenceUrl={state.url} />
       )}
 
-      <section className="flex flex-col gap-2 w-full">
-        {/* 공개 선택 */}
-        <div className="flex flex-col p-2 gap-1">
-          <div className="flex flex-row items-center justify-between">
-            <p className="text-lg text-foreground font-medium">
-              {PostTrans("setting.access.name")}
-            </p>
-            <div className="flex flex-row justify-end items-center gap-4">
-              <p className="text-md text-muted-foreground">
-                {state.isPublic ? "public" : "private"}
-              </p>
-              <ToggleSwitch enabled={state.isPublic} onChange={changePublic} />
-            </div>
-          </div>
-          <div className="text-sm text-reverse-50">
-            {PostTrans("setting.access.description")}
-          </div>
-        </div>
-
-        {/* 복제 선택 */}
-        <div className="flex flex-col p-2 gap-1">
-          <div className="flex flex-row items-center justify-between">
-            <p className="text-lg text-foreground font-medium">
-              {PostTrans("setting.copy.name")}
-            </p>
-            <div className="flex flex-row justify-between items-center gap-4">
-              <p className="text-md text-muted-foreground">
-                {state.isDuplicable ? "allowed" : "denied"}
-              </p>
-              <ToggleSwitch
-                enabled={state.isDuplicable}
-                onChange={changeDuplicable}
+      {/* Settings row - Group + Toggles */}
+      <div className="flex flex-col gap-4">
+        {/* Group selection - inline creation */}
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium text-foreground">Group</label>
+          <div className="flex items-center gap-2">
+            <div className="flex-1">
+              <Combo
+                {...comboBind}
+                buttons={[
+                  <Button
+                    key="groupAdd"
+                    onClick={addGroup}
+                    className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground hover:bg-reverse-5 cursor-pointer transition-colors"
+                  >
+                    <PlusIcon className="w-4 h-4 text-muted-foreground" />
+                    <span className="font-medium">Create &ldquo;{query}&rdquo;</span>
+                  </Button>,
+                ]}
               />
             </div>
           </div>
-          <div className="text-sm text-reverse-50">
-            {PostTrans("setting.copy.description")}
-          </div>
         </div>
 
-        {/* 그룹 선택 */}
-        <div className="flex flex-col justify-center items-start w-full p-2 gap-1">
-          <p className="text-md text-foreground">Group</p>
-          <div className="flex flex-row w-full items-end gap-2">
-            <Combo
-              {...comboBind}
-              buttons={[
-                <Button
-                  key={"groupAddButton"}
-                  onClick={() => {
-                    if (query.length === 0) {
-                      pushWarning(PostTrans("message.warning.groupCreation"));
-                      return;
-                    }
-                    open();
-                  }}
-                  className="group flex w-full cursor-pointer justify-center items-center gap-2 rounded-xl select-none click-effect"
-                >
-                  <div className="text-sm/6 font-semibold text-foreground bg-reverse-10 w-full px-3 py-1.5 rounded-xl">
-                    {PostTrans("setting.group.create.button")}
-                  </div>
-                </Button>,
-              ]}
-            />
-            <Modal
-              key={"addGroupModal"}
-              title={PostTrans("setting.group.create.title")}
-              actionNode={
-                <div className="flex flex-col items-center justify-center gap-4">
-                  <div className="text-md w-full text-start p-4 rounded-lg">
-                    {query}
-                  </div>
-                  <div className="flex flex-row w-full gap-8">
-                    <Button
-                      className="w-full p-2 bg-surface cursor-pointer rounded-xl text-foreground"
-                      onClick={() => close()}
-                    >
-                      취소
-                    </Button>
-                    <Button
-                      className="w-full p-2 bg-foreground cursor-pointer rounded-xl text-surface"
-                      onClick={() => addGroup(query)}
-                    >
-                      확인
-                    </Button>
-                  </div>
-                </div>
-              }
-              {...modalBind}
-            />
+        {/* Toggle row */}
+        <div className="flex flex-wrap gap-x-8 gap-y-3">
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-secondary">{PostTrans("setting.access.name")}</span>
+            <ToggleSwitch enabled={state.isPublic} onChange={(v) => setState({ ...state, isPublic: v })} />
+            <span className="text-xs text-muted-foreground">{state.isPublic ? "Public" : "Private"}</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-secondary">{PostTrans("setting.copy.name")}</span>
+            <ToggleSwitch enabled={state.isDuplicable} onChange={(v) => setState({ ...state, isDuplicable: v })} />
+            <span className="text-xs text-muted-foreground">{state.isDuplicable ? "Allowed" : "Denied"}</span>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

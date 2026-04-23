@@ -12,33 +12,28 @@ export default function Editor() {
   const { state, setState } = useEditor();
   const { PostTrans } = useTranslation();
 
-  const changeTitle = (newTitle: string) => {
-    setState({ ...state, title: newTitle });
-  };
-
   return (
-    <div className="w-full flex flex-col items-center mx-auto">
-      <div className="w-full flex flex-col max-w-xl md:max-w-5xl">
-        <div className="flex flex-col md:flex-row justify-center w-full p-4 gap-4 md:gap-8">
-          {/* 왼쪽 설정 패널 */}
-          <section className="md:min-w-32 md:max-w-72 w-full md:self-start md:sticky md:top-24">
-            <ArchiveSetting thumnailUpload={state.type !== "REFERENCE"} />
-          </section>
+    <div className="w-full max-w-3xl mx-auto px-5 md:px-8 py-8">
+      {/* Title - large, prominent */}
+      <Input
+        value={state.title}
+        className="text-3xl md:text-4xl font-bold py-3 bg-transparent w-full outline-none placeholder:text-muted-foreground/30 tracking-tight"
+        placeholder={PostTrans("title.placeholder")}
+        onChange={(e) => setState({ ...state, title: e.target.value })}
+      />
 
-          {/* 오른쪽 에디터 */}
-          <section className="flex flex-col md:min-w-xl md:max-w-3xl w-full text-center">
-            <Input
-              value={state.title}
-              className="text-2xl py-4 bg-transparent w-full outline-none px-4"
-              placeholder={PostTrans("title.placeholder")}
-              onChange={(e) => changeTitle(e.target.value)}
-            />
-            <Tagbar />
-            {state.type === "NOTE" && <BlockEditor />}
-            {state.type === "REFERENCE" && <LinkEditor />}
-          </section>
-        </div>
-      </div>
+      {/* Tags */}
+      <Tagbar />
+
+      {/* Settings - inline, compact */}
+      <ArchiveSetting thumnailUpload={state.type !== "REFERENCE"} />
+
+      {/* Divider */}
+      <div className="h-px bg-border my-6" />
+
+      {/* Content area */}
+      {state.type === "NOTE" && <BlockEditor />}
+      {state.type === "REFERENCE" && <LinkEditor />}
     </div>
   );
 }
