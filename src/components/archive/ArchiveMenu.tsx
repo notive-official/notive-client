@@ -1,52 +1,25 @@
 "use client";
 import { Link, usePathname } from "@/i18n/routing";
-import { MinusIcon } from "@heroicons/react/16/solid";
 
-interface ArchiveMenuProps {
-  menu?: string;
-}
+const items = [
+  { href: "/archive/note", label: "Note" },
+  { href: "/archive/link", label: "Link" },
+  { href: "/archive/like", label: "Like" },
+  { href: "/archive/group", label: "Group" },
+];
 
-const NOTE = "/archive/note";
-const GROUP = "/archive/group";
-const LINK = "/archive/link";
-const LIKE = "/archive/like";
-
-export default function ArchiveMenu({}: ArchiveMenuProps) {
+export default function ArchiveMenu() {
   const pathname = usePathname();
-  const isNoteActive = pathname.startsWith(NOTE);
-  const isLinkActive = pathname.startsWith(LINK);
-  const isLikeActive = pathname.startsWith(LIKE);
-  const isGroupActive = pathname.startsWith(GROUP);
   return (
-    <div className="flex flex-row md:flex-col w-full h-full gap-4 py-4 drop-shadow-lg md:shadow-none justify-center items-center">
-      <Link
-        href={NOTE}
-        className="flex flex-row justify-center md:justify-start cursor-pointer hover:text-reverse-50 w-full"
-      >
-        {isNoteActive && <MinusIcon className="w-6 h-6" />}
-        {<div className={`${isNoteActive && "font-bold"}`}>NOTE</div>}
-      </Link>
-      <Link
-        href={LINK}
-        className="flex flex-row justify-center md:justify-start cursor-pointer hover:text-reverse-50 w-full"
-      >
-        {isLinkActive && <MinusIcon className="w-6 h-6" />}
-        {<div className={`${isLinkActive && "font-bold"}`}>LINK</div>}
-      </Link>
-      <Link
-        href={LIKE}
-        className="flex flex-row justify-center md:justify-start cursor-pointer hover:text-reverse-50 w-full"
-      >
-        {isLikeActive && <MinusIcon className="w-6 h-6" />}
-        {<div className={`${isLikeActive && "font-bold"}`}>LIKE</div>}
-      </Link>
-      <Link
-        href={GROUP}
-        className="flex flex-row justify-center md:justify-start cursor-pointer hover:text-reverse-50 w-full"
-      >
-        {isGroupActive && <MinusIcon className="w-6 h-6" />}
-        {<div className={`${isGroupActive && "font-bold"}`}>GROUP</div>}
-      </Link>
-    </div>
+    <nav className="flex flex-row md:flex-col gap-1 py-3 md:py-5">
+      {items.map(({ href, label }) => (
+        <Link key={href} href={href}
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-150 text-center md:text-left
+            ${pathname.startsWith(href) ? "text-foreground bg-reverse-5" : "text-muted-foreground hover:text-foreground hover:bg-reverse-5"}`}
+        >
+          {label}
+        </Link>
+      ))}
+    </nav>
   );
 }

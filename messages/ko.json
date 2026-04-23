@@ -79,7 +79,25 @@
   },
 
   "PostPage": {
+    "note": {
+      "name": "NOTE",
+      "description": "이미지 · 텍스트 · 파일 등 다양한 형태의 콘텐츠를 자유롭게 조합해 만드는 아카이브입니다.\n자료 정리, 스크랩, 문서 작성처럼 직접 구성하는 기록용 아카이브에 적합합니다.",
+      "button": "생성"
+    },
+    "reference": {
+      "name": "LINK",
+      "description": "URL을 입력하면 자동으로 미리보기가 생성되는 링크 기반 아카이브입니다.\n유튜브 · 기사 · 포트폴리오 등 웹 콘텐츠를 간편하게 저장할 때 사용합니다.",
+      "button": "생성"
+    },
     "setting": {
+      "access": {
+        "name": "Access",
+        "description": "노트를 나만 보거나 다른 사람과 공유할 수 있어요"
+      },
+      "copy": {
+        "name": "Copying",
+        "description": "다른 사용자가 이 노트를 복제해서 자신만의 노트로 만들 수 있게 할지 정해요"
+      },
       "group": {
         "create": {
           "title": "다음의 그룹을 생성하시겠습니까?",

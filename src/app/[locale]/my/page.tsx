@@ -51,56 +51,63 @@ export default function MyPage() {
   );
 
   return (
-    <div className="h-full flex flex-col items-center justify-between p-8">
-      <div className="w-full max-w-lg rounded-xl bg-surface p-6 shadow-md">
+    <div className="h-full flex flex-col items-center justify-start pt-12 md:pt-20 px-4">
+      <div className="w-full max-w-lg">
         {data && (
-          <div className="flex flex-row">
-            <div className="relative size-[120px]">
-              <div className="relative w-[120px] h-[120px] rounded-full overflow-hidden">
-                <Image
-                  src={
-                    file
-                      ? URL.createObjectURL(file)
-                      : data.profileImagePath ?? DEFAULT_PROFILE_PATH
+          <div className="rounded-2xl border border-border bg-surface p-8">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+              {/* Profile Image */}
+              <div className="relative shrink-0">
+                <div className="relative w-24 h-24 rounded-full overflow-hidden ring-2 ring-border">
+                  <Image
+                    src={
+                      file
+                        ? URL.createObjectURL(file)
+                        : data.profileImagePath ?? DEFAULT_PROFILE_PATH
+                    }
+                    alt={"profile"}
+                    fill
+                    sizes="96px"
+                    className="object-cover"
+                  />
+                </div>
+                <ImageUploader
+                  button={
+                    <div className="absolute bottom-0 right-0 cursor-pointer rounded-full p-1.5 bg-primary text-on-primary shadow-md hover:opacity-90 transition-opacity">
+                      <PencilSquareIcon className="w-3.5 h-3.5" />
+                    </div>
                   }
-                  alt={"profile"}
-                  fill
-                  sizes="100px"
-                  className="object-cover rounded-full overflow-hidden bg-white"
+                  handleFileChange={(newFile) => setFile(newFile)}
                 />
               </div>
-              <ImageUploader
-                button={
-                  <div className="absolute bottom-1 right-1 cursor-pointer rounded-full p-1 bg-primary">
-                    <PencilSquareIcon className="w-5 h-5 text-foreground hover-bg-effect" />
-                  </div>
-                }
-                handleFileChange={(newFile) => setFile(newFile)}
-              />
+
+              {/* Profile Info */}
+              <div className="flex-1 w-full space-y-4">
+                <div className="flex items-center justify-between py-2 border-b border-border">
+                  <span className="text-sm text-muted-foreground">{MyTrans("information.name")}</span>
+                  <span className="text-sm font-medium">{data.name}</span>
+                </div>
+                <div className="flex items-center justify-between py-2 border-b border-border">
+                  <span className="text-sm text-muted-foreground">{MyTrans("information.nickname")}</span>
+                  <span className="text-sm font-medium">{data.nickname}</span>
+                </div>
+                <div className="flex items-center justify-between py-2 border-b border-border">
+                  <span className="text-sm text-muted-foreground">{MyTrans("information.email")}</span>
+                  <span className="text-sm font-medium">{data.email}</span>
+                </div>
+              </div>
             </div>
-            <div className="w-full p-8">
-              <div className="flex flex-row justify-between">
-                <p className="font-bold">{MyTrans("information.name")}</p>
-                <p>{data.name}</p>
-              </div>
-              <div className="flex flex-row justify-between">
-                <p className="font-bold">{MyTrans("information.nickname")}</p>
-                <p>{data.nickname}</p>
-              </div>
-              <div className="flex flex-row justify-between">
-                <p className="font-bold">{MyTrans("information.email")}</p>
-                <p>{data.email}</p>
-              </div>
+
+            {/* Language Selector */}
+            <div className="flex items-center justify-end gap-2 mt-6 pt-4 border-t border-border">
+              <span className="text-sm text-muted-foreground">{MyTrans("language")}</span>
+              <DropDown
+                node={<LanguageIcon className="size-4 text-muted-foreground hover:text-foreground transition-colors" />}
+                items={languages}
+              />
             </div>
           </div>
         )}
-        <div className="flex flex-row items-center justify-end gap-2">
-          <p>{MyTrans("language")}</p>
-          <DropDown
-            node={<LanguageIcon className="size-4" />}
-            items={languages}
-          />
-        </div>
       </div>
     </div>
   );

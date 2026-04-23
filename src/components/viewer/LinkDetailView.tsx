@@ -2,101 +2,50 @@
 
 import customizeIframeHtml, { extractSrc } from "@/common/htmlParser";
 import { GetOEmbed, useGetOEmbedQuery } from "@/hooks/api/archive/oembed";
-import { useCallback, memo, useMemo, useState } from "react";
-import Image from "next/image";
-import React from "react";
-import useTranslation from "@/hooks/useTranslation";
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/16/solid";
+import { useCallback, memo, useMemo } from "react";
+import { ArrowTopRightOnSquareIcon, GlobeAltIcon } from "@heroicons/react/24/outline";
 
 export function LinkDetailView({ url }: { url: string }) {
-  const { ViewTrans } = useTranslation();
-
   const { data: oEmbed, isError } = useGetOEmbedQuery({
-    url: GetOEmbed.url(),
-    key: GetOEmbed.key(url),
-    params: { url },
-    options: {
-      enabled: url.length > 0,
-      retry: false,
-      staleTime: 1000 * 60 * 5, // 5분
-      refetchOnWindowFocus: false, // 포커스시 X
-      refetchOnReconnect: false, // 재연결시 X
-      refetchOnMount: false,
-    },
+    url: GetOEmbed.url(), key: GetOEmbed.key(url), params: { url },
+    options: { enabled: url.length > 0, retry: false, staleTime: 1000 * 60 * 5, refetchOnWindowFocus: false, refetchOnReconnect: false, refetchOnMount: false },
   });
 
   const customizedHtml = useMemo(() => {
     if (!oEmbed?.html) return "";
-    const src = extractSrc(oEmbed.html);
-    return customizeIframeHtml(src, {});
+    return customizeIframeHtml(extractSrc(oEmbed.html), {});
   }, [oEmbed?.html]);
 
   const handleClick = useCallback(() => {
-    window.open(
-      url,
-      "myPopup",
-      "width=800,height=600,toolbar=no,menubar=no,scrollbars=yes"
-    );
+    window.open(url, "_blank", "width=900,height=700,scrollbars=yes");
   }, [url]);
 
   if (isError) {
     return (
-      <p
-        className="p-2 text-start underline text-blue-500 cursor-pointer hover:text-blue-600"
-        onClick={handleClick}
-      >
-        {url}
-      </p>
+      <button onClick={handleClick} className="inline-flex items-center gap-2 text-base text-secondary hover:text-foreground transition-colors cursor-pointer">
+        <GlobeAltIcon className="w-5 h-5 shrink-0" />
+        <span className="underline underline-offset-4 break-all text-left">{url}</span>
+      </button>
     );
   }
 
-  return (
-    <div className="flex flex-col w-full gap-2">
-      {oEmbed ? (
-        <div className="flex flex-col md:flex-row justify-center items-center gap-4">
-          {/* 썸네일 이미지 */}
-          <div className="flex flex-col justify-center items-center rounded-lg h-full w-fit">
-            {oEmbed.thumbnailUrl ? (
-              <div
-                className="relative group cursor-pointer rounded hover:drop-shadow-lg w-fit h-fit"
-                onClick={handleClick}
-              >
-                <Image
-                  src={oEmbed.thumbnailUrl}
-                  alt={oEmbed.title}
-                  width={20}
-                  height={20}
-                  priority
-                  className="object-cover w-auto h-auto rounded bg-white"
-                />
-                <p className="absolute bottom-2 right-2 bg-black/75 text-white py-1 px-2 rounded-full flex flex-row gap-1 text-sm opacity-0 transition group-hover:opacity-100">
-                  <ArrowTopRightOnSquareIcon className="w-5 h-5" />
-                  {ViewTrans("link.visit")}
-                </p>
-              </div>
-            ) : null}
-          </div>
+  if (!oEmbed) return null;
 
-          {/* 정보 */}
-          <div className="flex flex-col justify-start items-start h-full p-4 gap-4">
-            <h2
-              className="text-foreground font-bold text-lg line-clamp-4 text-start"
-              title={oEmbed.title}
-            >
-              {oEmbed.title}
-            </h2>
-            <p className="text-muted-foreground text-base">
-              {oEmbed.providerName}
-            </p>
-            <div
-              key="oembed-stable"
-              className="oembed-container"
-              dangerouslySetInnerHTML={{ __html: customizedHtml }}
-            />
-            <div className="text-sm text-reverse-25">{url}</div>
-          </div>
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <GlobeAltIcon className="w-5 h-5 text-muted-foreground" />
+          <span className="text-sm text-muted-foreground">{oEmbed.providerName}</span>
         </div>
-      ) : null}
+        <button onClick={handleClick} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
+          <ArrowTopRightOnSquareIcon className="w-4 h-4" />Open
+        </button>
+      </div>
+      {customizedHtml && (
+        <div key="oembed" className="oembed-container w-full aspect-video bg-muted rounded-xl overflow-hidden" dangerouslySetInnerHTML={{ __html: customizedHtml }} />
+      )}
+      <p className="text-xs text-muted-foreground/40 break-all">{url}</p>
     </div>
   );
 }

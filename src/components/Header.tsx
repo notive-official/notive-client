@@ -9,133 +9,53 @@ import Image from "next/image";
 import useTrans from "@/hooks/useTranslation";
 import PopButton from "./common/PopButton";
 import { ReactNode } from "react";
-import {
-  UserIcon,
-  ArchiveBoxIcon,
-  PencilIcon,
-} from "@heroicons/react/24/solid";
+import { UserIcon, ArchiveBoxIcon, PencilIcon, ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import { DEFAULT_PROFILE_PATH } from "@/common/consts/defaultImage";
 
-interface PopEntry {
-  title: string;
-  onClick: () => void;
-  icon?: ReactNode;
-  description?: string;
-}
+interface PopEntry { title: string; onClick: () => void; icon?: ReactNode }
 
 export default function Header() {
   const { HeaderTrans } = useTrans();
   const router = useRouter();
   const { isAuthenticated, logout, isLoading: isAuthLoading } = useAuth();
-
-  const handleLogoClick = () => {
-    router.push("/");
-  };
-  const handleLogin = () => {
-    router.push("/login");
-  };
-
   const { isLoading: isUserLoading, data } = useGetUserQuery({
-    url: GetUser.url(),
-    key: GetUser.key(),
-    options: {
-      staleTime: 1000 * 60 * 5,
-      enabled: isAuthenticated,
-    },
+    url: GetUser.url(), key: GetUser.key(),
+    options: { staleTime: 1000 * 60 * 5, enabled: isAuthenticated },
   });
 
-  const popTopEntries: PopEntry[] = [
-    {
-      title: HeaderTrans("userMenu.myPage.title"),
-      onClick: () => router.push("/my"),
-      icon: <UserIcon className="w-6 h-6 text-muted-foreground" />,
-    },
-    {
-      title: HeaderTrans("userMenu.archive.title"),
-      onClick: () => router.push("/archive/note"),
-      icon: <ArchiveBoxIcon className="w-6 h-6 text-muted-foreground" />,
-    },
-    {
-      title: HeaderTrans("userMenu.posting.title"),
-      onClick: () => router.push("/post/new"),
-      icon: <PencilIcon className="w-6 h-6 text-muted-foreground" />,
-    },
+  const popTop: PopEntry[] = [
+    { title: HeaderTrans("userMenu.myPage.title"), onClick: () => router.push("/my"), icon: <UserIcon className="w-5 h-5" /> },
+    { title: HeaderTrans("userMenu.archive.title"), onClick: () => router.push("/archive/note"), icon: <ArchiveBoxIcon className="w-5 h-5" /> },
+    { title: HeaderTrans("userMenu.posting.title"), onClick: () => router.push("/post/new"), icon: <PencilIcon className="w-5 h-5" /> },
   ];
-
-  const popBottomEntries: PopEntry[] = [
-    {
-      title: HeaderTrans("userMenu.signOut.title"),
-      onClick: () => logout(),
-    },
+  const popBottom: PopEntry[] = [
+    { title: HeaderTrans("userMenu.signOut.title"), onClick: () => logout(), icon: <ArrowRightStartOnRectangleIcon className="w-5 h-5" /> },
   ];
-
-  const popTopNode = popTopEntries.map((entry) => {
-    return (
-      <PopButton
-        key={entry.title}
-        title={entry.title}
-        onClick={entry.onClick}
-        icon={entry.icon}
-      />
-    );
-  });
-
-  const popBottomNode = popBottomEntries.map((entry) => {
-    return (
-      <PopButton
-        key={entry.title}
-        title={entry.title}
-        onClick={entry.onClick}
-        textCenter={true}
-      />
-    );
-  });
 
   return (
-    <header className="w-full p-4 flex justify-between shadow-md text-foreground bg-primary">
+    <header className="shrink-0 w-full h-14 px-5 md:px-8 flex justify-between items-center border-b border-border bg-surface sticky top-0 z-30">
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <p
-        className="flex flex-row items-center font-bold text-2xl cursor-pointer"
-        onClick={handleLogoClick}
-      >
-        <Image
-          className="w-7 h-7 mr-3"
-          src="/icons/favicon-dark.ico"
-          width={32}
-          height={32}
-          unoptimized
-          alt={"icon"}
-        />
-        {HeaderTrans("serviceName")}
-      </p>
-      {!isAuthLoading && !isUserLoading && isAuthenticated && data ? (
-        <>
+      <div className="flex items-center gap-2.5 cursor-pointer select-none" onClick={() => router.push("/")}>
+        <Image className="w-6 h-6" src="/icons/favicon-dark.ico" width={24} height={24} unoptimized alt="icon" />
+        <span className="font-semibold text-base tracking-tight text-foreground">{HeaderTrans("serviceName")}</span>
+      </div>
+      {!isAuthLoading && (
+        !isUserLoading && isAuthenticated && data ? (
           <Pop
             node={
-              <div className="flex flex-row items-center m-2 gap-2">
-                <Image
-                  className="w-7 h-7 rounded-full bg-white"
-                  src={data.profileImagePath ?? DEFAULT_PROFILE_PATH}
-                  width={30}
-                  height={30}
-                  alt="profile image"
-                />
-                <p className="text-md font-medium text-current">
-                  {data.nickname}
-                </p>
+              <div className="flex items-center gap-2.5 py-1 px-1">
+                <Image className="w-8 h-8 rounded-full object-cover ring-1 ring-border" src={data.profileImagePath ?? DEFAULT_PROFILE_PATH} width={32} height={32} alt="profile" />
+                <span className="text-sm font-medium text-secondary hidden sm:block">{data.nickname}</span>
               </div>
             }
-            popTopNode={popTopNode}
-            popBottomNode={popBottomNode}
+            popTopNode={popTop.map((e) => <PopButton key={e.title} title={e.title} onClick={e.onClick} icon={e.icon} />)}
+            popBottomNode={popBottom.map((e) => <PopButton key={e.title} title={e.title} onClick={e.onClick} icon={e.icon} />)}
           />
-        </>
-      ) : (
-        <Button
-          onClick={handleLogin}
-          className="cursor-pointer rounded-md px-4 py-2 text-sm font-medium text-foreground hover-bg-effect"
-        >
-          {HeaderTrans("signIn.buttonName")}
-        </Button>
+        ) : (
+          <Button onClick={() => router.push("/login")} className="cursor-pointer text-sm font-medium text-secondary hover:text-foreground transition-colors">
+            {HeaderTrans("signIn.buttonName")}
+          </Button>
+        )
       )}
     </header>
   );

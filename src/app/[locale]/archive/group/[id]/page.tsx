@@ -6,131 +6,58 @@ import InfiniteScroll from "@/components/common/InfiniteScroll";
 import { use, useEffect, useRef, useState } from "react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import MainCard from "@/components/archive/MainCard";
-import {
-  useListArchivesByGroupQuery,
-  ListArchivesByGroup,
-  ArchiveSummaryResponse,
-  useGetGroupMetaQuery,
-  getGroupMeta,
-  DeleteGroup,
-  ListGroupDetails,
-  useDeleteGroupMutation,
-  usePutGroupMutation,
-  PutGroup,
-} from "@/hooks/api/archive/group";
+import { useListArchivesByGroupQuery, ListArchivesByGroup, ArchiveSummaryResponse, useGetGroupMetaQuery, getGroupMeta, usePutGroupMutation, PutGroup } from "@/hooks/api/archive/group";
 import { Button } from "@headlessui/react";
-import { PencilIcon } from "@heroicons/react/20/solid";
+import { PencilIcon, CheckIcon } from "@heroicons/react/24/outline";
 import InputBox from "@/components/common/InputBox";
 import { useQueryClient } from "@tanstack/react-query";
-import { useErrorBar } from "@/contexts/ErrorBarContext";
-import { TrashIcon } from "@heroicons/react/16/solid";
-import { useRouter } from "@/i18n/routing";
+import { ListTag, useListTagsQuery } from "@/hooks/api/archive/tag";
 
-type GroupArchiveProps = { id: string };
-
-export default function GroupArchivePage({
-  params,
-}: {
-  params: Promise<GroupArchiveProps>;
-}) {
+export default function GroupArchivePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
-  const router = useRouter();
-  const { pushError } = useErrorBar();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [selectedTag, setSelectedTad] = useState<string>();
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [payloads, setPayloads] = useState<ArchiveSummaryResponse[]>();
-
   useRequireAuth();
-  const result = useListArchivesByGroupQuery({
-    url: ListArchivesByGroup.url(id),
-    key: ListArchivesByGroup.key(id),
-    options: { enabled: isAuthenticated, staleTime: 5 * 60 * 1000 },
-  });
 
-  const { data: groupMeta } = useGetGroupMetaQuery({
-    url: getGroupMeta.url(id),
-    key: getGroupMeta.key(id),
-    options: { enabled: isAuthenticated, staleTime: 5 * 60 * 1000 },
-  });
-  const { mutate: changeGroupName } = usePutGroupMutation({
-    url: PutGroup.url(id),
-    options: {
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: getGroupMeta.key(id),
-        });
-      },
-    },
-  });
-  const [groupName, setGroupName] = useState<string>(groupMeta?.name ?? "");
-  const [isGroupNameChanging, setIsGroupNameChanging] =
-    useState<boolean>(false);
+  const result = useListArchivesByGroupQuery({ url: ListArchivesByGroup.url(id), key: ListArchivesByGroup.key(id), options: { enabled: isAuthenticated, staleTime: 5 * 60 * 1000 } });
+  const { data: groupMeta } = useGetGroupMetaQuery({ url: getGroupMeta.url(id), key: getGroupMeta.key(id), options: { enabled: isAuthenticated, staleTime: 5 * 60 * 1000 } });
+  const { mutate: changeGroupName } = usePutGroupMutation({ url: PutGroup.url(id), options: { onSuccess: () => queryClient.invalidateQueries({ queryKey: getGroupMeta.key(id) }) } });
+  const { data: tags } = useListTagsQuery({ url: ListTag.url(), key: ListTag.key(), options: { enabled: isAuthenticated } });
+
+  const [groupName, setGroupName] = useState(groupMeta?.name ?? "");
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
-    if (!selectedTag) return;
     if (!result.data) return;
-    const filteredPayloads =
-      result.data.pages
-        .flatMap((page) => page.content)
-        .filter((content) => content.tags.includes(selectedTag)) ?? [];
-    setPayloads(filteredPayloads);
+    const all = result.data.pages.flatMap((p) => p.content);
+    setPayloads(!selectedTag ? all : all.filter((c) => c.tags.includes(selectedTag)));
   }, [selectedTag, result.data]);
 
   return (
-    <div
-      ref={scrollRef}
-      className="relative h-full w-full flex flex-col justify-start mx-auto overflow-y-auto p-8"
-    >
-      <section className="rounded-xl justify-start items-center h-fit w-full max-w-7xl">
-        {!isGroupNameChanging ? (
-          <div className="flex flex-row p-4 gap-2">
-            <h1 className="text-2xl font-bold ">{groupMeta?.name}</h1>
-
-            {/* 그룹 수정 버튼 */}
-            <Button
-              className="p-1 click-effect text-muted-foreground hover:text-foreground"
-              onClick={() => {
-                setGroupName(groupMeta?.name ?? "");
-                setIsGroupNameChanging(true);
-              }}
-            >
-              <PencilIcon className="w-5 h-5" />
-            </Button>
-          </div>
-        ) : (
-          <InputBox
-            value={groupName}
-            handleChange={(value) => setGroupName(value)}
-            buttonIcon={<PencilIcon className="w-5 h-5" />}
-            onAction={() => {
-              changeGroupName({ groupName });
-              setIsGroupNameChanging(false);
-            }}
-          />
-        )}
-      </section>
-      <section className="flex flex-row justify-between items-start h-full w-full max-w-7xl">
-        <div className="flex flex-col gap-20 w-full">
-          <TagSearchBar
-            onClick={(v) => setSelectedTad(v)}
-            selectedTag={selectedTag}
-          />
-          <InfiniteScroll result={result} root={scrollRef} payloads={payloads}>
-            {(note) => (
-              <div className="flex justify-center" key={note.id}>
-                <MainCard
-                  id={note.id}
-                  title={note.title}
-                  thumbnailPath={note.thumbnailPath}
-                  writer={note.writer}
-                />
-              </div>
-            )}
-          </InfiniteScroll>
+    <div ref={scrollRef} className="h-full w-full p-5 md:p-8 overflow-y-auto">
+      <div className="flex flex-col gap-6 max-w-5xl">
+        <div className="flex items-center gap-3">
+          {!editing ? (
+            <>
+              <h1 className="text-xl font-semibold text-foreground">{groupMeta?.name}</h1>
+              <Button className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-reverse-5 cursor-pointer transition-all" onClick={() => { setGroupName(groupMeta?.name ?? ""); setEditing(true); }}>
+                <PencilIcon className="w-4 h-4" />
+              </Button>
+            </>
+          ) : (
+            <div className="w-full max-w-sm">
+              <InputBox value={groupName} handleChange={setGroupName} buttonIcon={<CheckIcon className="w-5 h-5" />} onAction={() => { changeGroupName({ groupName }); setEditing(false); }} autoFocus />
+            </div>
+          )}
         </div>
-      </section>
+        {tags && tags.content.length > 0 && <TagSearchBar tags={tags.content} onClick={(v) => setSelectedTag(v)} selectedTag={selectedTag} />}
+        <InfiniteScroll result={result} root={scrollRef} payloads={payloads} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+          {(n) => <MainCard key={n.id} id={n.id} title={n.title} thumbnailPath={n.thumbnailPath} writer={n.writer} />}
+        </InfiniteScroll>
+      </div>
     </div>
   );
 }

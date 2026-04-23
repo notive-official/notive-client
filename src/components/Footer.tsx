@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
-    <footer className="fixed bottom-0 left-0 w-full p-1 flex justify-center shadow-mt text-foreground bg-surface">
-      Design Archive
+    <footer className="w-full py-8 flex justify-center">
+      <span className="text-[10px] text-muted-foreground/40 tracking-[0.15em] uppercase">Notive</span>
     </footer>
   );
 }

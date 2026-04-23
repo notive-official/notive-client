@@ -16,76 +16,29 @@ interface InfiniteScrollProps<T> {
 }
 
 export default function InfiniteScroll<T>({
-  result,
-  root,
-  children,
-  payloads,
-  loadingComponent = <div className="text-lg">로딩 중...</div>,
-  errorComponent = (
-    <div className="text-lg text-red-500">
-      데이터를 불러오는 중 오류가 발생했습니다.
-    </div>
-  ),
-  className = "grid grid-cols-1 sm:grid-cols-2 gap-8",
+  result, root, children, payloads,
+  loadingComponent = <div className="w-5 h-5 border-2 border-border border-t-secondary rounded-full animate-spin" />,
+  errorComponent = <span className="text-sm text-muted-foreground">Something went wrong</span>,
+  className = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5",
 }: InfiniteScrollProps<T>) {
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    isError,
-  } = result;
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } = result;
+  const { targetRef, isIntersecting } = useIntersectionObserver({ root, threshold: 0, rootMargin: "0px 0px 100px 0px" });
 
-  const { targetRef, isIntersecting } = useIntersectionObserver({
-    root,
-    threshold: 0,
-    rootMargin: "0px 0px 100px 0px",
-  });
-
-  // 스크롤이 하단에 도달했을 때 다음 페이지 로드
   useEffect(() => {
-    if (isIntersecting && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
+    if (isIntersecting && hasNextPage && !isFetchingNextPage) fetchNextPage();
   }, [isIntersecting, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  const notes = payloads
-    ? payloads
-    : data?.pages.flatMap((page) => page.content) ?? [];
+  const items = payloads ?? data?.pages.flatMap((p) => p.content) ?? [];
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        {loadingComponent}
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        {errorComponent}
-      </div>
-    );
-  }
+  if (isLoading) return <div className="flex justify-center py-24">{loadingComponent}</div>;
+  if (isError) return <div className="flex justify-center py-24">{errorComponent}</div>;
+  if (payloads?.length === 0) return <div className="flex justify-center py-16"><span className="text-sm text-muted-foreground">No results</span></div>;
 
   return (
-    <div className="flex flex-col gap-20 w-full pb-32">
-      <div className={className}>
-        {notes.map((item, index) => children(item, index))}
-      </div>
-
-      {/* 무한 스크롤 트리거 요소 */}
-      <div ref={targetRef} className="flex justify-center items-center h-20">
-        {isFetchingNextPage && (
-          <div className="text-lg">다음 페이지 로딩 중...</div>
-        )}
-        {!hasNextPage && notes.length > 0 && (
-          <div className="text-lg text-gray-500">
-            모든 데이터를 불러왔습니다.
-          </div>
-        )}
+    <div className="flex flex-col gap-8 w-full">
+      <div className={className}>{items.map((item, i) => children(item, i))}</div>
+      <div ref={targetRef} className="flex justify-center h-12">
+        {isFetchingNextPage && <div className="w-5 h-5 border-2 border-border border-t-secondary rounded-full animate-spin" />}
       </div>
     </div>
   );

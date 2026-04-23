@@ -1,25 +1,29 @@
 @import "tailwindcss";
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,450;14..32,500;14..32,550;14..32,600;14..32,700;14..32,800&display=swap');
+
 :root {
   @theme {
-    --color-surface: #fafafa;
-    --color-foreground: #1a1a1a;
+    --color-surface: #ffffff;
+    --color-foreground: #171717;
 
-    --color-muted: #f2f2f2;
-    --color-muted-foreground: #8f8f8f;
+    --color-muted: #f5f5f5;
+    --color-muted-foreground: #737373;
 
-    --color-border: #6f6f6f;
-    --color-ring: #6f6f6f;
+    --color-border: #e5e5e5;
+    --color-ring: #d4d4d4;
 
-    --color-primary: #fafafa;
-    --color-on-primary: #0c0c0c;
+    --color-primary: #171717;
+    --color-on-primary: #ffffff;
 
-    --color-secondary: #e8e8e8;
-    --color-on-secondary: #0c0c0c;
+    --color-secondary: #525252;
+    --color-on-secondary: #fafafa;
 
-    --color-reverse-5: rgba(0, 0, 0, 0.05);
-    --color-reverse-10: rgba(0, 0, 0, 0.1);
-    --color-reverse-25: rgba(0, 0, 0, 0.25);
+    --color-accent: #f5f5f5;
+
+    --color-reverse-5: rgba(0, 0, 0, 0.04);
+    --color-reverse-10: rgba(0, 0, 0, 0.07);
+    --color-reverse-25: rgba(0, 0, 0, 0.14);
     --color-reverse-50: rgba(0, 0, 0, 0.5);
     --color-reverse-75: rgba(0, 0, 0, 0.75);
     --color-reverse-100: rgb(0, 0, 0);
@@ -28,24 +32,26 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-surface: #1d1d1d;
-    --color-foreground: #ebebeb;
+    --color-surface: #141414;
+    --color-foreground: #ededed;
 
-    --color-muted: #232323;
-    --color-muted-foreground: #d0d0d0;
+    --color-muted: #1c1c1c;
+    --color-muted-foreground: #8a8a8a;
 
-    --color-border: #d0d0d0;
-    --color-ring: #d0d0d0;
+    --color-border: #272727;
+    --color-ring: #3a3a3a;
 
-    --color-primary: #232323;
-    --color-on-primary: #ebebeb;
+    --color-primary: #ededed;
+    --color-on-primary: #141414;
 
-    --color-secondary: #232323;
-    --color-on-secondary: #ebebeb;
+    --color-secondary: #a3a3a3;
+    --color-on-secondary: #1c1c1c;
+
+    --color-accent: #1c1c1c;
 
     --color-reverse-5: rgba(255, 255, 255, 0.05);
-    --color-reverse-10: rgba(255, 255, 255, 0.1);
-    --color-reverse-25: rgba(255, 255, 255, 0.25);
+    --color-reverse-10: rgba(255, 255, 255, 0.08);
+    --color-reverse-25: rgba(255, 255, 255, 0.16);
     --color-reverse-50: rgba(255, 255, 255, 0.5);
     --color-reverse-75: rgba(255, 255, 255, 0.75);
     --color-reverse-100: rgba(255, 255, 255, 1);
@@ -53,30 +59,43 @@
 }
 
 @layer components {
-  /* Effect */
   .hover-bg-effect {
-    @apply hover:bg-reverse-5;
+    @apply hover:bg-reverse-5 transition-colors duration-150;
   }
   .data-focus-outline-effect {
     @apply data-focus:outline-reverse-25
     focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2;
   }
   .click-effect {
-    @apply text-on-primary
-    data-hover:text-reverse-100
-    data-active:text-reverse-100
-    data-focus:text-reverse-100
-    hover:bg-reverse-5
-    rounded-xl cursor-pointer;
+    @apply text-foreground hover:bg-reverse-5 active:bg-reverse-10
+    rounded-lg cursor-pointer transition-all duration-150;
   }
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.011em;
+  font-feature-settings: "cv11", "ss01";
+  font-variation-settings: "opsz" 20;
 }
 
 @layer base {
-  p {
-    @apply truncate;
-  }
+  p { @apply truncate; }
+  * { @apply border-border; }
 }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+
+.oembed-container { position: relative; }
+.oembed-container iframe {
+  position: absolute; top: 0; left: 0;
+  width: 100% !important; height: 100% !important;
+  border: none; border-radius: 12px;
+}
+
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }

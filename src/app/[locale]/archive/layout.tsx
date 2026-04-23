@@ -1,16 +1,12 @@
 import ArchiveMenu from "@/components/archive/ArchiveMenu";
 
-export default async function ArchiveLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function ArchiveLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="flex flex-col md:flex-row relative w-full h-screen pb-16 p-8">
-      <div className="flex flex-col gap-4 w-full h-fit md:w-1/4 md:h-full">
+    <div className="flex h-full w-full md:flex-row flex-col">
+      <aside className="shrink-0 w-full md:w-52 border-b md:border-b-0 md:border-r border-border px-3 md:px-4">
         <ArchiveMenu />
-      </div>
-      {children}
+      </aside>
+      <div className="flex-1 min-h-0 h-full overflow-y-auto">{children}</div>
     </div>
   );
 }
